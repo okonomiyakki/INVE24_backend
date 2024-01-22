@@ -14,19 +14,23 @@ const summonersInfoRequest = () => {
       summonersName: summonersName,
       summonersTag: summonersTag,
     })
-    .then((response) => {
-      console.log('서버 응답: ', response.data);
+    .then((res) => {
+      console.log('서버 응답: ', res.data);
 
-      if (response.data.summonersEncryptedId)
-        // window.location.href = `${hostBaseUrl}/info`;
-        title.innerHTML = `'${summonersName}' 님의 게임을 조회합니다.`;
-      else {
-        if (response.data.errorCode === 403)
-          title.innerHTML = response.data.message;
-        else if (response.data.errorCode === 400)
-          title.innerHTML = response.data.message;
-        else if (response.data.errorCode === 404)
-          title.innerHTML = response.data.message;
+      if (res.data.summonersEncryptedId) {
+        const infoData = {
+          summonersName,
+          summonersEncryptedId: res.data.summonersEncryptedId,
+          summonersInfo: res.data.summonersInfo,
+        };
+
+        localStorage.setItem('infoData', JSON.stringify(infoData));
+
+        window.location.href = `${hostBaseUrl}/summoners`;
+      } else {
+        if (res.data.errorCode === 403) title.innerHTML = res.data.message;
+        else if (res.data.errorCode === 400) title.innerHTML = res.data.message;
+        else if (res.data.errorCode === 404) title.innerHTML = res.data.message;
       }
     })
     .catch((error) => {
