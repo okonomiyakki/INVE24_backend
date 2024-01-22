@@ -20,6 +20,7 @@ const summonersInfoRequest = () => {
       if (res.data.summonersEncryptedId) {
         const infoData = {
           summonersName,
+          summonersTag,
           summonersEncryptedId: res.data.summonersEncryptedId,
           summonersInfo: res.data.summonersInfo,
         };
