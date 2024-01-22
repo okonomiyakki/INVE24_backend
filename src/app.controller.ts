@@ -18,7 +18,17 @@ export class AppController {
 
   @Get()
   @Render('main')
-  root() {
+  main() {
+    return {
+      data: {
+        HostBaseUrl: this.HostBaseUrl,
+      },
+    };
+  }
+
+  @Get('/summoners')
+  @Render('summoners')
+  summoners() {
     return {
       data: {
         HostBaseUrl: this.HostBaseUrl,
