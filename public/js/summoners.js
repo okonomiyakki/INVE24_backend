@@ -34,10 +34,13 @@ const lolRealTimeRequest = () => {
 
     axios
       .post(`${hostBaseUrl}/lol/ingame`, {
+        summonersName: infoData.summonersName,
         summonersEncryptedId: infoData.summonersEncryptedId,
       })
       .then((res) => {
         console.log('서버 응답: ', res.data);
+
+        if (res.data.errorCode === 404) title.innerHTML = res.data.message;
       })
       .catch((error) => {
         console.error('[Client] 인게임 검색 에러:', error);
@@ -45,11 +48,6 @@ const lolRealTimeRequest = () => {
       .finally(() => {
         loading.style.display = 'none';
       });
-
-    summonerName.innerHTML = `${infoData.summonersName} #${infoData.summonersTag}`;
-    summonerTier.innerHTML = infoData.summonersInfo[0]
-      ? `${infoData.summonersInfo[0].tier} ${infoData.summonersInfo[0].rank} ${infoData.summonersInfo[0].leaguePoints}LP`
-      : '티어 정보가 없습니다.';
   } else {
     console.error('localStorage에 데이터가 존재하지 않습니다.');
   }
