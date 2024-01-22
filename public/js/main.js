@@ -10,18 +10,29 @@ const summonersInfoRequest = () => {
   loading.style.display = 'flex';
 
   axios
-    .post(`${hostBaseUrl}`, {
+    .post(`${hostBaseUrl}/lol`, {
       summonersName: summonersName,
       summonersTag: summonersTag,
     })
-    .then(function (response) {
+    .then((response) => {
       console.log('서버 응답: ', response.data);
+
+      if (response.data.summonersEncryptedId)
+        // window.location.href = `${hostBaseUrl}/info`;
+        title.innerHTML = `'${summonersName}' 님의 게임을 조회합니다.`;
+      else {
+        if (response.data.errorCode === 403)
+          title.innerHTML = response.data.message;
+        else if (response.data.errorCode === 400)
+          title.innerHTML = response.data.message;
+        else if (response.data.errorCode === 404)
+          title.innerHTML = response.data.message;
+      }
     })
-    .catch(function (error) {
-      console.error('에러 발생:', error);
-      title.innerHTML = `존재하지 않는 소환사 입니다.`;
+    .catch((error) => {
+      console.error('[Client] 소환사 검색 에러:', error);
     })
-    .finally(function () {
+    .finally(() => {
       loading.style.display = 'none';
     });
 };
