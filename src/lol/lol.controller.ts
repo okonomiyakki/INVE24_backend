@@ -10,8 +10,8 @@ export class LolController {
     return this.lolService.getSummonersEncryptedId(Body);
   }
 
-  @Post('/ingame')
-  getSummonersRealTime(@Body() Body) {
-    return this.lolService.getSummonersRealTime(Body);
+  @Post('/status')
+  getSummonersStatus(@Body() Body) {
+    return this.lolService.getSummonersStatus(Body);
   }
 }

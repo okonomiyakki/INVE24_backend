@@ -33,14 +33,18 @@ const lolRealTimeRequest = () => {
     console.log('infoData:', infoData);
 
     axios
-      .post(`${hostBaseUrl}/lol/ingame`, {
+      .post(`${hostBaseUrl}/lol/status`, {
         summonersName: infoData.summonersName,
         summonersEncryptedId: infoData.summonersEncryptedId,
       })
       .then((res) => {
         console.log('서버 응답: ', res.data);
 
-        if (res.data.errorCode === 404) title.innerHTML = res.data.message;
+        if (res.data.status) {
+          window.location.href = `${hostBaseUrl}/summoners/timer`;
+        } else {
+          if (res.data.errorCode === 404) title.innerHTML = res.data.message;
+        }
       })
       .catch((error) => {
         console.error('[Client] 인게임 검색 에러:', error);

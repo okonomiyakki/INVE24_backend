@@ -83,7 +83,7 @@ export class LolService {
     return { summonersEncryptedId, summonersInfo };
   }
 
-  async getSummonersRealTime(body): Promise<any> {
+  async getSummonersStatus(body): Promise<any> {
     const { summonersName, summonersEncryptedId } = body;
 
     const GetStartGameTimeUrl = `${this.RiotBaseUrlKr}/lol/spectator/v4/active-games/by-summoner/${summonersEncryptedId}?api_key=${this.RiotAppKey}`;
