@@ -75,7 +75,7 @@ export class LolService {
         return `소환사 정보가 존재하지 않습니다.<br>(code: ${error.response.status})`;
     }
 
-    const [summonersInfo] = responseBySummonersEncryptedId.data;
+    const summonersInfo = responseBySummonersEncryptedId.data;
 
     return { summonersEncryptedId, summonersInfo };
   }
