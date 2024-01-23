@@ -2,6 +2,10 @@ const hostBaseUrl = document.getElementById('host').dataset.hostBaseUrl;
 const title = document.getElementById('title');
 const start = document.getElementById('start');
 const timeContainer = document.getElementsByClassName('time-container')[0];
+const searchBtn = document.getElementById('searchBtn');
+let epochTime = new Date().getTime(); // 랜더링 시간 초기화
+let fetchCount = 0; // 요청 횟수 초기화
+let timeDiff; // 시간 차이 초기화
 
 document.addEventListener('DOMContentLoaded', function () {
   const storedInfoData = localStorage.getItem('infoData');
@@ -36,11 +40,13 @@ const lolRealTimeRequest = () => {
     start.style.display = 'none';
     timeContainer.style.display = 'flex';
 
-    startAutoIncrement(0); //로딩 타이머 실행
+    startAutoIncrement(0); // 로딩 타이머 실행
 
     const infoData = JSON.parse(storedInfoData);
 
-    console.log('infoData:', infoData);
+    title.innerHTML = `'${infoData.summonersName}'<br>님의 게임이 로딩중입니다.<br>게임이 시작되면 화면이 전환됩니다.`;
+
+    // console.log('infoData:', infoData);
 
     axios
       .post(`${hostBaseUrl}/lol/status`, {
@@ -48,7 +54,7 @@ const lolRealTimeRequest = () => {
         summonersEncryptedId: infoData.summonersEncryptedId,
       })
       .then((res) => {
-        console.log('서버 응답: ', res.data);
+        // console.log('서버 응답: ', res.data);
 
         if (res.data.gameStartTime) {
           timeContainer.style.display = 'none';
@@ -62,12 +68,30 @@ const lolRealTimeRequest = () => {
 
           window.location.href = `${hostBaseUrl}/summoners/timer`;
         } else {
+          // 게임중이 아니면 조회 버튼 다시 생기고, 로딩 타이머 제거
           start.style.display = 'flex';
           timeContainer.style.display = 'none';
           if (res.data.errorCode === 404) title.innerHTML = res.data.message;
           else if (res.data.errorCode === 429)
             title.innerHTML = res.data.message;
           else title.innerHTML = res.data.message;
+        }
+        fetchCount++;
+
+        let currentEpochTime = new Date().getTime();
+
+        timeDiff = Math.floor((currentEpochTime - epochTime) / 1000);
+
+        // 3초 안에 3번 이상 눌리면 버튼 비활성화
+        if (timeDiff <= 3 && fetchCount >= 3) {
+          title.innerHTML = '조회버튼을 연타하지 마세요.';
+
+          searchBtn.disabled = true;
+          searchBtn.style.cursor = 'not-allowed';
+          searchBtn.style.backgroundColor = '#5d6e92';
+          searchBtn.style.borderColor = '#5d6e92';
+
+          startAutoIncrementBtn(30, infoData);
         }
       })
       .catch((error) => {
@@ -114,5 +138,38 @@ const startAutoIncrement = (num) => {
     const s = convertSecondsToHMS(currentCounter).s;
 
     updateCounter(h, m, s);
+  }, 1000);
+};
+
+const updateBtnCounter = (s) => {
+  document.getElementById('searchBtn').innerHTML = `${s}초 후<br>조회`;
+};
+
+let btnIntervalId;
+
+const startAutoIncrementBtn = (num, infoData) => {
+  let currentCounter = num;
+
+  if (btnIntervalId) {
+    clearInterval(btnIntervalId);
+  }
+
+  btnIntervalId = setInterval(() => {
+    currentCounter--;
+
+    if (currentCounter === 0) {
+      searchBtn.disabled = false;
+      searchBtn.style.cursor = 'pointer';
+      searchBtn.innerHTML = '조회';
+
+      searchBtn.style.backgroundColor = '#4171D6';
+      searchBtn.style.borderColor = '#4171D6';
+
+      title.innerHTML = `'${infoData.summonersName}'<br>님의 게임을 조회합니다.`;
+
+      epochTime = new Date().getTime(); // 랜더링 시간 초기화
+      fetchCount = 0; // 요청 횟수 초기화
+      clearInterval(btnIntervalId);
+    } else updateBtnCounter(currentCounter);
   }, 1000);
 };
