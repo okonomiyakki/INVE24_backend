@@ -15,12 +15,20 @@
       <div id="start">
         <div id="summoner-wrap">
           <div id="summonerName"></div>
+          <div id="summonerTag"></div>
           <div id="summonerTier"></div>
         </div>
         <button id="searchBtn" onclick="lolRealTimeRequest()">조회</button>
       </div>
+
+      <div class="time-container">
+        <div class="time-wrap">
+          <p class="timeTitle">로딩 시간</p>
+          <p id="time"></p>
+        </div>
+      </div>
     
-      <div id="resetBtn" onclick="reset()">처음으로</div>
+      <button id="resetBtn" onclick="reset()">HOME</button>
 
       <div id="loading" class="spinner">
         <div class="dot dot1"></div>

@@ -35,4 +35,14 @@ export class AppController {
       },
     };
   }
+
+  @Get('/summoners/timer')
+  @Render('timer')
+  timer() {
+    return {
+      data: {
+        HostBaseUrl: this.HostBaseUrl,
+      },
+    };
+  }
 }

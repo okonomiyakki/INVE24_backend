@@ -32,6 +32,7 @@ const summonersInfoRequest = () => {
         if (res.data.errorCode === 403) title.innerHTML = res.data.message;
         else if (res.data.errorCode === 400) title.innerHTML = res.data.message;
         else if (res.data.errorCode === 404) title.innerHTML = res.data.message;
+        else title.innerHTML = res.data.message;
       }
     })
     .catch((error) => {
@@ -40,4 +41,36 @@ const summonersInfoRequest = () => {
     .finally(() => {
       loading.style.display = 'none';
     });
+};
+
+const handleInputName = () => {
+  const inputElement = document.getElementById('summonersNameInput');
+  const clearNameButton = document.getElementById('clearNameButton');
+
+  if (inputElement.value !== '') clearNameButton.style.display = 'inline-block';
+  else clearNameButton.style.display = 'none';
+};
+
+const handleInputTag = () => {
+  const inputElement = document.getElementById('summonersTagInput');
+  const clearTagButton = document.getElementById('clearTagButton');
+
+  if (inputElement.value !== '') clearTagButton.style.display = 'inline-block';
+  else clearTagButton.style.display = 'none';
+};
+
+const clearInputName = () => {
+  const inputElement = document.getElementById('summonersNameInput');
+  const clearNameButton = document.getElementById('clearNameButton');
+
+  inputElement.value = '';
+  clearNameButton.style.display = 'none';
+};
+
+const clearInputTag = () => {
+  const inputElement = document.getElementById('summonersTagInput');
+  const clearTagButton = document.getElementById('clearTagButton');
+
+  inputElement.value = '';
+  clearTagButton.style.display = 'none';
 };

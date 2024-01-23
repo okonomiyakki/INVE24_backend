@@ -2,24 +2,37 @@
 
   <head>
     <meta charset='utf-8' />
-    <link href='css/main.css' rel='stylesheet' />
+    <link href='/css/timer.css' rel='stylesheet' />
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <title>LoL Watch</title>
   </head>
 
   <body>
-    <h1 id="title">소환사 정보를 입력해주세요.</h1>
+    <h1 id="title"></h1>
     <hr>
     <div id="search-wrap">
-      <div class="input-wrap">
-        <input type="text" id="summonersNameInput" oninput="handleInputName()" placeholder="소환사 이름" value="신동엽짜배기">
-        <span class="clear-button" id="clearNameButton" onclick="clearInputName()">x</span>
+
+      <div class="time-container">
+        <div class="time-wrap">
+          <p class="timeTitle">시작 시간</p>
+          <p id="gameStartTime"></p>
+        </div>
       </div>
-      <div class="input-wrap">
-        <input type="text" id="summonersTagInput" oninput="handleInputTag()" placeholder="소환사 태그" value="kr1">
-        <span class="clear-button" id="clearTagButton" onclick="clearInputTag()">x</span>
+
+      <div class="time-container">
+        <div class="time-wrap">
+          <p class="timeTitle">협곡 시간</p>
+          <p id="time"></p>
+        </div>
       </div>
-      <button id="searchBtn" onclick="summonersInfoRequest()">소환사 검색</button>
+
+
+      <div class="button-container">
+        <button id="backBtn" onclick="back()">이전</button>
+        {{!-- <button id="restartBtn" onclick="">시간 갱신</button> --}}
+        <button id="resetBtn" onclick="reset()">HOME</button>
+      </div>
+
 
       <div id="loading" class="spinner">
         <div class="dot dot1"></div>
@@ -37,12 +50,12 @@
     <hr>
     <h1 id="info">- 사 용 법 -</h1>
     <div id="info-wrap">
-    
+
       <p>1. 소환사 태그는 '#'을 제외하고 입력해 주세요.</p>
       <p>2. 밴픽이 진행되는 동안에는 인게임 조회가 안됩니다.</p>
       <p>3. 브라우저를 새로고침 하면 초기화 됩니다.</p>
       <p style="color: red; text-align: center;"><b>검색 버튼은 필요할때만 눌러주세요. (연타 X)</b></p>
-    
+
     </div>
     <hr>
     <div id="footer">
@@ -51,7 +64,7 @@
 
     <div id="host" data-host-base-url={{data.HostBaseUrl}}></div>
 
-    <script src='js/main.js'></script>
+    <script src='/js/timer.js'></script>
   </body>
 
 </html>

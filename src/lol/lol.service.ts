@@ -45,6 +45,11 @@ export class LolService {
           message: `존재하지 않는 아이디입니다.<br>(code: ${error.response.status})`,
           errorCode: error.response.status,
         };
+      else
+        return {
+          message: `서버 오류.<br>(code: ${error.response.status})`,
+          errorCode: error.response.status,
+        };
     }
 
     const summonersEncryptedPuuid = responseBySummonersNameTag.data.puuid;
@@ -58,7 +63,15 @@ export class LolService {
     } catch (error) {
       console.log('소환사 암호화ID 검색 에러: ', error.response.status);
       if (error.response.status === 404)
-        return `리그오브레전드 아이디가 아닙니다.<br>(code: ${error.response.status})`;
+        return {
+          message: `리그오브레전드 아이디가 아닙니다.<br>(code: ${error.response.status})`,
+          errorCode: error.response.status,
+        };
+      else
+        return {
+          message: `서버 오류.<br>(code: ${error.response.status})`,
+          errorCode: error.response.status,
+        };
     }
 
     const summonersEncryptedId = responseBySummonersPuuid.data.id;
@@ -76,6 +89,11 @@ export class LolService {
           message: `소환사 정보가 존재하지 않습니다.<br>(code: ${error.response.status})`,
           errorCode: error.response.status,
         };
+      else
+        return {
+          message: `서버 오류.<br>(code: ${error.response.status})`,
+          errorCode: error.response.status,
+        };
     }
 
     const summonersInfo = responseBySummonersEncryptedId.data;
@@ -89,9 +107,19 @@ export class LolService {
     const GetStartGameTimeUrl = `${this.RiotBaseUrlKr}/lol/spectator/v4/active-games/by-summoner/${summonersEncryptedId}?api_key=${this.RiotAppKey}`;
 
     try {
-      var responseBySummonersId = await this.httpService
+      const responseBySummonersId = await this.httpService
         .get(GetStartGameTimeUrl)
         .toPromise();
+
+      const gameStartTime = responseBySummonersId.data.gameStartTime; // epochTime
+
+      const currentEpochTime = new Date().getTime();
+
+      if (currentEpochTime > gameStartTime + 30000 + 180000)
+        return {
+          message: `'${summonersName}'<br>님의 게임이 시작 후 3분이 경과되어<br>조회가 불가능합니다.<br>(code: 403.1)`,
+          errorCode: 403.1,
+        };
     } catch (error) {
       console.log('인게임 검색 에러: ', error.response.status);
       if (error.response.status === 404)
@@ -99,47 +127,126 @@ export class LolService {
           message: `'${summonersName}'<br>님은 현재 게임중이 아닙니다.<br>(code: ${error.response.status})`,
           errorCode: error.response.status,
         };
+      else
+        return {
+          message: `서버 오류.<br>(code: ${error.response.status})`,
+          errorCode: error.response.status,
+        };
     }
 
-    const gameStartTime = responseBySummonersId.data.gameStartTime;
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms)); // API fetch 딜레이
 
-    console.log('gameStartTime: ', gameStartTime);
+    let startTimeList = []; // 게임 시작 시간을 담는 배열
+    let currentStartTimeIndex = startTimeList.length - 1;
+    let fetchCount = 0; // 라이엇 인게임 조회 횟수
 
-    const time = new Date(gameStartTime + 30 * 1000); // 인게임 딜레이 30초 추가
+    do {
+      try {
+        var responseBySummonersId = await this.httpService
+          .get(GetStartGameTimeUrl)
+          .toPromise();
+      } catch (error) {
+        console.log('인게임 검색 에러: ', error.response.status);
+        if (error.response.status === 429)
+          return {
+            message: `현재 요청자가 많아 이용이 어렵습니다.<br>(code: ${error.response.status})`,
+            errorCode: error.response.status,
+          };
+        else
+          return {
+            message: `서버 오류.<br>(code: ${error.response.status})`,
+            errorCode: error.response.status,
+          };
+      }
+
+      const gameStartTime = responseBySummonersId.data.gameStartTime;
+
+      startTimeList.push(gameStartTime);
+
+      console.log('로딩중... ');
+      console.log('현재 배열: ', startTimeList);
+
+      fetchCount++;
+
+      if (fetchCount === 42)
+        // 로딩 시간 7분이면 종료
+        return {
+          message: `로딩 시간이 7분 경과되어 이용이 어렵습니다.<br>(code: 403.2)`,
+          errorCode: 403.2,
+        };
+
+      await delay(10000);
+    } while (
+      startTimeList.length === 1 ||
+      startTimeList[fetchCount - 2] === startTimeList[fetchCount - 1]
+    );
+
+    const currentStartTime = startTimeList[currentStartTimeIndex];
+
+    const time = new Date(currentStartTime + 30 * 1000); // 인게임 딜레이 30초 추가
 
     const hours = time.getHours();
     const minutes = time.getMinutes();
     const seconds = time.getSeconds();
 
-    const startTimeString = `${hours}시 ${minutes}분 ${seconds}초`;
-
-    console.log('게임 시작 시간:', startTimeString);
-
     const currentEpochTime = new Date().getTime();
 
     const realTimeSeconds = Math.floor(
-      (currentEpochTime - (gameStartTime + 30 * 1000)) / 1000,
+      (currentEpochTime - (currentStartTime + 30 * 1000)) / 1000,
     );
 
-    const h = Math.floor(realTimeSeconds / 3600);
-    const m = Math.floor((realTimeSeconds % 3600) / 60);
-    const s = realTimeSeconds % 60;
-
-    const realTimeString = `${h}시간 ${m}분 ${s}초`;
-    console.log('게임 진행 시간:', realTimeString);
-
-    let status = false;
-
-    if (currentEpochTime < gameStartTime + 30000)
-      status = false; // 로딩중 일때는 실제 시간이 더 느림
-    else status = true; // 게임 시작하면 같아짐
-
     return {
-      name: summonersName,
-      inGamedSummonersName: `'${summonersName}'<br>님의 게임이 시작되었습니다.`,
-      status,
-      startTimeString,
+      gameStartTime: { hours, minutes, seconds },
       realTimeSeconds,
     };
+
+    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+    // const gameStartTime = responseBySummonersId.data.gameStartTime;
+
+    // console.log('gameStartTime: ', gameStartTime);
+
+    // const time = new Date(gameStartTime + 30 * 1000); // 인게임 딜레이 30초 추가
+
+    // const hours = time.getHours();
+    // const minutes = time.getMinutes();
+    // const seconds = time.getSeconds();
+
+    // const startTimeString = `${hours}시 ${minutes}분 ${seconds}초`;
+
+    // console.log('게임 시작 시간:', startTimeString);
+
+    // const currentEpochTime = new Date().getTime();
+
+    // const realTimeSeconds = Math.floor(
+    //   (currentEpochTime - (gameStartTime + 30 * 1000)) / 1000,
+    // );
+
+    // const h = Math.floor(realTimeSeconds / 3600);
+    // const m = Math.floor((realTimeSeconds % 3600) / 60);
+    // const s = realTimeSeconds % 60;
+
+    // const realTimeString = `${h}시간 ${m}분 ${s}초`;
+    // console.log('게임 진행 시간:', realTimeString);
+
+    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+    // let status = true;
+
+    // return { status };
+
+    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+    // if (currentEpochTime < gameStartTime + 30000)
+    //   status = false; // 로딩중 일때는 실제 시간이 더 느림
+    // else status = true; // 게임 시작하면 같아짐
+
+    // return {
+    //   name: summonersName,
+    //   inGamedSummonersName: `'${summonersName}'<br>님의 게임이 시작되었습니다.`,
+    //   status,
+    //   startTimeString,
+    //   realTimeSeconds,
+    // };
   }
 }
