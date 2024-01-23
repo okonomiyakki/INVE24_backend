@@ -216,103 +216,86 @@ p {
   0% {
     transform: rotate(0deg);
   }
-
   100% {
     transform: rotate(360deg);
   }
 }
 
 @keyframes dot1Anim {
-
   0%,
   20% {
     transform: translate(0, -50px);
   }
-
   100% {
     transform: translate(0, -50px) rotate(360deg);
   }
 }
 
 @keyframes dot2Anim {
-
   0%,
   20% {
     transform: translate(29px, -38px);
   }
-
   100% {
     transform: translate(29px, -38px) rotate(360deg);
   }
 }
 
 @keyframes dot3Anim {
-
   0%,
   20% {
     transform: translate(50px, 0);
   }
-
   100% {
     transform: translate(50px, 0) rotate(360deg);
   }
 }
 
 @keyframes dot4Anim {
-
   0%,
   20% {
     transform: translate(29px, 38px);
   }
-
   100% {
     transform: translate(29px, 38px) rotate(360deg);
   }
 }
 
 @keyframes dot5Anim {
-
   0%,
   20% {
     transform: translate(0, 50px);
   }
-
   100% {
     transform: translate(0, 50px) rotate(360deg);
   }
 }
 
 @keyframes dot6Anim {
-
   0%,
   20% {
     transform: translate(-29px, 38px);
   }
-
   100% {
     transform: translate(-29px, 38px) rotate(360deg);
   }
 }
 
 @keyframes dot7Anim {
-
   0%,
   20% {
     transform: translate(-50px, 0);
   }
-
   100% {
     transform: translate(-50px, 0) rotate(360deg);
   }
 }
 
 @keyframes dot8Anim {
-
   0%,
   20% {
     transform: translate(-29px, -38px);
   }
-
   100% {
     transform: translate(-29px, -38px) rotate(360deg);
   }
