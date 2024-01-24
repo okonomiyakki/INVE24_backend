@@ -137,10 +137,13 @@ export class LolService {
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms)); // API fetch 딜레이
 
     let startTimeList = []; // 게임 시작 시간을 담는 배열
-    let currentStartTimeIndex = startTimeList.length - 1;
+    let currentStartTimeIndex; // 실제 게임 시작 시간 배열 인덱스
     let fetchCount = 0; // 라이엇 인게임 조회 횟수
 
     do {
+      if (fetchCount >= 1) await delay(10000);
+      else await delay(1000);
+
       try {
         var responseBySummonersId = await this.httpService
           .get(GetStartGameTimeUrl)
@@ -149,7 +152,7 @@ export class LolService {
         console.log('인게임 검색 에러: ', error.response.status);
         if (error.response.status === 429)
           return {
-            message: `현재 요청자가 많아 이용이 어렵습니다.<br>(code: ${error.response.status})`,
+            message: `현재 요청자가 많아 이용이 어렵습니다.<br>다시 시도해 주세요<br>(code: ${error.response.status})`,
             errorCode: error.response.status,
           };
         else
@@ -168,18 +171,22 @@ export class LolService {
 
       fetchCount++;
 
-      if (fetchCount === 42)
-        // 로딩 시간 7분이면 종료
+      if (fetchCount === 30)
+        // 로딩 시간 5분이면 종료
         return {
-          message: `로딩 시간이 7분 경과되어 이용이 어렵습니다.<br>(code: 403.2)`,
+          message: `로딩 시간이 5분 경과되어 이용이 어렵습니다.<br>다시 시도해 주세요.<br>(code: 403.2)`,
           errorCode: 403.2,
         };
 
-      await delay(10000);
+      // 요청 제한                               우리 서비스
+      // 2분에 100번 (동시에 인게임 검색 8.3명)   2분에 12번
+      // 1초에 20번  (동시에 소환사 검색 6명)     1초에 0.1번
     } while (
       startTimeList.length === 1 ||
       startTimeList[fetchCount - 2] === startTimeList[fetchCount - 1]
     );
+
+    currentStartTimeIndex = startTimeList.length - 1;
 
     const currentStartTime = startTimeList[currentStartTimeIndex];
 
