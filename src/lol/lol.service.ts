@@ -16,7 +16,7 @@ export class LolService {
   async getSummonersEncryptedId(body): Promise<any> {
     const { summonersName, summonersTag } = body;
 
-    console.log(`-----------------------------------------------------------`);
+    console.log(`----------------------------------------------`);
     console.log(`조회 계정: ${summonersName} #${summonersTag}`);
 
     const encodedSummonersName = encodeURIComponent(summonersName);
