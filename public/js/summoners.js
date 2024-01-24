@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 const reset = () => {
+  localStorage.removeItem('infoData');
+  localStorage.removeItem('timeData');
   window.location.href = `${hostBaseUrl}`;
 };
 
@@ -56,8 +58,6 @@ const lolRealTimeRequest = () => {
         summonersEncryptedId: infoData.summonersEncryptedId,
       })
       .then((res) => {
-        // console.log('서버 응답: ', res.data);
-
         if (res.data.gameStartTime) {
           timeContainer.style.display = 'none';
 

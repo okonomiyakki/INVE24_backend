@@ -36,10 +36,13 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 const back = () => {
+  localStorage.removeItem('timeData');
   window.location.href = `${hostBaseUrl}/summoners`;
 };
 
 const reset = () => {
+  localStorage.removeItem('infoData');
+  localStorage.removeItem('timeData');
   window.location.href = `${hostBaseUrl}`;
 };
 
