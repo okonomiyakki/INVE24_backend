@@ -6,6 +6,8 @@ const searchBtn = document.getElementById('searchBtn');
 let epochTime = new Date().getTime(); // 랜더링 시간 초기화
 let fetchCount = 0; // 요청 횟수 초기화
 let timeDiff; // 시간 차이 초기화
+let timeDifftList = []; // 시간차 배열 초기화
+let temp = 0; // n초
 
 document.addEventListener('DOMContentLoaded', function () {
   const storedInfoData = localStorage.getItem('infoData');
@@ -82,16 +84,26 @@ const lolRealTimeRequest = () => {
 
         timeDiff = Math.floor((currentEpochTime - epochTime) / 1000);
 
-        // 3초 안에 3번 이상 눌리면 버튼 비활성화
-        if (timeDiff <= 3 && fetchCount >= 3) {
-          title.innerHTML = '조회버튼을 연타하지 마세요.';
+        timeDifftList.push(timeDiff);
 
-          searchBtn.disabled = true;
-          searchBtn.style.cursor = 'not-allowed';
-          searchBtn.style.backgroundColor = '#5d6e92';
-          searchBtn.style.borderColor = '#5d6e92';
+        // console.log('fetchCount, timeDiff :', fetchCount, timeDiff);
+        // console.log('timeDifftList        :', timeDifftList);
 
-          startAutoIncrementBtn(30, infoData);
+        if (timeDifftList.length > 3) {
+          temp = timeDifftList[fetchCount - 1] - timeDifftList[fetchCount - 4];
+          // console.log('temp :', temp);
+
+          if (fetchCount > temp) {
+            title.innerHTML = `최근 ${temp}초 동안 ${fetchCount}번이나 조회하셨습니다.<br>30초 이후에 다시 이용해주세요.`;
+
+            searchBtn.disabled = true;
+            searchBtn.style.cursor = 'not-allowed';
+            searchBtn.style.backgroundColor = '#5d6e92';
+            searchBtn.style.borderColor = '#5d6e92';
+            searchBtn.style.fontSize = '40px';
+
+            startAutoIncrementBtn(30, infoData);
+          }
         }
       })
       .catch((error) => {
@@ -164,10 +176,12 @@ const startAutoIncrementBtn = (num, infoData) => {
 
       searchBtn.style.backgroundColor = '#4171D6';
       searchBtn.style.borderColor = '#4171D6';
+      searchBtn.style.fontSize = '50px';
 
       title.innerHTML = `'${infoData.summonersName}'<br>님의 게임을 조회합니다.`;
 
       epochTime = new Date().getTime(); // 랜더링 시간 초기화
+      timeDifftList = []; // 시간차 배열 초기화
       fetchCount = 0; // 요청 횟수 초기화
       clearInterval(btnIntervalId);
     } else updateBtnCounter(currentCounter);
