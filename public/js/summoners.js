@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     summonerName.innerHTML = `${infoData.summonersName}`;
     summonerTag.innerHTML = `#${infoData.summonersTag}`;
     summonerTier.innerHTML = infoData.summonersInfo[0]
-      ? `${infoData.summonersInfo[0].tier} ${infoData.summonersInfo[0].rank} ${infoData.summonersInfo[0].leaguePoints}LP`
+      ? `${infoData.summonersInfo[0].tier} &nbsp; ${infoData.summonersInfo[0].rank} &nbsp; ${infoData.summonersInfo[0].leaguePoints}LP`
       : '티어 정보가 없습니다.';
   } else {
     console.error(`'localStorage'에 'infoData'가 존재하지 않습니다.`);
