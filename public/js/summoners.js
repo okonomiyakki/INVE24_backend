@@ -10,11 +10,16 @@ let timeDifftList = []; // 시간차 배열 초기화
 let temp = 0; // n초
 
 document.addEventListener('DOMContentLoaded', function () {
+  const storedFetchData = localStorage.getItem('fetchData');
+
   const storedInfoData = localStorage.getItem('infoData');
+
   if (storedInfoData) {
     timeContainer.style.display = 'none';
 
     const infoData = JSON.parse(storedInfoData);
+
+    if (storedFetchData) fetchDisable(fetchCount, temp, infoData); // 연타 금지 함수 (브라우저 새로고침 방지용)
 
     const summonerName = document.getElementById('summonerName');
     const summonerTag = document.getElementById('summonerTag');
@@ -91,19 +96,10 @@ const lolRealTimeRequest = () => {
 
         if (timeDifftList.length > 3) {
           temp = timeDifftList[fetchCount - 1] - timeDifftList[fetchCount - 4];
+
           // console.log('temp :', temp);
 
-          if (fetchCount > temp) {
-            title.innerHTML = `최근 ${temp}초 동안 ${fetchCount}번이나 조회하셨습니다.<br>30초 이후에 다시 이용해주세요.`;
-
-            searchBtn.disabled = true;
-            searchBtn.style.cursor = 'not-allowed';
-            searchBtn.style.backgroundColor = '#5d6e92';
-            searchBtn.style.borderColor = '#5d6e92';
-            searchBtn.style.fontSize = '40px';
-
-            startAutoIncrementBtn(30, infoData);
-          }
+          if (fetchCount > temp) fetchDisable(fetchCount, temp, infoData); // 연타 금지 함수
         }
       })
       .catch((error) => {
@@ -114,6 +110,35 @@ const lolRealTimeRequest = () => {
       });
   } else {
     console.error(`'localStorage'에 'infoData'가 존재하지 않습니다.`);
+  }
+};
+
+const fetchDisable = (fetchCount, temp, infoData) => {
+  const fetchData = {
+    fetchDisableSecond: fetchCount + 30,
+  };
+
+  localStorage.setItem('fetchData', JSON.stringify(fetchData));
+
+  const storedFetchData = localStorage.getItem('fetchData');
+
+  const currentFetchData = JSON.parse(storedFetchData);
+
+  if (currentFetchData) {
+    title.innerHTML = `최근 ${temp}초 동안 ${fetchCount}번 조회하셨습니다.<br>${fetchCount + 30}초 이후에 다시 이용해주세요.`;
+
+    searchBtn.disabled = true;
+    searchBtn.style.cursor = 'not-allowed';
+    searchBtn.style.backgroundColor = '#5d6e92';
+    searchBtn.style.borderColor = '#5d6e92';
+    searchBtn.style.fontSize = '40px';
+
+    startAutoIncrementBtn(
+      parseInt(currentFetchData.fetchDisableSecond),
+      infoData,
+    );
+  } else {
+    console.error(`'localStorage'에 'fetchData'가 존재하지 않습니다.`);
   }
 };
 
@@ -183,6 +208,9 @@ const startAutoIncrementBtn = (num, infoData) => {
       epochTime = new Date().getTime(); // 랜더링 시간 초기화
       timeDifftList = []; // 시간차 배열 초기화
       fetchCount = 0; // 요청 횟수 초기화
+
+      localStorage.removeItem('fetchData'); // fetch 데이터 초기화
+
       clearInterval(btnIntervalId);
     } else updateBtnCounter(currentCounter);
   }, 1000);
