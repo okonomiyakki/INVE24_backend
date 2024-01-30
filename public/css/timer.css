@@ -139,8 +139,12 @@
 }
 
 #version>a {
+  font-family: 'BMDOHYEON';
+  font-weight: 10;
   font-size: 30px;
   text-decoration: none;
+  margin-left: 350px;
+  color: gray
 }
 
 #info {
