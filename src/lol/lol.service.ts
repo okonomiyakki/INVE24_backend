@@ -206,54 +206,5 @@ export class LolService {
       gameStartTime: { hours, minutes, seconds },
       realTimeSeconds,
     };
-
-    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
-    // const gameStartTime = responseBySummonersId.data.gameStartTime;
-
-    // console.log('gameStartTime: ', gameStartTime);
-
-    // const time = new Date(gameStartTime + 30 * 1000); // 인게임 딜레이 30초 추가
-
-    // const hours = time.getHours();
-    // const minutes = time.getMinutes();
-    // const seconds = time.getSeconds();
-
-    // const startTimeString = `${hours}시 ${minutes}분 ${seconds}초`;
-
-    // console.log('게임 시작 시간:', startTimeString);
-
-    // const currentEpochTime = new Date().getTime();
-
-    // const realTimeSeconds = Math.floor(
-    //   (currentEpochTime - (gameStartTime + 30 * 1000)) / 1000,
-    // );
-
-    // const h = Math.floor(realTimeSeconds / 3600);
-    // const m = Math.floor((realTimeSeconds % 3600) / 60);
-    // const s = realTimeSeconds % 60;
-
-    // const realTimeString = `${h}시간 ${m}분 ${s}초`;
-    // console.log('게임 진행 시간:', realTimeString);
-
-    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
-    // let status = true;
-
-    // return { status };
-
-    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-
-    // if (currentEpochTime < gameStartTime + 30000)
-    //   status = false; // 로딩중 일때는 실제 시간이 더 느림
-    // else status = true; // 게임 시작하면 같아짐
-
-    // return {
-    //   name: summonersName,
-    //   inGamedSummonersName: `'${summonersName}'<br>님의 게임이 시작되었습니다.`,
-    //   status,
-    //   startTimeString,
-    //   realTimeSeconds,
-    // };
   }
 }
