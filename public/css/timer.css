@@ -160,9 +160,19 @@ p {
   padding: 10px 50px;
 }
 
+@font-face {
+  font-family: 'BMDOHYEON';
+  src: url('../css/BMDOHYEON_ttf.ttf') format('truetype');
+}
+
 #footer {
+  font-family: 'BMDOHYEON';
   margin: 0;
   text-align: center;
+}
+
+#footer>a {
+  margin: 0 20px;
 }
 
 .spinner {
