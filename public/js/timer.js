@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (storedInfoData) {
     const infoData = JSON.parse(storedInfoData);
 
-    title.innerHTML = `'${infoData.summonersName}'<br>님의 게임이 시작되었습니다.`;
+    title.innerHTML = `'${infoData.summonersName}'<br>님의 게임이 시작되었습니다.<br>타이머는 2분 뒤 자동 종료됩니다.`;
   } else {
     console.error(`'localStorage'에 'infoData'가 존재하지 않습니다.`);
   }
@@ -77,7 +77,9 @@ const startAutoIncrement = (num) => {
     const h = convertSecondsToHMS(currentCounter).h;
     const m = convertSecondsToHMS(currentCounter).m;
     const s = convertSecondsToHMS(currentCounter).s;
-
-    updateCounter(h, m, s);
+    if (currentCounter === 120) {
+      clearInterval(intervalId);
+      back();
+    } else updateCounter(h, m, s);
   }, 1000);
 };
