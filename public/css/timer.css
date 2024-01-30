@@ -138,6 +138,11 @@
   text-align: center;
 }
 
+#version>a {
+  font-size: 30px;
+  text-decoration: none;
+}
+
 #info {
   font-size: 30px;
   width: 100%;
@@ -171,7 +176,9 @@ p {
   text-align: center;
 }
 
-#footer>a {
+#footer>p {
+  font-family: 'BMDOHYEON';
+  font-size: 15px;
   margin: 0 20px;
 }
 
