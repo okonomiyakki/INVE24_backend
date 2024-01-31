@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const summonerTag = document.getElementById('summonerTag');
     const summonerTier = document.getElementById('summonerTier');
 
-    title.innerHTML = `'${infoData.summonersName}'<br>님의 게임을 조회합니다.`;
+    title.innerHTML = `챔피언 픽이 끝난 직후부터<br>조회 버튼을 2초에 한번씩 눌러주세요.`;
 
     summonerName.innerHTML = `${infoData.summonersName}`;
     summonerTag.innerHTML = `#${infoData.summonersTag}`;
@@ -203,7 +203,7 @@ const startAutoIncrementBtn = (num, infoData) => {
       searchBtn.style.borderColor = '#4171D6';
       searchBtn.style.fontSize = '50px';
 
-      title.innerHTML = `'${infoData.summonersName}'<br>님의 게임을 조회합니다.`;
+      title.innerHTML = `챔피언 픽이 끝난 직후부터<br>조회 버튼을 2초에 한번씩 눌러주세요.`;
 
       epochTime = new Date().getTime(); // 랜더링 시간 초기화
       timeDifftList = []; // 시간차 배열 초기화
