@@ -10,10 +10,7 @@
 
 ## 사용 기술
 
-<img src="https://img.shields.io/badge/Handlebars.js-000?&style=for-the-badge&logo=handlebarsdotjs&logoColor=fff"/><img src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white"/>
-<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/>
-<img src="https://img.shields.io/badge/Typescript-3178C6?style=for-the-badge&logo=Typescript&logoColor=white"/>
-<img src="https://img.shields.io/badge/nestjs-E0234E?style=for-the-badge&logo=nestjs&logoColor=white">
+<img src="https://img.shields.io/badge/Handlebars.js-000?&style=for-the-badge&logo=handlebarsdotjs&logoColor=fff"/><img src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white"/><img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/><img src="https://img.shields.io/badge/Typescript-3178C6?style=for-the-badge&logo=Typescript&logoColor=white"/><img src="https://img.shields.io/badge/nestjs-E0234E?style=for-the-badge&logo=nestjs&logoColor=white">
 
 ---
 
@@ -94,6 +91,6 @@ npm run start:dev
 
 - 무분별한 API 호출을 막기 위한 연타 방지 스크립트가 존재합니다.
 
-        -  n 초 동안 n 번 이상 클릭 시 조회 버튼이 m 초 동안 비활성화됩니다.
+        -  n 초 동안 n 번 이상 클릭 시, 조회 버튼이 m 초 동안 비활성화됩니다.
 
         - 페이지를 새로고침하거나 종료하더라도 버튼 비활성화는 풀리지 않습니다.
