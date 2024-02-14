@@ -15,7 +15,8 @@ export class AppController {
   // }
 
   private HostBaseUrl = this.config.get('HOST_BASE_URL');
-  private DiscordInvitationCode = this.config.get('DISCORD_INVITATION_CODE');
+  private DiscordInvitationCode =
+    this.config.get('DISCORD_INVITATION_CODE') || '#';
 
   @Get()
   @Render('main')
