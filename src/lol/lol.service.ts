@@ -177,10 +177,6 @@ export class LolService {
           message: `로딩 시간이 5분 경과되어 이용이 어렵습니다.<br>다시 시도해 주세요.<br>(code: 403.2)`,
           errorCode: 403.2,
         };
-
-      // 요청 제한                               우리 서비스
-      // 2분에 100번 (동시에 인게임 검색 8.3명)   2분에 12번
-      // 1초에 20번  (동시에 소환사 검색 6명)     1초에 0.1번
     } while (
       startTimeList.length === 1 ||
       startTimeList[fetchCount - 2] === startTimeList[fetchCount - 1]
