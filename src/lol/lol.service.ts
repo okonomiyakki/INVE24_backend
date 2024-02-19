@@ -12,6 +12,23 @@ export class LolService {
   private RiotBaseUrlAsia = this.config.get('RIOT_BASE_URL_ASIA');
   private RiotBaseUrlKr = this.config.get('RIOT_BASE_URL_KR');
   private RiotAppKey = this.config.get('RIOT_API_APP_KEY');
+  private DiscordWebHookUrl = this.config.get('DISCORD_WEBHOOK_URL');
+
+  private getCurrentDate() {
+    const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
+
+    const YEAR = new Date().getFullYear();
+    const MONTH = new Date().getMonth();
+    const DATE = new Date().getDate();
+    const DAY = DAYS[new Date().getDay()];
+    const HOUR = new Date().getHours();
+    const MINUTE = new Date().getMinutes();
+    const SECOND = new Date().getSeconds();
+
+    const currentTime = `${YEAR}/${MONTH}/${DATE}/${DAY} ${HOUR}시${MINUTE}분${SECOND}초`;
+
+    return currentTime;
+  }
 
   async getSummonersEncryptedId(body): Promise<any> {
     const { summonersName, summonersTag } = body;
