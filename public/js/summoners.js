@@ -60,6 +60,7 @@ const lolRealTimeRequest = () => {
     axios
       .post(`${hostBaseUrl}/lol/status`, {
         summonersName: infoData.summonersName,
+        summonersTag: infoData.summonersTag,
         summonersEncryptedId: infoData.summonersEncryptedId,
       })
       .then((res) => {
