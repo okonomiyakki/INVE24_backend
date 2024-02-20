@@ -3,11 +3,21 @@ const title = document.getElementById('title');
 const start = document.getElementById('start');
 const timeContainer = document.getElementsByClassName('time-container')[0];
 const searchBtn = document.getElementById('searchBtn');
-let epochTime = new Date().getTime(); // 랜더링 시간 초기화
-let fetchCount = 0; // 요청 횟수 초기화
-let timeDiff; // 시간 차이 초기화
-let timeDifftList = []; // 시간차 배열 초기화
-let temp = 0; // n초
+
+/** 랜더링 시간 초기화 */
+let epochTime = new Date().getTime();
+
+/** 요청 횟수 초기화 */
+let fetchCount = 0;
+
+/** 시간차 초기화 */
+let timeDiff;
+
+/** 시간차 배열 초기화 */
+let timeDifftList = [];
+
+/** n초 */
+let temp = 0;
 
 document.addEventListener('DOMContentLoaded', function () {
   const storedFetchData = localStorage.getItem('fetchData');
@@ -19,13 +29,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const infoData = JSON.parse(storedInfoData);
 
-    if (storedFetchData) fetchDisable(fetchCount, temp, infoData); // 연타 금지 함수 (브라우저 새로고침 방지용)
+    /** 연타 금지 함수 (브라우저 새로고침 방지용) */
+    if (storedFetchData) fetchDisable(fetchCount, temp, infoData);
 
     const summonerName = document.getElementById('summonerName');
     const summonerTag = document.getElementById('summonerTag');
     const summonerTier = document.getElementById('summonerTier');
 
-    title.innerHTML = `챔피언 픽이 끝난 직후부터<br>조회 버튼을 2초에 한번씩 눌러주세요.`;
+    title.innerHTML = `챔피언 픽이 끝난 직후<br>클릭해 주세요.`;
 
     summonerName.innerHTML = `${infoData.summonersName}`;
     summonerTag.innerHTML = `#${infoData.summonersTag}`;
@@ -49,13 +60,12 @@ const lolRealTimeRequest = () => {
     start.style.display = 'none';
     timeContainer.style.display = 'flex';
 
-    startAutoIncrement(0); // 로딩 타이머 실행
+    /** 로딩 타이머 실행 */
+    startAutoIncrement(0);
 
     const infoData = JSON.parse(storedInfoData);
 
-    title.innerHTML = `'${infoData.summonersName}'<br>님의 게임이 로딩중입니다.<br>게임이 시작되면 화면이 전환됩니다.`;
-
-    // console.log('infoData:', infoData);
+    title.innerHTML = `'${infoData.summonersName}'<br>님의 게임이 로딩중입니다.`;
 
     axios
       .post(`${hostBaseUrl}/lol/status`, {
@@ -76,9 +86,11 @@ const lolRealTimeRequest = () => {
 
           window.location.href = `${hostBaseUrl}/summoners/timer`;
         } else {
-          // 게임중이 아니면 조회 버튼 다시 생기고, 로딩 타이머 제거
+          /** 게임중이 아니면 조회 버튼 다시 생기고, 로딩 타이머 제거 */
           start.style.display = 'flex';
+
           timeContainer.style.display = 'none';
+
           if (res.data.errorCode === 404) title.innerHTML = res.data.message;
           else if (res.data.errorCode === 429)
             title.innerHTML = res.data.message;
@@ -92,15 +104,11 @@ const lolRealTimeRequest = () => {
 
         timeDifftList.push(timeDiff);
 
-        // console.log('fetchCount, timeDiff :', fetchCount, timeDiff);
-        // console.log('timeDifftList        :', timeDifftList);
-
         if (timeDifftList.length > 3) {
           temp = timeDifftList[fetchCount - 1] - timeDifftList[fetchCount - 4];
 
-          // console.log('temp :', temp);
-
-          if (fetchCount > temp) fetchDisable(fetchCount, temp, infoData); // 연타 금지 함수
+          /** 연타 금지 로직 */
+          if (fetchCount > temp) fetchDisable(fetchCount, temp);
         }
       })
       .catch((error) => {
@@ -114,7 +122,7 @@ const lolRealTimeRequest = () => {
   }
 };
 
-const fetchDisable = (fetchCount, temp, infoData) => {
+const fetchDisable = (fetchCount, temp) => {
   const fetchData = {
     fetchDisableSecond: fetchCount + 30,
   };
@@ -126,7 +134,7 @@ const fetchDisable = (fetchCount, temp, infoData) => {
   const currentFetchData = JSON.parse(storedFetchData);
 
   if (currentFetchData) {
-    title.innerHTML = `최근 ${temp}초 동안 ${fetchCount}번 조회하셨습니다.<br>${fetchCount + 30}초 이후에 다시 이용해주세요.`;
+    title.innerHTML = `최근 ${temp}초 동안 ${fetchCount}번 조회하셨습니다.<br>잠시 후에 다시 이용해주세요.`;
 
     searchBtn.disabled = true;
     searchBtn.style.cursor = 'not-allowed';
@@ -134,10 +142,7 @@ const fetchDisable = (fetchCount, temp, infoData) => {
     searchBtn.style.borderColor = '#5d6e92';
     searchBtn.style.fontSize = '40px';
 
-    startAutoIncrementBtn(
-      parseInt(currentFetchData.fetchDisableSecond),
-      infoData,
-    );
+    startAutoIncrementBtn(parseInt(currentFetchData.fetchDisableSecond));
   } else {
     console.error(`'localStorage'에 'fetchData'가 존재하지 않습니다.`);
   }
@@ -185,7 +190,7 @@ const updateBtnCounter = (s) => {
 
 let btnIntervalId;
 
-const startAutoIncrementBtn = (num, infoData) => {
+const startAutoIncrementBtn = (num) => {
   let currentCounter = num;
 
   if (btnIntervalId) {
@@ -204,13 +209,19 @@ const startAutoIncrementBtn = (num, infoData) => {
       searchBtn.style.borderColor = '#4171D6';
       searchBtn.style.fontSize = '50px';
 
-      title.innerHTML = `챔피언 픽이 끝난 직후부터<br>조회 버튼을 2초에 한번씩 눌러주세요.`;
+      title.innerHTML = `챔피언 픽이 끝난 직후<br>클릭해 주세요.`;
 
-      epochTime = new Date().getTime(); // 랜더링 시간 초기화
-      timeDifftList = []; // 시간차 배열 초기화
-      fetchCount = 0; // 요청 횟수 초기화
+      /** 랜더링 시간 초기화 */
+      epochTime = new Date().getTime();
 
-      localStorage.removeItem('fetchData'); // fetch 데이터 초기화
+      /** 시간차 배열 초기화 */
+      timeDifftList = [];
+
+      /** 요청 횟수 초기화 */
+      fetchCount = 0;
+
+      /** fetch 데이터 초기화 */
+      localStorage.removeItem('fetchData');
 
       clearInterval(btnIntervalId);
     } else updateBtnCounter(currentCounter);
