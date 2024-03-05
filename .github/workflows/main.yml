@@ -48,13 +48,13 @@ jobs:
     name: Deploy 실행
     runs-on: [self-hosted, label-inve24] # AWS ./configure에서 사용할 label명
     steps:
-      # - name: (1) Login to GHCR / GHCR에 로그인
-      #   uses: docker/login-action@v1
-      #   with:
-      #     registry: ghcr.io
-      #     username: ${{ github.actor }}
-      #     password: ${{ secrets.GHCR_TOKEN }}
-      - name: Docker Run / Docker 컨테이너 띄우기
+      - name: (1) Login to GHCR / GHCR에 로그인
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+      - name: (2) Docker Run / Docker 컨테이너 띄우기
         run: |
           docker stop ${{ env.NAME }} || true
           docker rm ${{ env.NAME }} || true
