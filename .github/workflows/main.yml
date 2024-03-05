@@ -1,0 +1,73 @@
+name: CI/CD Docker
+
+# main브랜치로 PR될 때 트리거 되고, 해당 PR이 merge되면 workflow를 실행함
+on:
+  pull_request:
+    branches: [main]
+    types: [closed]
+
+# 환경변수 설정
+env:
+  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/github-auto-deploy
+  VERSION: ${{ github.sha }}
+  NAME: inve24_container
+
+jobs:
+  build: # Docker 이미지 빌드 및 GHCR에 푸시
+    name: Build 실행
+    runs-on: ubuntu-latest #ubuntu 환경에서 작업 실행
+    steps:
+      - name: (1) Checkout / github repository의 코드를 가상의 컨테이너 안으로 체크아웃
+        uses: actions/checkout@v2
+      - name: (2) SetUp Docker buildx / Docker 이미지 buildx 설정
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      - name: (3) Cache Docker layers / Docker 빌드 레이어 캐싱
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ env.VERSION }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-11
+      - name: (4) Login to GHCR / GHCR에 로그인
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+      - name: (5) Build and Push / Docker 이미지 빌드 후 packages에 푸시
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          tags: ${{ env.DOCKER_IMAGE }}:latest
+  # 배포
+  deploy:
+    needs: build # build 후에 실행되도록 정의
+    name: Deploy 실행
+    runs-on: [self-hosted, label-inve24] # AWS ./configure에서 사용할 label명
+    steps:
+      - name: (1) Login to GHCR / GHCR에 로그인
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+      - name: (2) Docker Run / Docker 컨테이너 띄우기
+        run: |
+          docker stop ${{ env.NAME }} || true
+          docker rm ${{ env.NAME }} || true
+          docker rmi ${{ env.DOCKER_IMAGE }}:latest || true
+          docker run -d -p 5500:5500 --name inve24_container --restart always \
+            -e HOST_BASE_URL=${{ secrets.HOST_BASE_URL }} \
+            -e RIOT_BASE_URL_ASIA=${{ secrets.RIOT_BASE_URL_ASIA }} \
+            -e RIOT_BASE_URL_KR=${{ secrets.RIOT_BASE_URL_KR }} \
+            -e RIOT_API_APP_KEY=${{ secrets.RIOT_API_APP_KEY }} \
+            -e DISCORD_INVITATION_CODE=${{ secrets.DISCORD_INVITATION_CODE }} \
+            -e DISCORD_WEBHOOK_URL_SUMMONER=${{ secrets.DISCORD_WEBHOOK_URL_SUMMONER }} \
+            -e DISCORD_WEBHOOK_URL_INGAME=${{ secrets.DISCORD_WEBHOOK_URL_INGAME }} \
+            -e DISCORD_WEBHOOK_URL_SUMMONER_ERROR=${{ secrets.DISCORD_WEBHOOK_URL_SUMMONER_ERROR }} \
+            -e DISCORD_WEBHOOK_URL_INGAME_ERROR=${{ secrets.DISCORD_WEBHOOK_URL_INGAME_ERROR }} \
+            -e DISCORD_WEBHOOK_URL_SERVER_ERROR=${{ secrets.DISCORD_WEBHOOK_URL_SERVER_ERROR }} \
+            ${{ env.DOCKER_IMAGE }}:latest
