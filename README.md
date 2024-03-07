@@ -18,7 +18,19 @@
 
 <img src="https://img.shields.io/badge/Typescript-3178C6?style=for-the-badge&logo=Typescript&logoColor=white"/><img src="https://img.shields.io/badge/nestjs-E0234E?style=for-the-badge&logo=nestjs&logoColor=white">
 
+### DevOps
+
+<img src="https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=fff"><img src="https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=nginx&logoColor=fff"><img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=fff"><img src="https://img.shields.io/badge/Amazon%20EC2-F90?style=for-the-badge&logo=amazonec2&logoColor=fff">
+
 ---
+
+## 문의
+
+- 디스코드 url
+
+## 서비스 동작 과정 및 배포 프로세스
+
+- 직접 그려서 넣기
 
 ## 서비스 목적
 
@@ -32,7 +44,7 @@
 
 ## 서비스 URL
 
--
+- [홈페이지 바로가기](https://inve24.com/)
 
 ## 참고
 
