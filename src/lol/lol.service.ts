@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
+import * as moment from 'moment-timezone';
 
 @Injectable()
 export class LolService {
@@ -25,17 +26,9 @@ export class LolService {
     this.config.get('DISCORD_WEBHOOK_URL_SERVER_ERROR') || undefined;
 
   private getCurrentDate() {
-    const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
-
-    const YEAR = new Date().getFullYear();
-    const MONTH = new Date().getMonth();
-    const DATE = new Date().getDate();
-    const DAY = DAYS[new Date().getDay()];
-    const HOUR = new Date().getHours();
-    const MINUTE = new Date().getMinutes();
-    const SECOND = new Date().getSeconds();
-
-    const currentTime = `${YEAR}/${MONTH}/${DATE}/${DAY} ${HOUR}시${MINUTE}분${SECOND}초`;
+    const currentTime = moment()
+      .tz('Asia/Seoul')
+      .format('YYYY/MM/DD/ddd HH시mm분ss초');
 
     return currentTime;
   }
@@ -113,8 +106,10 @@ export class LolService {
   async getSummonersEncryptedId(body): Promise<any> {
     const { summonersName, summonersTag } = body;
 
-    // console.log(`----------------------------------------------`);
-    // console.log(`조회 계정: ${summonersName} #${summonersTag}`);
+    console.log(`----------------------------------------------`);
+    console.log(
+      `[${this.getCurrentDate()}] 조회 계정: ${summonersName} #${summonersTag}`,
+    );
 
     const encodedSummonersName = encodeURIComponent(summonersName);
     const encodedSummonersTag = encodeURIComponent(summonersTag);
