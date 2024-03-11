@@ -9,11 +9,6 @@ export class AppController {
     private readonly config: ConfigService,
   ) {}
 
-  // @Get()
-  // getHello(): string {
-  //   return this.appService.getHello();
-  // }
-
   private HostBaseUrl = this.config.get('HOST_BASE_URL');
   private DiscordInvitationCode =
     this.config.get('DISCORD_INVITATION_CODE') || '#';
