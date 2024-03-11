@@ -121,8 +121,6 @@ export class LolService {
         .get(GetSummonersEncryptedPuuidUrl)
         .toPromise();
     } catch (error) {
-      console.log('소환사 계정 검색 에러: ', error.response.status);
-
       const webHookInfo = {
         url: this.SummonerErrorWebHookUrl,
         title: {
@@ -184,8 +182,6 @@ export class LolService {
         .get(GetEncryptedSummonersIdUrl)
         .toPromise();
     } catch (error) {
-      console.log('소환사 암호화ID 검색 에러: ', error.response.status);
-
       const webHookInfo = {
         url: this.SummonerErrorWebHookUrl,
         title: {
@@ -233,8 +229,6 @@ export class LolService {
         .get(GetSummonersInfoUrl)
         .toPromise();
     } catch (error) {
-      console.log('소환사 정보 검색 에러: ', error.response.status);
-
       const webHookInfo = {
         url: this.SummonerErrorWebHookUrl,
         title: {
@@ -322,8 +316,6 @@ export class LolService {
         };
       }
     } catch (error) {
-      console.log('인게임 검색 에러: ', error.response.status);
-
       const webHookInfo = {
         url: this.IngameErrorWebHookUrl,
         title: {
@@ -395,8 +387,6 @@ export class LolService {
           .get(GetStartGameTimeUrl)
           .toPromise();
       } catch (error) {
-        console.log('인게임 검색 에러: ', error.response.status);
-
         const webHookInfo = {
           url: this.IngameErrorWebHookUrl,
           title: {
