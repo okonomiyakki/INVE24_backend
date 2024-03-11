@@ -13,21 +13,16 @@ export class LolService {
   private RiotBaseUrlKr = this.config.get('RIOT_BASE_URL_KR');
   private RiotAppKey = this.config.get('RIOT_API_APP_KEY');
 
-  private SummonerSuccessWebHookUrl = this.config.get(
-    'DISCORD_WEBHOOK_URL_SUMMONER',
-  );
-  private IngameSuccessWebHookUrl = this.config.get(
-    'DISCORD_WEBHOOK_URL_INGAME',
-  );
-  private SummonerErrorWebHookUrl = this.config.get(
-    'DISCORD_WEBHOOK_URL_SUMMONER_ERROR',
-  );
-  private IngameErrorWebHookUrl = this.config.get(
-    'DISCORD_WEBHOOK_URL_INGAME_ERROR',
-  );
-  private ServerErrorWebHookUrl = this.config.get(
-    'DISCORD_WEBHOOK_URL_SERVER_ERROR',
-  );
+  private SummonerSuccessWebHookUrl =
+    this.config.get('DISCORD_WEBHOOK_URL_SUMMONER') || undefined;
+  private IngameSuccessWebHookUrl =
+    this.config.get('DISCORD_WEBHOOK_URL_INGAME') || undefined;
+  private SummonerErrorWebHookUrl =
+    this.config.get('DISCORD_WEBHOOK_URL_SUMMONER_ERROR') || undefined;
+  private IngameErrorWebHookUrl =
+    this.config.get('DISCORD_WEBHOOK_URL_INGAME_ERROR') || undefined;
+  private ServerErrorWebHookUrl =
+    this.config.get('DISCORD_WEBHOOK_URL_SERVER_ERROR') || undefined;
 
   private getCurrentDate() {
     const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
@@ -111,7 +106,8 @@ export class LolService {
       ],
     };
 
-    await this.httpService.post(webHookInfo.url, contents).toPromise();
+    if (webHookInfo.url)
+      await this.httpService.post(webHookInfo.url, contents).toPromise();
   }
 
   async getSummonersEncryptedId(body): Promise<any> {
