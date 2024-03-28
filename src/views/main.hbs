@@ -2,8 +2,9 @@
 
   <head>
     <meta charset='utf-8' />
-    <link rel="icon" href="css/icons8-league-of-legends-doodle-16.png" />
+    <link rel="icon" href="favicon/icons8-league-of-legends-doodle-16.png" />
     <link href='css/main.css' rel='stylesheet' />
+    <link href='css/common.css' rel='stylesheet' />
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <title>인베24 | 지금 협곡 시간은?</title>
   </head>
@@ -11,16 +12,16 @@
   <body>
     <h1 id="title">소환사 정보를 입력해주세요.</h1>
     <hr>
-    <div id="search-wrap">
+    <div id="main-wrap">
       <div class="input-wrap">
-        <input type="search" id="summonersNameInput" oninput="handleInputName()" placeholder=" 소환사 이름" value="">
-        <span class="clear-button" id="clearNameButton" onclick="clearInputName()">x</span>
+        <input type="search" id="summonersNameInput" placeholder=" 소환사 이름" value="">
       </div>
       <div class="input-wrap">
-        <input type="text" id="summonersTagInput" oninput="handleInputTag()" placeholder=" KR1" value="KR1">
-        <span class="clear-button" id="clearTagButton" onclick="clearInputTag()">x</span>
+        <input type="text" id="summonersTagInput" placeholder=" KR1" value="KR1">
       </div>
+      
       <button id="searchBtn" onclick="summonersInfoRequest()">소환사 검색</button>
+      {{!-- <button id="searchBtn" onclick="loginForRiotAccount()">라이엇 계정으로 로그인하기</button> --}}
 
       <div id="loading" class="spinner">
         <div class="dot dot1"></div>
