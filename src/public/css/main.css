@@ -38,6 +38,8 @@ input {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  margin-bottom: 30px;
   padding: 10px 20 10px 10px;
   background-color: white;
   color: #D13639;
