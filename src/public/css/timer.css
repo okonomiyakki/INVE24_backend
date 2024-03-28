@@ -1,67 +1,10 @@
-#title {
-  font-size: 60px;
-  width: 100%;
-  background: #FFF2DD;
-  margin: 0;
-  text-align: center;
-  padding: 10px 0;
-}
-
-#search-wrap {
+#main-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 51vh;
   margin: 0;
-}
-
-.time-container {
-  text-align: left;
-  margin-bottom: 20px;
-}
-
-.time-wrap {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  padding: 10px 10px 5px 10px;
-  margin: 8px 0;
-  border-radius: 15px;
-  box-sizing: border-box;
-  background-color: #68655b;
-  text-align: center;
-}
-
-.timeTitle{
-  font-size: 50px;
-  color: white;
-  padding: 0 40px
-}
-
-#gameStartTime {
-  padding: 0 20px;
-  color: #e2a55f;
-  margin: auto;
-  font-size: 150px;
-  font-family: 'digital-7', sans-serif;
-}
-
-#time {
-  padding: 0 20px;
-  color: #5fe264;
-  margin: auto;
-  font-size: 150px;
-  /* font-size: min(15vw, 4em); */
-  font-family: 'digital-7', sans-serif;
-}
-
-@font-face {
-  font-family: 'digital-7';
-  src: url('digital-7.ttf');
 }
 
 .button-container{
@@ -88,92 +31,14 @@
   background: #885cff;
 }
 
-#restartBtn{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 300px;
-  height: 110px;
+@media (min-width: 1000px) {
+  #main-wrap {
+    height: 42vh;
+  }
 
-  font-size: 45px;
-  cursor: pointer;
-  border: 1px solid #4171D6;
-  border-radius: 50px;
-  color: white;
-  background: #4171D6;
-}
-
-#resetBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 300px;
-  height: 110px;
-
-  font-size: 45px;
-  cursor: pointer;
-  border: 1px solid #5ca3ff;
-  border-radius: 50px;
-  color: white;
-  background: #5ca3ff;
-}
-
-#version {
-  padding-top: 5px;
-  font-family: 'BMDOHYEON';
-  font-weight: 10;
-  font-size: 35px; /* font-size: 40px; */
-  width: 100%;
-  background: #FFEC8E;
-  margin: 0;
-  text-align: center;
-
-}
-
-#version>a {
-  font-family: 'BMDOHYEON';
-  font-weight: 10;
-  font-size: 35px;
-  text-decoration: none;
-  margin-left: 550px; /* 좌우로 벌리기 */
-  color: gray
-}
-
-#info {
-  font-size: 30px;
-  width: 100%;
-  background: #FFF2DD;
-  margin: 0;
-  text-align: center;
-  color: gray;
-}
-
-#info-wrap {
-  font-size: 30px;
-  width: 100%;
-  background: #FFF2DD;
-  margin: 0;
-}
-
-p {
-  font-size: 25px;
-  margin: 0;
-  padding: 10px 50px;
-}
-
-@font-face {
-  font-family: 'BMDOHYEON';
-  src: url('../css/BMDOHYEON_ttf.ttf') format('truetype');
-}
-
-#footer {
-  font-family: 'BMDOHYEON';
-  margin: 0;
-  text-align: center;
-}
-
-#footer>p {
-  font-family: 'BMDOHYEON';
-  font-size: 15px;
-  margin: 0 20px;
+  #backBtn {
+    width: 150px;
+    height: 50px;
+    font-size: 20px;
+  }
 }
