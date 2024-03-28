@@ -2,8 +2,10 @@
 
   <head>
     <meta charset='utf-8' />
-    <link rel="icon" href="/css/icons8-league-of-legends-doodle-16.png" />
+    <link rel="icon" href="/favicon/icons8-league-of-legends-doodle-16.png" />
     <link href='/css/timer.css' rel='stylesheet' />
+    <link href='/css/common.css' rel='stylesheet' />
+    <link href='/css/clock.css' rel='stylesheet' />
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <title>인베24 | 지금 협곡 시간은?</title>
   </head>
@@ -11,19 +13,19 @@
   <body>
     <h1 id="title"></h1>
     <hr>
-    <div id="search-wrap">
+    <div id="main-wrap">
 
       <div class="time-container">
         <div class="time-wrap">
           <p class="timeTitle">시작 시간</p>
-          <p id="gameStartTime"></p>
+          <p id="startTime"></p>
         </div>
       </div>
 
       <div class="time-container">
         <div class="time-wrap">
           <p class="timeTitle">협곡 시간</p>
-          <p id="time"></p>
+          <p id="realTime"></p>
         </div>
       </div>
 
@@ -47,7 +49,7 @@
     </div>
     <hr>
     <div id="footer">
-      <p>© 2024 INVE24, Okonomiyakki</p>
+      <p><a href={{data.HostPrivacyUrl}}>개인정보처리방침</a> | <a href={{data.HostAgreementUrl}}>이용약관</a> | © 2024 INVE24, Okonomiyakki</p>
     </div>
 
     <div id="host" data-host-base-url={{data.HostBaseUrl}}></div>
