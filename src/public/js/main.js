@@ -43,4 +43,6 @@ const summonersInfoRequest = () => {
     });
 };
 
-const loginForRiotAccount = () => {};
+const loginForRiotAccount = () => {
+  alert('점검 중입니다.');
+};

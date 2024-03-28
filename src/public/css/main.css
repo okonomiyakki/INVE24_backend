@@ -21,7 +21,7 @@ input {
   font-size: 50px;
 }
 
-button {
+#searchBtn {
   width: 50%;
   padding: 10px;
   margin: 35px 5px 5px 5px;
@@ -32,6 +32,25 @@ button {
   border-radius: 50px;
   color: white;
   background: #4171D6;
+}
+
+#loginBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20 10px 10px;
+  background-color: white;
+  color: #D13639;
+  border: 3px solid #D13639;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+
+.loginIcon {
+  margin-right: 10px;
 }
 
 @media (min-width: 1000px) {
@@ -46,8 +65,12 @@ button {
     font-size: 25px;
   }
 
-  button {
+  #searchBtn {
     width: 10%;
+    font-size: 20px;
+  }
+
+  #loginBtn{
     font-size: 20px;
   }
 }
