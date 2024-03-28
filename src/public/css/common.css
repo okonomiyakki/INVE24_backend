@@ -87,7 +87,7 @@ p {
 
   #info-wrap>p {
     font-size: 20px;
-    padding: 10px 50px 10px 720px;
+    text-align: center;
   }
 
   @font-face {
