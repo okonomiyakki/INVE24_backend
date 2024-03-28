@@ -113,9 +113,6 @@ const lolRealTimeRequest = () => {
       })
       .catch((error) => {
         console.error('[Client] 인게임 검색 에러:', error);
-      })
-      .finally(() => {
-        loading.style.display = 'none';
       });
   } else {
     console.error(`'localStorage'에 'infoData'가 존재하지 않습니다.`);
@@ -161,7 +158,7 @@ const convertSecondsToHMS = (seconds) => {
 };
 
 const updateCounter = (h, m, s) => {
-  document.getElementById('time').innerText = `${h}:${m}:${s}`;
+  document.getElementById('realTime').innerText = `${h}:${m}:${s}`;
 };
 
 let intervalId;

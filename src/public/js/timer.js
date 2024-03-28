@@ -1,6 +1,6 @@
 const hostBaseUrl = document.getElementById('host').dataset.hostBaseUrl;
 const title = document.getElementById('title');
-const gameStartTime = document.getElementById('gameStartTime');
+const gameStartTime = document.getElementById('startTime');
 
 document.addEventListener('DOMContentLoaded', function () {
   const storedInfoData = localStorage.getItem('infoData');
@@ -59,7 +59,7 @@ const convertSecondsToHMS = (seconds) => {
 };
 
 const updateCounter = (h, m, s) => {
-  document.getElementById('time').innerText = `${h}:${m}:${s}`;
+  document.getElementById('realTime').innerText = `${h}:${m}:${s}`;
 };
 
 let intervalId;
