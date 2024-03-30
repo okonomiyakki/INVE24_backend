@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
-import { FindSummonerDto } from './dto/find-summoner.dto';
-import * as moment from 'moment-timezone';
+import { SearchSummonerDto } from './dto/search-summoner.dto';
 import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
@@ -18,9 +17,9 @@ export class LolService {
   private RiotAppKey = this.config.get('RIOT_API_APP_KEY');
 
   async getSummonersEncryptedId(
-    FindSummonerDto: FindSummonerDto,
+    searchSummonerDto: SearchSummonerDto,
   ): Promise<any> {
-    const { summonersName, summonersTag } = FindSummonerDto;
+    const { summonersName, summonersTag } = searchSummonerDto;
 
     console.log(`----------------------------------------------`);
     console.log(

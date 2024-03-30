@@ -1,13 +1,21 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { LolService } from './lol.service';
+import { SearchSummonerDto } from './dto/search-summoner.dto';
 
 @Controller('lol')
 export class LolController {
   constructor(private lolService: LolService) {}
 
   @Post()
-  getSummonersEncryptedId(@Body() Body) {
-    return this.lolService.getSummonersEncryptedId(Body);
+  @UsePipes(ValidationPipe)
+  getSummonersEncryptedId(@Body() searchSummonerDto: SearchSummonerDto) {
+    return this.lolService.getSummonersEncryptedId(searchSummonerDto);
   }
 
   @Post('/status')
