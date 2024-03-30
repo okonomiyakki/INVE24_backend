@@ -1,114 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
+import { FindSummonerDto } from './dto/find-summoner.dto';
 import * as moment from 'moment-timezone';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class LolService {
   constructor(
     private readonly httpService: HttpService,
     private readonly config: ConfigService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   private RiotBaseUrlAsia = this.config.get('RIOT_BASE_URL_ASIA');
   private RiotBaseUrlKr = this.config.get('RIOT_BASE_URL_KR');
   private RiotAppKey = this.config.get('RIOT_API_APP_KEY');
 
-  private SummonerSuccessWebHookUrl =
-    this.config.get('DISCORD_WEBHOOK_URL_SUMMONER') || undefined;
-  private IngameSuccessWebHookUrl =
-    this.config.get('DISCORD_WEBHOOK_URL_INGAME') || undefined;
-  private SummonerErrorWebHookUrl =
-    this.config.get('DISCORD_WEBHOOK_URL_SUMMONER_ERROR') || undefined;
-  private IngameErrorWebHookUrl =
-    this.config.get('DISCORD_WEBHOOK_URL_INGAME_ERROR') || undefined;
-  private ServerErrorWebHookUrl =
-    this.config.get('DISCORD_WEBHOOK_URL_SERVER_ERROR') || undefined;
-
-  private getCurrentDate() {
-    const currentTime = moment()
-      .tz('Asia/Seoul')
-      .format('YYYY/MM/DD/ddd HH시mm분ss초');
-
-    return currentTime;
-  }
-
-  private async sendToWebHook(webHookInfo, offset: string) {
-    let about = '';
-    switch (offset) {
-      case 'server error':
-        about = `${webHookInfo.title.summonersName} #${webHookInfo.title.summonersTag}
-[${webHookInfo.title.error.response.status}] 서버 오류.`;
-        break;
-      case '#1 forbiden':
-        about = `${webHookInfo.title.summonersName} #${webHookInfo.title.summonersTag}
-[${webHookInfo.title.error.response.status}] 이름 또는 태그를 입력해 주세요.`;
-        break;
-      case '#1 bad request':
-        about = `${webHookInfo.title.summonersName} #${webHookInfo.title.summonersTag}
-[${webHookInfo.title.error.response.status}] 잘못된 입력입니다.`;
-        break;
-      case '#1 not found':
-        about = `${webHookInfo.title.summonersName} #${webHookInfo.title.summonersTag}
-[${webHookInfo.title.error.response.status}] 존재하지 않는 아이디입니다.`;
-        break;
-      case '#2 not found':
-        about = `${webHookInfo.title.summonersName} #${webHookInfo.title.summonersTag}.
-[${webHookInfo.title.error.response.status}] 리그오브레전드 아이디가 아닙니다`;
-        break;
-      case '#3 not found':
-        about = `${webHookInfo.title.summonersName} #${webHookInfo.title.summonersTag}
-[${webHookInfo.title.error.response.status}] 소환사 정보가 존재하지 않습니다.`;
-        break;
-      case 'summoner OK':
-        about = `${webHookInfo.title.summonersName} #${webHookInfo.title.summonersTag}`;
-        break;
-      case '#4 forbiden':
-        about = `${webHookInfo.title.summonersName} #${webHookInfo.title.summonersTag}
-[403.1] 게임 시작 3분이 경과되어 조회가 불가능합니다.`;
-        break;
-      case '#4 not found':
-        about = `${webHookInfo.title.summonersName} #${webHookInfo.title.summonersTag}
-[${webHookInfo.title.error.response.status}] 현재 게임중이 아닙니다.`;
-        break;
-      case '#5 too many request':
-        about = `${webHookInfo.title.summonersName} #${webHookInfo.title.summonersTag}
-[${webHookInfo.title.error.response.status}] 현재 요청자가 많아 이용이 어렵습니다.`;
-        break;
-      case 'loading OK':
-        about = `${webHookInfo.title.summonersName} #${webHookInfo.title.summonersTag}
-로딩중...`;
-        break;
-      case '#5 forbiden':
-        about = `${webHookInfo.title.summonersName} #${webHookInfo.title.summonersTag}
-[403.2] 로딩 시간이 5분 경과되어 이용이 어렵습니다. 다시 시도해 주세요.`;
-        break;
-      case 'start OK':
-        about = `${webHookInfo.title.summonersName} #${webHookInfo.title.summonersTag}
-게임이 시작되었습니다.`;
-        break;
-    }
-
-    const contents = {
-      embeds: [
-        {
-          title: about,
-          description: webHookInfo.currentDate,
-          color: 3447003,
-        },
-      ],
-    };
-
-    if (webHookInfo.url)
-      await this.httpService.post(webHookInfo.url, contents).toPromise();
-  }
-
-  async getSummonersEncryptedId(body): Promise<any> {
-    const { summonersName, summonersTag } = body;
+  async getSummonersEncryptedId(
+    FindSummonerDto: FindSummonerDto,
+  ): Promise<any> {
+    const { summonersName, summonersTag } = FindSummonerDto;
 
     console.log(`----------------------------------------------`);
     console.log(
-      `[${this.getCurrentDate()}] 조회 계정: ${summonersName} #${summonersTag}`,
+      `[${this.notificationService.getCurrentDate()}] 조회 계정: ${summonersName} #${summonersTag}`,
     );
 
     const encodedSummonersName = encodeURIComponent(summonersName);
@@ -122,47 +38,46 @@ export class LolService {
         .toPromise();
     } catch (error) {
       const webHookInfo = {
-        url: this.SummonerErrorWebHookUrl,
         title: {
           summonersName,
           summonersTag,
           error,
         },
-        currentDate: `${this.getCurrentDate()}`,
       };
 
       if (error.response.status === 403) {
-        await this.sendToWebHook(webHookInfo, '#1 forbiden');
+        await this.notificationService.sendToWebHook(
+          webHookInfo,
+          '#1 forbiden',
+        );
 
         return {
           message: `이름 또는 태그를 입력해 주세요.`,
           errorCode: error.response.status,
         };
       } else if (error.response.status === 400) {
-        await this.sendToWebHook(webHookInfo, '#1 bad request');
+        await this.notificationService.sendToWebHook(
+          webHookInfo,
+          '#1 bad request',
+        );
 
         return {
           message: `잘못된 입력입니다.`,
           errorCode: error.response.status,
         };
       } else if (error.response.status === 404) {
-        await this.sendToWebHook(webHookInfo, '#1 not found');
+        await this.notificationService.sendToWebHook(
+          webHookInfo,
+          '#1 not found',
+        );
 
         return {
           message: `존재하지 않는 아이디입니다.`,
           errorCode: error.response.status,
         };
       } else {
-        await this.sendToWebHook(
-          {
-            url: this.ServerErrorWebHookUrl,
-            title: {
-              summonersName,
-              summonersTag,
-              error,
-            },
-            currentDate: `${this.getCurrentDate()}`,
-          },
+        await this.notificationService.sendToWebHook(
+          webHookInfo,
           'server error',
         );
 
@@ -183,33 +98,26 @@ export class LolService {
         .toPromise();
     } catch (error) {
       const webHookInfo = {
-        url: this.SummonerErrorWebHookUrl,
         title: {
           summonersName,
           summonersTag,
           error,
         },
-        currentDate: `${this.getCurrentDate()}`,
       };
 
       if (error.response.status === 404) {
-        await this.sendToWebHook(webHookInfo, '#2 not found');
+        await this.notificationService.sendToWebHook(
+          webHookInfo,
+          '#2 not found',
+        );
 
         return {
           message: `리그오브레전드 아이디가 아닙니다.`,
           errorCode: error.response.status,
         };
       } else {
-        await this.sendToWebHook(
-          {
-            url: this.ServerErrorWebHookUrl,
-            title: {
-              summonersName,
-              summonersTag,
-              error,
-            },
-            currentDate: `${this.getCurrentDate()}`,
-          },
+        await this.notificationService.sendToWebHook(
+          webHookInfo,
           'server error',
         );
 
@@ -230,33 +138,26 @@ export class LolService {
         .toPromise();
     } catch (error) {
       const webHookInfo = {
-        url: this.SummonerErrorWebHookUrl,
         title: {
           summonersName,
           summonersTag,
           error,
         },
-        currentDate: `${this.getCurrentDate()}`,
       };
 
       if (error.response.status === 404) {
-        await this.sendToWebHook(webHookInfo, '#3 not found');
+        await this.notificationService.sendToWebHook(
+          webHookInfo,
+          '#3 not found',
+        );
 
         return {
           message: `소환사 정보가 존재하지 않습니다.`,
           errorCode: error.response.status,
         };
       } else {
-        await this.sendToWebHook(
-          {
-            url: this.ServerErrorWebHookUrl,
-            title: {
-              summonersName,
-              summonersTag,
-              error,
-            },
-            currentDate: `${this.getCurrentDate()}`,
-          },
+        await this.notificationService.sendToWebHook(
+          webHookInfo,
           'server error',
         );
 
@@ -268,15 +169,13 @@ export class LolService {
     }
 
     const webHookInfo = {
-      url: this.SummonerSuccessWebHookUrl,
       title: {
         summonersName,
         summonersTag,
       },
-      currentDate: `${this.getCurrentDate()}`,
     };
 
-    await this.sendToWebHook(webHookInfo, 'summoner OK');
+    await this.notificationService.sendToWebHook(webHookInfo, 'summoner OK');
 
     const summonersInfo = responseBySummonersEncryptedId.data;
 
@@ -298,18 +197,19 @@ export class LolService {
 
       const currentEpochTime = new Date().getTime();
 
+      const webHookInfo = {
+        title: {
+          summonersName,
+          summonersTag,
+        },
+      };
+
       if (currentEpochTime > gameStartTime + 30000 + 180000) {
-        await this.sendToWebHook(
-          {
-            url: this.ServerErrorWebHookUrl,
-            title: {
-              summonersName,
-              summonersTag,
-            },
-            currentDate: `${this.getCurrentDate()}`,
-          },
+        await this.notificationService.sendToWebHook(
+          webHookInfo,
           '#4 forbiden',
         );
+
         return {
           message: `게임 시작 3분이 경과되어<br>조회가 불가능합니다.`,
           errorCode: 403.1,
@@ -317,32 +217,26 @@ export class LolService {
       }
     } catch (error) {
       const webHookInfo = {
-        url: this.IngameErrorWebHookUrl,
         title: {
           summonersName,
           summonersTag,
           error,
         },
-        currentDate: `${this.getCurrentDate()}`,
       };
 
       if (error.response.status === 404) {
-        await this.sendToWebHook(webHookInfo, '#4 not found');
+        await this.notificationService.sendToWebHook(
+          webHookInfo,
+          '#4 not found',
+        );
+
         return {
           message: `'${summonersName}'<br>님은 현재 게임중이 아닙니다.`,
           errorCode: error.response.status,
         };
       } else {
-        await this.sendToWebHook(
-          {
-            url: this.ServerErrorWebHookUrl,
-            title: {
-              summonersName,
-              summonersTag,
-              error,
-            },
-            currentDate: `${this.getCurrentDate()}`,
-          },
+        await this.notificationService.sendToWebHook(
+          webHookInfo,
           'server error',
         );
 
@@ -369,15 +263,13 @@ export class LolService {
       if (fetchCount >= 1) await delay(10000);
       else {
         const webHookInfo = {
-          url: this.IngameSuccessWebHookUrl,
           title: {
             summonersName,
             summonersTag,
           },
-          currentDate: `${this.getCurrentDate()}`,
         };
 
-        await this.sendToWebHook(webHookInfo, 'loading OK');
+        await this.notificationService.sendToWebHook(webHookInfo, 'loading OK');
 
         await delay(1000);
       }
@@ -388,33 +280,26 @@ export class LolService {
           .toPromise();
       } catch (error) {
         const webHookInfo = {
-          url: this.IngameErrorWebHookUrl,
           title: {
             summonersName,
             summonersTag,
             error,
           },
-          currentDate: `${this.getCurrentDate()}`,
         };
 
         if (error.response.status === 429) {
-          await this.sendToWebHook(webHookInfo, '#5 too many request');
+          await this.notificationService.sendToWebHook(
+            webHookInfo,
+            '#5 too many request',
+          );
 
           return {
             message: `현재 요청자가 많아 이용이 어렵습니다.<br>ㅈㅅ`,
             errorCode: error.response.status,
           };
         } else {
-          await this.sendToWebHook(
-            {
-              url: this.ServerErrorWebHookUrl,
-              title: {
-                summonersName,
-                summonersTag,
-                error,
-              },
-              currentDate: `${this.getCurrentDate()}`,
-            },
+          await this.notificationService.sendToWebHook(
+            webHookInfo,
             'server error',
           );
 
@@ -434,17 +319,17 @@ export class LolService {
 
       fetchCount++;
 
+      const webHookInfo = {
+        title: {
+          summonersName,
+          summonersTag,
+        },
+      };
+
       /** 로딩 시간 5분 이상이면 다시 시도 */
       if (fetchCount === 30) {
-        await this.sendToWebHook(
-          {
-            url: this.ServerErrorWebHookUrl,
-            title: {
-              summonersName,
-              summonersTag,
-            },
-            currentDate: `${this.getCurrentDate()}`,
-          },
+        await this.notificationService.sendToWebHook(
+          webHookInfo,
           '#5 forbiden',
         );
         return {
@@ -458,15 +343,13 @@ export class LolService {
     );
 
     const webHookInfo = {
-      url: this.IngameSuccessWebHookUrl,
       title: {
         summonersName,
         summonersTag,
       },
-      currentDate: `${this.getCurrentDate()}`,
     };
 
-    await this.sendToWebHook(webHookInfo, 'start OK');
+    await this.notificationService.sendToWebHook(webHookInfo, 'start OK');
 
     currentStartTimeIndex = startTimeList.length - 1;
 
