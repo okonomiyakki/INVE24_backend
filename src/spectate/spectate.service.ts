@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
+import { NotifierService } from '../notifier/notifier.service';
 import { SearchSummonerDto } from './dto/search-summoner.dto';
-import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
-export class LolService {
+export class SpectateService {
   constructor(
     private readonly httpService: HttpService,
     private readonly config: ConfigService,
-    private readonly notificationService: NotificationService,
+    private readonly notifierService: NotifierService,
   ) {}
 
   private RiotBaseUrlAsia = this.config.get('RIOT_BASE_URL_ASIA');
@@ -23,7 +23,7 @@ export class LolService {
 
     console.log(`----------------------------------------------`);
     console.log(
-      `[${this.notificationService.getCurrentDate()}] 조회 계정: ${summonersName} #${summonersTag}`,
+      `[${this.notifierService.getCurrentDate()}] 조회 계정: ${summonersName} #${summonersTag}`,
     );
 
     const encodedSummonersName = encodeURIComponent(summonersName);
@@ -45,40 +45,28 @@ export class LolService {
       };
 
       if (error.response.status === 403) {
-        await this.notificationService.sendToWebHook(
-          webHookInfo,
-          '#1 forbiden',
-        );
+        await this.notifierService.sendToWebHook(webHookInfo, '#1 forbiden');
 
         return {
           message: `이름 및 태그를 모두 입력해 주세요.`,
           errorCode: error.response.status,
         };
       } else if (error.response.status === 400) {
-        await this.notificationService.sendToWebHook(
-          webHookInfo,
-          '#1 bad request',
-        );
+        await this.notifierService.sendToWebHook(webHookInfo, '#1 bad request');
 
         return {
           message: `잘못된 입력 형식입니다.`,
           errorCode: error.response.status,
         };
       } else if (error.response.status === 404) {
-        await this.notificationService.sendToWebHook(
-          webHookInfo,
-          '#1 not found',
-        );
+        await this.notifierService.sendToWebHook(webHookInfo, '#1 not found');
 
         return {
           message: `존재하지 않는 아이디입니다.`,
           errorCode: error.response.status,
         };
       } else {
-        await this.notificationService.sendToWebHook(
-          webHookInfo,
-          'server error',
-        );
+        await this.notifierService.sendToWebHook(webHookInfo, 'server error');
 
         return {
           message: `서버 오류.<br>(code: ${error.response.status})`,
@@ -105,20 +93,14 @@ export class LolService {
       };
 
       if (error.response.status === 404) {
-        await this.notificationService.sendToWebHook(
-          webHookInfo,
-          '#2 not found',
-        );
+        await this.notifierService.sendToWebHook(webHookInfo, '#2 not found');
 
         return {
           message: `리그오브레전드 아이디가 아닙니다.`,
           errorCode: error.response.status,
         };
       } else {
-        await this.notificationService.sendToWebHook(
-          webHookInfo,
-          'server error',
-        );
+        await this.notifierService.sendToWebHook(webHookInfo, 'server error');
 
         return {
           message: `서버 오류.<br>(code: ${error.response.status})`,
@@ -145,20 +127,14 @@ export class LolService {
       };
 
       if (error.response.status === 404) {
-        await this.notificationService.sendToWebHook(
-          webHookInfo,
-          '#3 not found',
-        );
+        await this.notifierService.sendToWebHook(webHookInfo, '#3 not found');
 
         return {
           message: `소환사 정보가 존재하지 않습니다.`,
           errorCode: error.response.status,
         };
       } else {
-        await this.notificationService.sendToWebHook(
-          webHookInfo,
-          'server error',
-        );
+        await this.notifierService.sendToWebHook(webHookInfo, 'server error');
 
         return {
           message: `서버 오류.<br>(code: ${error.response.status})`,
@@ -174,14 +150,14 @@ export class LolService {
       },
     };
 
-    await this.notificationService.sendToWebHook(webHookInfo, 'summoner OK');
+    await this.notifierService.sendToWebHook(webHookInfo, 'summoner OK');
 
     const summonersInfo = responseBySummonersEncryptedId.data;
 
     return { summonersEncryptedId, summonersInfo };
   }
 
-  async getSummonersStatus(body): Promise<any> {
+  async getLiveGameTime(body): Promise<any> {
     const { summonersName, summonersTag, summonersEncryptedId } = body;
 
     const GetStartGameTimeUrl = `${this.RiotBaseUrlKr}/lol/spectator/v4/active-games/by-summoner/${summonersEncryptedId}?api_key=${this.RiotAppKey}`;
@@ -204,10 +180,7 @@ export class LolService {
       };
 
       if (currentEpochTime > gameStartTime + 30000 + 180000) {
-        await this.notificationService.sendToWebHook(
-          webHookInfo,
-          '#4 forbiden',
-        );
+        await this.notifierService.sendToWebHook(webHookInfo, '#4 forbiden');
 
         return {
           message: `게임 시작 3분이 경과되어<br>조회가 불가능합니다.`,
@@ -224,20 +197,14 @@ export class LolService {
       };
 
       if (error.response.status === 404) {
-        await this.notificationService.sendToWebHook(
-          webHookInfo,
-          '#4 not found',
-        );
+        await this.notifierService.sendToWebHook(webHookInfo, '#4 not found');
 
         return {
           message: `'${summonersName}'<br>님은 현재 게임중이 아닙니다.`,
           errorCode: error.response.status,
         };
       } else {
-        await this.notificationService.sendToWebHook(
-          webHookInfo,
-          'server error',
-        );
+        await this.notifierService.sendToWebHook(webHookInfo, 'server error');
 
         return {
           message: `서버 오류.<br>(code: ${error.response.status})`,
@@ -268,7 +235,7 @@ export class LolService {
           },
         };
 
-        await this.notificationService.sendToWebHook(webHookInfo, 'loading OK');
+        await this.notifierService.sendToWebHook(webHookInfo, 'loading OK');
 
         await delay(1000);
       }
@@ -287,7 +254,7 @@ export class LolService {
         };
 
         if (error.response.status === 429) {
-          await this.notificationService.sendToWebHook(
+          await this.notifierService.sendToWebHook(
             webHookInfo,
             '#5 too many request',
           );
@@ -297,10 +264,7 @@ export class LolService {
             errorCode: error.response.status,
           };
         } else {
-          await this.notificationService.sendToWebHook(
-            webHookInfo,
-            'server error',
-          );
+          await this.notifierService.sendToWebHook(webHookInfo, 'server error');
 
           return {
             message: `서버 오류.<br>(code: ${error.response.status})`,
@@ -327,10 +291,8 @@ export class LolService {
 
       /** 로딩 시간 5분 이상이면 다시 시도 */
       if (fetchCount === 30) {
-        await this.notificationService.sendToWebHook(
-          webHookInfo,
-          '#5 forbiden',
-        );
+        await this.notifierService.sendToWebHook(webHookInfo, '#5 forbiden');
+
         return {
           message: `로딩 시간이 5분 경과되어 이용이 어렵습니다.<br>(다시하기)`,
           errorCode: 403.2,
@@ -348,7 +310,7 @@ export class LolService {
       },
     };
 
-    await this.notificationService.sendToWebHook(webHookInfo, 'start OK');
+    await this.notifierService.sendToWebHook(webHookInfo, 'start OK');
 
     currentStartTimeIndex = startTimeList.length - 1;
 
