@@ -44,7 +44,9 @@ document.addEventListener('DOMContentLoaded', function () {
       ? `${infoData.summonersInfo[0].tier} &nbsp; ${infoData.summonersInfo[0].rank} &nbsp; ${infoData.summonersInfo[0].leaguePoints}LP`
       : '티어 정보가 없습니다.';
   } else {
-    console.error(`'localStorage'에 'infoData'가 존재하지 않습니다.`);
+    console.error(`infoData가 존재하지 않습니다.`);
+    alert('비정상적인 접근입니다.');
+    window.location.href = `${hostBaseUrl}`;
   }
 });
 
@@ -112,10 +114,12 @@ const lolRealTimeRequest = () => {
         }
       })
       .catch((error) => {
-        console.error('[Client] 인게임 검색 에러:', error);
+        console.error('[Client] game search error:', error);
       });
   } else {
-    console.error(`'localStorage'에 'infoData'가 존재하지 않습니다.`);
+    console.error(`infoData가 존재하지 않습니다.`);
+    alert('비정상적인 접근입니다.');
+    window.location.href = `${hostBaseUrl}`;
   }
 };
 
@@ -141,7 +145,9 @@ const fetchDisable = (fetchCount, temp) => {
 
     startAutoIncrementBtn(parseInt(currentFetchData.fetchDisableSecond));
   } else {
-    console.error(`'localStorage'에 'fetchData'가 존재하지 않습니다.`);
+    console.error(`fetchData가 존재하지 않습니다.`);
+    alert('비정상적인 접근입니다.');
+    window.location.href = `${hostBaseUrl}`;
   }
 };
 
