@@ -41,12 +41,12 @@ export class NotificationService {
         break;
       case '#1 forbiden':
         about = `${webHookInfo.title.summonersName} #${webHookInfo.title.summonersTag}
-[${webHookInfo.title.error.response.status}] 이름 또는 태그를 입력해 주세요.`;
+[${webHookInfo.title.error.response.status}] 이름 및 태그를 모두 입력해 주세요.`;
         url = this.SummonerErrorWebHookUrl;
         break;
       case '#1 bad request':
         about = `${webHookInfo.title.summonersName} #${webHookInfo.title.summonersTag}
-[${webHookInfo.title.error.response.status}] 잘못된 입력입니다.`;
+[${webHookInfo.title.error.response.status}] 잘못된 입력 형식입니다.`;
         url = this.SummonerErrorWebHookUrl;
         break;
       case '#1 not found':

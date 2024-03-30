@@ -51,7 +51,7 @@ export class LolService {
         );
 
         return {
-          message: `이름 또는 태그를 입력해 주세요.`,
+          message: `이름 및 태그를 모두 입력해 주세요.`,
           errorCode: error.response.status,
         };
       } else if (error.response.status === 400) {
@@ -61,7 +61,7 @@ export class LolService {
         );
 
         return {
-          message: `잘못된 입력입니다.`,
+          message: `잘못된 입력 형식입니다.`,
           errorCode: error.response.status,
         };
       } else if (error.response.status === 404) {
