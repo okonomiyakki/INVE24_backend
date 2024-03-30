@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
       : '티어 정보가 없습니다.';
   } else {
     console.error(`infoData가 존재하지 않습니다.`);
-    alert('비정상적인 접근입니다.');
+    alert('잘못된 접근입니다.');
     window.location.href = `${hostBaseUrl}`;
   }
 });
@@ -70,7 +70,7 @@ const lolRealTimeRequest = () => {
     title.innerHTML = `'${infoData.summonersName}'<br>님의 게임이 로딩중입니다.`;
 
     axios
-      .post(`${hostBaseUrl}/lol/status`, {
+      .post(`${hostBaseUrl}/api/v1.0/spectate/live`, {
         summonersName: infoData.summonersName,
         summonersTag: infoData.summonersTag,
         summonersEncryptedId: infoData.summonersEncryptedId,
@@ -86,7 +86,7 @@ const lolRealTimeRequest = () => {
 
           localStorage.setItem('timeData', JSON.stringify(timeData));
 
-          window.location.href = `${hostBaseUrl}/summoners/timer`;
+          window.location.href = `${hostBaseUrl}/summoners/spectate/live`;
         } else {
           /** 게임중이 아니면 조회 버튼 다시 생기고, 로딩 타이머 제거 */
           start.style.display = 'flex';
@@ -118,7 +118,7 @@ const lolRealTimeRequest = () => {
       });
   } else {
     console.error(`infoData가 존재하지 않습니다.`);
-    alert('비정상적인 접근입니다.');
+    alert('잘못된 접근입니다.');
     window.location.href = `${hostBaseUrl}`;
   }
 };
@@ -146,7 +146,7 @@ const fetchDisable = (fetchCount, temp) => {
     startAutoIncrementBtn(parseInt(currentFetchData.fetchDisableSecond));
   } else {
     console.error(`fetchData가 존재하지 않습니다.`);
-    alert('비정상적인 접근입니다.');
+    alert('잘못된 접근입니다.');
     window.location.href = `${hostBaseUrl}`;
   }
 };

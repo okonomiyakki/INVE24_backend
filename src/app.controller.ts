@@ -36,7 +36,7 @@ export class AppController {
     };
   }
 
-  @Get('/summoners/timer')
+  @Get('/summoners/spectate/live')
   @Render('timer')
   timer() {
     return {
