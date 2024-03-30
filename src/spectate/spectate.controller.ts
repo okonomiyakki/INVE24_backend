@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { SpectateService } from './spectate.service';
 import { SearchSummonerDto } from './dto/search-summoner.dto';
+import { SpectateSummonerDto } from './dto/spectate-summoner.dto';
 
 @Controller('api/v1.0')
 export class SpectateController {
@@ -19,7 +20,8 @@ export class SpectateController {
   }
 
   @Post('/spectate/live')
-  getLiveGameTime(@Body() Body) {
-    return this.spectateService.getLiveGameTime(Body);
+  @UsePipes(ValidationPipe)
+  getLiveGameTime(@Body() spectateSummonerDto: SpectateSummonerDto) {
+    return this.spectateService.getLiveGameTime(spectateSummonerDto);
   }
 }

@@ -3,6 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { NotifierService } from '../notifier/notifier.service';
 import { SearchSummonerDto } from './dto/search-summoner.dto';
+import { SpectateSummonerDto } from './dto/spectate-summoner.dto';
 
 @Injectable()
 export class SpectateService {
@@ -157,8 +158,11 @@ export class SpectateService {
     return { summonersEncryptedId, summonersInfo };
   }
 
-  async getLiveGameTime(body): Promise<any> {
-    const { summonersName, summonersTag, summonersEncryptedId } = body;
+  async getLiveGameTime(
+    spectateSummonerDto: SpectateSummonerDto,
+  ): Promise<any> {
+    const { summonersName, summonersTag, summonersEncryptedId } =
+      spectateSummonerDto;
 
     const GetStartGameTimeUrl = `${this.RiotBaseUrlKr}/lol/spectator/v4/active-games/by-summoner/${summonersEncryptedId}?api_key=${this.RiotAppKey}`;
 
