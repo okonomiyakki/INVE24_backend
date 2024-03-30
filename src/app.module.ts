@@ -2,7 +2,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { LolModule } from './lol/lol.module';
+import { AuthModule } from './auth/auth.module';
+import { NotifierModule } from './notifier/notifier.module';
+import { SpectateModule } from './spectate/spectate.module';
 
 @Module({
   imports: [
@@ -10,7 +12,9 @@ import { LolModule } from './lol/lol.module';
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
-    LolModule,
+    AuthModule,
+    SpectateModule,
+    NotifierModule,
   ],
   controllers: [AppController],
   providers: [AppService],
