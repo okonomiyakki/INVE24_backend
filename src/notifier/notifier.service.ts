@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import * as moment from 'moment-timezone';
 
 @Injectable()
-export class NotificationService {
+export class NotifierService {
   constructor(
     private readonly httpService: HttpService,
     private readonly config: ConfigService,
