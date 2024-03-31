@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     title.innerHTML = `'${infoData.summonersName}'<br>님의 게임이 시작되었습니다.<br>타이머는 2분 뒤 자동 종료됩니다.`;
   } else {
-    console.error(`'localStorage'에 'infoData'가 존재하지 않습니다.`);
+    console.error(`infoData가 존재하지 않습니다.`);
   }
 
   const storedTimeData = localStorage.getItem('timeData');
@@ -31,7 +31,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     startAutoIncrement(timeData.realTimeSeconds, 1);
   } else {
-    console.error(`'localStorage'에 'timeData'가 존재하지 않습니다.`);
+    console.error(`timeData가 존재하지 않습니다.`);
+    alert('잘못된 접근입니다.');
+    window.location.href = `${hostBaseUrl}`;
   }
 });
 
@@ -40,11 +42,11 @@ const back = () => {
   window.location.href = `${hostBaseUrl}/summoners`;
 };
 
-const reset = () => {
-  localStorage.removeItem('infoData');
-  localStorage.removeItem('timeData');
-  window.location.href = `${hostBaseUrl}`;
-};
+// const reset = () => {
+//   localStorage.removeItem('infoData');
+//   localStorage.removeItem('timeData');
+//   window.location.href = `${hostBaseUrl}`;
+// };
 
 const convertSecondsToHMS = (seconds) => {
   var hours = Math.floor(seconds / 3600);
