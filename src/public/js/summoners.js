@@ -45,8 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
       : '티어 정보가 없습니다.';
   } else {
     console.error(`infoData가 존재하지 않습니다.`);
-    alert('잘못된 접근입니다.');
-    window.location.href = `${hostBaseUrl}`;
   }
 });
 
