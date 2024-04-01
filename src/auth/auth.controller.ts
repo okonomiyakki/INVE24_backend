@@ -12,7 +12,12 @@ import { RiotAccessPermissionCodeDto } from './dto/riot-access-permission-code.d
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Get('/v1.0/rso-auth/login')
+  @Get('/v1.0/oauth')
+  getClientId() {
+    return this.authService.getClientId();
+  }
+
+  @Get('/v1.0/oauth/login')
   @UsePipes(ValidationPipe)
   rsoLogin(@Query() accessCode: RiotAccessPermissionCodeDto) {
     return this.authService.rsoLogin(accessCode);
