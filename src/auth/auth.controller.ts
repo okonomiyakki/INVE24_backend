@@ -19,7 +19,7 @@ export class AuthController {
 
   @Get('/v1.0/oauth/login')
   @UsePipes(ValidationPipe)
-  rsoLogin(@Query() accessCode: RiotAccessPermissionCodeDto) {
-    return this.authService.rsoLogin(accessCode);
+  rsoLogin(@Query() riotAccessPermissionCodeDto: RiotAccessPermissionCodeDto) {
+    return this.authService.rsoLogin(riotAccessPermissionCodeDto);
   }
 }

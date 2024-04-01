@@ -44,13 +44,10 @@ const summonersInfoRequest = () => {
 
 const rsoLoginRequest = () => {
   const hostBaseUrl = document.getElementById('host').dataset.hostBaseUrl;
-  const riotBaseUrlAuth =
-    document.getElementById('auth').dataset.riotBaseUrlAuth;
+  const riotAuthUrl = document.getElementById('auth').dataset.riotBaseUrlAuth;
 
   axios.get(`${hostBaseUrl}/api/v1.0/oauth`).then((res) => {
-    console.log('ClientId:', res.data);
-
-    const rsoLoginUrl = `${riotBaseUrlAuth}?client_id=${res.data.clientId}&redirect_uri=${res.data.redirectUri}&response_type=code&scope=openid+offline_access`;
+    const rsoLoginUrl = `${riotAuthUrl}?client_id=${res.data.clientId}&redirect_uri=${res.data.redirectUri}&response_type=code&scope=openid+offline_access`;
     window.location.href = rsoLoginUrl;
 
     const code = new URLSearchParams(window.location.search).get('code');

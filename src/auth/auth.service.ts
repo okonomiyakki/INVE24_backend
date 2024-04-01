@@ -26,63 +26,60 @@ export class AuthService {
     return { clientId, redirectUri };
   }
 
-  async rsoLogin(accessCode: RiotAccessPermissionCodeDto): Promise<any> {
-    console.log('#1 accessCode: ', accessCode);
-
+  async rsoLogin(
+    riotAccessPermissionCodeDto: RiotAccessPermissionCodeDto,
+  ): Promise<any> {
     const tokenConfigs = {
       auth: {
         username: this.RiotClientID,
         password: this.RiotClientSecrete,
       },
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
     };
 
     const tokenParams = new URLSearchParams();
-    tokenParams.append('code', `${accessCode}`);
-    tokenParams.append('redirect_uri', `${this.HostRedirectUri}`);
     tokenParams.append('grant_type', 'authorization_code');
+    tokenParams.append('code', riotAccessPermissionCodeDto.code);
+    tokenParams.append('redirect_uri', this.HostRedirectUri);
 
-    const accessTokenResponse = await this.httpService
-      .post(this.RiotBaseUrlToken, tokenParams, tokenConfigs)
-      .toPromise();
+    try {
+      const accessTokenResponse = await this.httpService
+        .post(this.RiotBaseUrlToken, tokenParams, tokenConfigs)
+        .toPromise();
 
-    console.log('#2 accessTokenResponse: ', accessTokenResponse);
+      const oauthPayload: OauthPayloadDto = accessTokenResponse.data;
 
-    const oauthPayload: OauthPayloadDto = accessTokenResponse.data;
+      const tokenId = oauthPayload.id_token;
 
-    const tokenId = oauthPayload.id_token;
+      const tokenInfo = {
+        refreshToken: oauthPayload.refresh_token,
+        accessToken: oauthPayload.access_token,
+        expiresIn: oauthPayload.expires_in,
+        tokenType: oauthPayload.token_type,
+      };
 
-    const tokenInfo = {
-      refresh_token: oauthPayload.refresh_token,
-      access_token: oauthPayload.access_token,
-      expires_in: oauthPayload.expires_in,
-      token_type: oauthPayload.token_type,
-    };
+      const GetSummonersAccountUrl = `${this.RiotBaseUrlAsia}/riot/account/v1/accounts/me`;
 
-    const GetSummonersAccountUrl = `${this.RiotBaseUrlAsia}/riot/account/v1/accounts/me`;
+      const authConfig = {
+        headers: {
+          Authorization: `${tokenInfo.tokenType} ${tokenInfo.accessToken}`,
+        },
+      };
 
-    const authConfig = {
-      headers: {
-        Authorization: `${tokenInfo.token_type} ${tokenInfo.access_token}`,
-      },
-    };
+      const summonersAccountResponse = await this.httpService
+        .get(GetSummonersAccountUrl, authConfig)
+        .toPromise();
 
-    const summonersAccountResponse = await this.httpService
-      .post(GetSummonersAccountUrl, tokenParams, authConfig)
-      .toPromise();
+      const summonersAccount: SummonerAccountDto =
+        summonersAccountResponse.data;
 
-    const summonersAccount: SummonerAccountDto = summonersAccountResponse.data;
-
-    console.log('tokenId : ', tokenId);
-    console.log('summonersAccount : ', summonersAccount);
-
-    return {
-      authData: {
-        tokenId,
-        summonersAccount,
-      },
-    };
+      return {
+        authData: {
+          tokenId,
+          summonersAccount,
+        },
+      };
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
