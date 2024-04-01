@@ -24,6 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const storedInfoData = localStorage.getItem('infoData');
 
+  const storedRsoData = localStorage.getItem('rsoData');
+
+  console.log('storedRsoData : ', storedRsoData);
+
   if (storedInfoData) {
     timeContainer.style.display = 'none';
 
