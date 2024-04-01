@@ -16,8 +16,15 @@ export class AuthService {
   private RiotClientSecrete = this.config.get('RIOT_CLIENT_SECRETE');
   private HostRedirectUri = this.config.get('HOST_REDIRECT_URI');
 
-  private RiotBaseUrlAuth = this.config.get('RIOT_BASE_URL_AUTH');
+  private RiotBaseUrlToken = this.config.get('RIOT_BASE_URL_TOKEN');
   private RiotBaseUrlAsia = this.config.get('RIOT_BASE_URL_ASIA');
+
+  async getClientId() {
+    const clientId = this.RiotClientID;
+    const redirectUri = this.HostRedirectUri;
+
+    return { clientId, redirectUri };
+  }
 
   async rsoLogin(accessCode: RiotAccessPermissionCodeDto): Promise<any> {
     const tokenConfigs = {
@@ -36,7 +43,7 @@ export class AuthService {
     tokenParams.append('grant_type', 'authorization_code');
 
     const accessTokenResponse = await this.httpService
-      .post(this.RiotBaseUrlAuth, tokenParams, tokenConfigs)
+      .post(this.RiotBaseUrlToken, tokenParams, tokenConfigs)
       .toPromise();
 
     const oauthPayload: OauthPayloadDto = accessTokenResponse.data;
@@ -66,5 +73,12 @@ export class AuthService {
 
     console.log('tokenId : ', tokenId);
     console.log('summonersAccount : ', summonersAccount);
+
+    return {
+      authData: {
+        tokenId,
+        summonersAccount,
+      },
+    };
   }
 }

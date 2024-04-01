@@ -64,6 +64,11 @@ jobs:
             -e RIOT_BASE_URL_ASIA=${{ secrets.RIOT_BASE_URL_ASIA }} \
             -e RIOT_BASE_URL_KR=${{ secrets.RIOT_BASE_URL_KR }} \
             -e RIOT_API_APP_KEY=${{ secrets.RIOT_API_APP_KEY }} \
+            -e RIOT_BASE_URL_AUTH=${{ secrets.RIOT_BASE_URL_AUTH }} \
+            -e RIOT_CLIENT_ID=${{ secrets.RIOT_CLIENT_ID }} \
+            -e RIOT_CLIENT_SECRETE=${{ secrets.RIOT_CLIENT_SECRETE }} \
+            -e HOST_REDIRECT_URI=${{ secrets.HOST_REDIRECT_URI }} \
+            -e RIOT_BASE_URL_TOKEN=${{ secrets.RIOT_BASE_URL_TOKEN }} \
             -e DISCORD_INVITATION_CODE=${{ secrets.DISCORD_INVITATION_CODE }} \
             -e DISCORD_WEBHOOK_URL_SUMMONER=${{ secrets.DISCORD_WEBHOOK_URL_SUMMONER }} \
             -e DISCORD_WEBHOOK_URL_INGAME=${{ secrets.DISCORD_WEBHOOK_URL_INGAME }} \

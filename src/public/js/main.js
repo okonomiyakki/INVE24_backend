@@ -42,6 +42,26 @@ const summonersInfoRequest = () => {
     });
 };
 
-const loginForRiotAccount = () => {
-  alert('준비중');
+const rsoLoginRequest = () => {
+  const hostBaseUrl = document.getElementById('host').dataset.hostBaseUrl;
+  const riotBaseUrlAuth =
+    document.getElementById('auth').dataset.riotBaseUrlAuth;
+
+  axios.get(`${hostBaseUrl}/api/v1.0/oauth`).then((res) => {
+    console.log('ClientId:', res.data);
+
+    const rsoLoginUrl = `${riotBaseUrlAuth}?client_id=${res.data.clientId}redirect_uri=${res.data.redirectUri}&response_type=code&scope=openid+offline_access`;
+    window.location.href = rsoLoginUrl;
+
+    const code = new URLSearchParams(window.location.search).get('code');
+
+    if (code) sendCodeToServer(code);
+    else console.log('code not found');
+  });
+};
+
+const sendCodeToServer = (code) => {
+  axios.get(`${hostBaseUrl}/api/v1.0/oauth/login?code=${code}`).then((res) => {
+    console.log('success:', res.data);
+  });
 };
