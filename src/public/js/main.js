@@ -50,10 +50,12 @@ const rsoLoginRequest = () => {
     const rsoLoginUrl = `${riotAuthUrl}?client_id=${res.data.clientId}&redirect_uri=${res.data.redirectUri}&response_type=code&scope=openid+offline_access`;
     window.location.href = rsoLoginUrl;
 
-    const code = new URLSearchParams(window.location.search).get('code');
+    // // const code = new URLSearchParams(window.location.search).get('code');
+    // const code = new URL(window.location.href).searchParams.get('code');
+    // console.log('code:', code);
 
-    if (code) sendCodeToServer(code);
-    else console.log('code not found');
+    // if (code) sendCodeToServer(code);
+    // else console.log('code not found');
   });
 };
 

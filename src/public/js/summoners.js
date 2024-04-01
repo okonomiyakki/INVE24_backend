@@ -20,13 +20,22 @@ let timeDifftList = [];
 let temp = 0;
 
 document.addEventListener('DOMContentLoaded', function () {
+  const code = new URLSearchParams(window.location.search).get('code');
+  console.log('code:', code);
+
+  if (code) {
+    const summonersData = sendCodeToServer(code);
+
+    console.log('summonersData : ', summonersData);
+  } else console.log('code not found');
+
   const storedFetchData = localStorage.getItem('fetchData');
 
   const storedInfoData = localStorage.getItem('infoData');
 
-  const storedRsoData = localStorage.getItem('rsoData');
+  // const storedRsoData = localStorage.getItem('rsoData');
 
-  console.log('storedRsoData : ', storedRsoData);
+  // console.log('storedRsoData : ', storedRsoData);
 
   if (storedInfoData) {
     timeContainer.style.display = 'none';
@@ -51,6 +60,15 @@ document.addEventListener('DOMContentLoaded', function () {
     console.error(`infoData가 존재하지 않습니다.`);
   }
 });
+
+const sendCodeToServer = (code) => {
+  axios.get(`${hostBaseUrl}/api/v1.0/oauth/login?code=${code}`).then((res) => {
+    const summonersData = res.data;
+
+    // localStorage.setItem('summonersData', JSON.stringify(summonersData));
+    return summonersData;
+  });
+};
 
 const reset = () => {
   localStorage.removeItem('infoData');
