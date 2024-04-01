@@ -27,6 +27,8 @@ export class AuthService {
   }
 
   async rsoLogin(accessCode: RiotAccessPermissionCodeDto): Promise<any> {
+    console.log('#1 accessCode: ', accessCode);
+
     const tokenConfigs = {
       auth: {
         username: this.RiotClientID,
@@ -45,6 +47,8 @@ export class AuthService {
     const accessTokenResponse = await this.httpService
       .post(this.RiotBaseUrlToken, tokenParams, tokenConfigs)
       .toPromise();
+
+    console.log('#2 accessTokenResponse: ', accessTokenResponse);
 
     const oauthPayload: OauthPayloadDto = accessTokenResponse.data;
 

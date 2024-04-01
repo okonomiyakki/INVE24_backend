@@ -62,7 +62,7 @@ const rsoLoginRequest = () => {
 
 const sendCodeToServer = (code) => {
   axios.get(`${hostBaseUrl}/api/v1.0/oauth/login?code=${code}`).then((res) => {
-    const rsoData = res.data.authData;
+    const rsoData = res.data;
 
     localStorage.setItem('rsoData', JSON.stringify(rsoData));
   });
