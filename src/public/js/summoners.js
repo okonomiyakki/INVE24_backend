@@ -28,9 +28,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const storedInfoData = localStorage.getItem('infoData');
 
-  const storedRsoData = localStorage.getItem('rsoData');
+  const storedSummonersData = localStorage.getItem('summonersData');
 
-  console.log('storedRsoData : ', storedRsoData);
+  console.log('storedSummonersData : ', storedSummonersData);
 
   if (storedInfoData) {
     timeContainer.style.display = 'none';
