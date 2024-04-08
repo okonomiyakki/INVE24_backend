@@ -2,24 +2,29 @@ import {
   Controller,
   Get,
   Query,
+  Res,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { RiotAccessPermissionCodeDto } from './dto/riot-access-permission-code.dto';
 
-@Controller('api')
+@Controller('api/v1.0/oauth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Get('/v1.0/oauth')
-  getClientId() {
-    return this.authService.getClientId();
+  @Get('/')
+  getOAuthDataHandler(@Res() res: Response) {
+    return this.authService.getOAuthData(res);
   }
 
-  @Get('/v1.0/oauth/login')
+  @Get('/login')
   @UsePipes(ValidationPipe)
-  rsoLogin(@Query() riotAccessPermissionCodeDto: RiotAccessPermissionCodeDto) {
-    return this.authService.rsoLogin(riotAccessPermissionCodeDto);
+  riotSignOnUserHandler(
+    @Query() riotAccessPermissionCodeDto: RiotAccessPermissionCodeDto,
+    @Res() res: Response,
+  ) {
+    return this.authService.riotSignOnUser(riotAccessPermissionCodeDto, res);
   }
 }
