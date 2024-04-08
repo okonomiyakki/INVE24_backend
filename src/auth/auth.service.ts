@@ -41,6 +41,8 @@ export class AuthService {
     riotAccessPermissionCodeDto: RiotAccessPermissionCodeDto,
     res: Response,
   ): Promise<any> {
+    const { code } = riotAccessPermissionCodeDto;
+
     const tokenConfigs = {
       auth: {
         username: this.RiotClientID,
@@ -48,12 +50,10 @@ export class AuthService {
       },
     };
 
-    console.log(riotAccessPermissionCodeDto.code);
-
     const tokenParams = new URLSearchParams();
 
     tokenParams.append('grant_type', 'authorization_code');
-    tokenParams.append('code', riotAccessPermissionCodeDto.code);
+    tokenParams.append('code', code);
     tokenParams.append('redirect_uri', this.HostRedirectUri);
 
     try {
@@ -61,6 +61,7 @@ export class AuthService {
         .post(this.RiotBaseUrlToken, tokenParams, tokenConfigs)
         .toPromise();
     } catch (error) {
+      console.log(error);
       return res.status(500).json({
         status: 'error',
         message: 'token error',
@@ -68,6 +69,8 @@ export class AuthService {
     }
 
     const oauthPayload: OauthPayloadDto = accessTokenResponse.data;
+
+    console.log('oauthPayload : ', oauthPayload);
 
     const tokenId = oauthPayload.id_token;
 
