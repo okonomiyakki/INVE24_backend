@@ -20,28 +20,26 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 const riotSignOnFetcher = (code) => {
-  showLoadingSpinner();
+  // showLoadingSpinner();
 
-  axios
-    .get(`${hostBaseUrl}/api/v1.0/oauth/login?code=${code}`)
-    .then((res) => {
-      const { tokenId, summonerLeagueInfo } = res.data.data;
+  axios.get(`${hostBaseUrl}/api/v1.0/oauth/login?code=${code}`).then((res) => {
+    const { tokenId, summonerLeagueInfo } = res.data.data;
 
-      console.log('tokenId : ', tokenId);
-      console.log('summonerLeagueInfo : ', summonerLeagueInfo);
+    console.log('tokenId : ', tokenId);
+    console.log('summonerLeagueInfo : ', summonerLeagueInfo);
 
-      setLocalStorage('tokenInfo', tokenId);
-      setLocalStorage('leagueInfo', summonerLeagueInfo);
-    })
-    .catch((error) => {
-      console.error('Riot Sign On Error:', error);
-      alert(
-        'RIOT 서버에 로그인할 수 없습니다. 서비스 관리자에게 문의해주세요.',
-      );
-    })
-    .finally(() => {
-      hideLoadingSpinner();
-    });
+    setLocalStorage('tokenInfo', tokenId);
+    setLocalStorage('leagueInfo', summonerLeagueInfo);
+  });
+  // .catch((error) => {
+  //   console.error('Riot Sign On Error:', error);
+  //   alert(
+  //     'RIOT 서버에 로그인할 수 없습니다. 서비스 관리자에게 문의해주세요.',
+  //   );
+  // })
+  // .finally(() => {
+  //   hideLoadingSpinner();
+  // });
 };
 
 const handleSummonerLeagueInfo = (leagueInfo) => {
