@@ -48,15 +48,21 @@ export class AuthService {
       },
     };
 
+    console.log(riotAccessPermissionCodeDto.code);
+
     const tokenParams = new URLSearchParams();
 
     tokenParams.append('grant_type', 'authorization_code');
     tokenParams.append('code', riotAccessPermissionCodeDto.code);
     tokenParams.append('redirect_uri', this.HostRedirectUri);
 
-    const accessTokenResponse = await this.httpService
-      .post(this.RiotBaseUrlToken, tokenParams, tokenConfigs)
-      .toPromise();
+    try {
+      var accessTokenResponse = await this.httpService
+        .post(this.RiotBaseUrlToken, tokenParams, tokenConfigs)
+        .toPromise();
+    } catch (error) {
+      console.log(error);
+    }
 
     const oauthPayload: OauthPayloadDto = accessTokenResponse.data;
 
