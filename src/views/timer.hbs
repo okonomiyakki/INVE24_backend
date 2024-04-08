@@ -15,24 +15,23 @@
     <hr>
     <div id="main-wrap">
 
-      <div class="time-container">
+      <div id="pick" class="time-container">
         <div class="time-wrap">
-          <p class="timeTitle">시작 시간</p>
-          <p id="startTime"></p>
+          <p id="banpick" class="timeTitle pending"></p>
+          <p id="pickTime"></p>
         </div>
       </div>
 
-      <div class="time-container">
+      <div id="load" class="time-container">
         <div class="time-wrap">
-          <p class="timeTitle">협곡 시간</p>
+          <p id="loading" class="timeTitle pending"></p>
           <p id="realTime"></p>
         </div>
       </div>
 
 
       <div class="button-container">
-        <button id="backBtn" onclick="back()">종료</button>
-        {{!-- <button id="resetBtn" onclick="reset()">HOME</button> --}}
+        <button id="backBtn" onclick="handleRedirectPrev()">종료</button>
       </div>
 
     </div>
