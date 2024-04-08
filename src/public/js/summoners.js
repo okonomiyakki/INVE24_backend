@@ -1,6 +1,12 @@
 const hostBaseUrl = document.getElementById('host').dataset.hostBaseUrl;
 
 document.addEventListener('DOMContentLoaded', function () {
+  const code = new URLSearchParams(window.location.search).get('code');
+
+  console.log('code : ', code);
+
+  if (code) riotSignOnFetcher(code);
+
   const storedTokenInfo = localStorage.getItem('tokenInfo');
   const storedLeagueInfo = localStorage.getItem('leagueInfo');
 
@@ -14,6 +20,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
   handleSummonerLeagueInfo(leagueInfo);
 });
+
+const riotSignOnFetcher = (code) => {
+  showLoadingSpinner();
+
+  axios
+    .get(`${hostBaseUrl}/api/v1.0/oauth/login?code=${code}`)
+    .then((res) => {
+      const { tokenId, summonerLeagueInfo } = res.data.data;
+
+      setLocalStorage('tokenInfo', tokenId);
+      setLocalStorage('leagueInfo', summonerLeagueInfo);
+
+      replaceLocation(`${hostBaseUrl}/summoners`);
+    })
+    .catch((error) => {
+      console.error('Riot Sign On Error:', error);
+      alert(
+        'RIOT 서버에 로그인할 수 없습니다. 서비스 관리자에게 문의해주세요.',
+      );
+    })
+    .finally(() => {
+      hideLoadingSpinner();
+    });
+};
 
 const handleSummonerLeagueInfo = (leagueInfo) => {
   injectHTML('title', '픽창에서 챔피언을 선택 후<br>조회 버튼을 눌러주세요.');
@@ -51,6 +81,18 @@ const injectHTML = (elementId, content) => {
 
 const showModal = () => {
   document.getElementById('modal-wrap').style.display = 'flex';
+};
+
+const showLoadingSpinner = () => {
+  document.getElementById('loading').style.display = 'flex';
+};
+
+const hideLoadingSpinner = () => {
+  document.getElementById('loading').style.display = 'none';
+};
+
+const setLocalStorage = (tag, data) => {
+  localStorage.setItem(tag, JSON.stringify(data));
 };
 
 const replaceLocation = (URL) => {

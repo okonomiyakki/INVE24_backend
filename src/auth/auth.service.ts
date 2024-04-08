@@ -61,7 +61,10 @@ export class AuthService {
         .post(this.RiotBaseUrlToken, tokenParams, tokenConfigs)
         .toPromise();
     } catch (error) {
-      console.log(error);
+      return res.status(500).json({
+        status: 'error',
+        message: 'token error',
+      });
     }
 
     const oauthPayload: OauthPayloadDto = accessTokenResponse.data;
