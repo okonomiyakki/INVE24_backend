@@ -3,16 +3,20 @@ const hostBaseUrl = document.getElementById('host').dataset.hostBaseUrl;
 document.addEventListener('DOMContentLoaded', function () {
   const code = new URLSearchParams(window.location.search).get('code');
 
-  if (code) riotSignOnFetcher(code);
+  const encodedCode = encodeURIComponent(code);
+
+  console.log('encodedCode : ', encodedCode);
+
+  if (code) riotSignOnFetcher(encodedCode);
 
   const storedTokenInfo = localStorage.getItem('tokenInfo');
   const storedLeagueInfo = localStorage.getItem('leagueInfo');
 
-  if (!storedTokenInfo) {
-    alert('잘못된 접근입니다.');
+  // if (!storedTokenInfo) {
+  //   alert('잘못된 접근입니다.');
 
-    replaceLocation(`${hostBaseUrl}`);
-  }
+  //   replaceLocation(`${hostBaseUrl}`);
+  // }
 
   const leagueInfo = JSON.parse(storedLeagueInfo);
 
