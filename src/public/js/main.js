@@ -15,6 +15,8 @@ const riotOAuthDataFetcher = (hostBaseUrl, riotAuthUrl) => {
 
     const code = new URLSearchParams(window.location.search).get('code');
 
+    console.log(code);
+
     if (code) riotSignOnFetcher(code);
   });
 };
