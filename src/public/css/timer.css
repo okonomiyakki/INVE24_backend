@@ -31,6 +31,16 @@
   background: #885cff;
 }
 
+.pending {
+  animation: slideIn 1s infinite
+}
+
+@keyframes slideIn {
+  0% { transform: translateX(-5%); }
+  /* 50% { transform: translateX(5%);} */
+  100% { transform: translateX(5%); }
+}
+
 @media (min-width: 1000px) {
   #main-wrap {
     height: 42vh;

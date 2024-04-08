@@ -69,6 +69,9 @@ jobs:
             -e RIOT_CLIENT_SECRETE=${{ secrets.RIOT_CLIENT_SECRETE }} \
             -e HOST_REDIRECT_URI=${{ secrets.HOST_REDIRECT_URI }} \
             -e RIOT_BASE_URL_TOKEN=${{ secrets.RIOT_BASE_URL_TOKEN }} \
+            -e LOL_DEFAULT_DELAY=${{ secrets.LOL_DEFAULT_DELAY }} \
+            -e LOL_INGAME_DELAY=${{ secrets.LOL_INGAME_DELAY }} \
+            -e LOL_LOADING_DELAY=${{ secrets.LOL_LOADING_DELAY }} \
             -e DISCORD_INVITATION_CODE=${{ secrets.DISCORD_INVITATION_CODE }} \
             -e DISCORD_WEBHOOK_URL_SUMMONER=${{ secrets.DISCORD_WEBHOOK_URL_SUMMONER }} \
             -e DISCORD_WEBHOOK_URL_INGAME=${{ secrets.DISCORD_WEBHOOK_URL_INGAME }} \

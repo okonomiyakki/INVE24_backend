@@ -1,69 +1,60 @@
-const summonersInfoRequest = () => {
+const handleRiotOAuth2Redirect = () => {
   const hostBaseUrl = document.getElementById('host').dataset.hostBaseUrl;
+  const riotAuthUrl = document.getElementById('auth').dataset.riotBaseUrlAuth;
 
-  const summonersName = document.getElementById('summonersNameInput').value;
-  const summonersTag = document.getElementById('summonersTagInput').value;
+  riotOAuthDataFetcher(hostBaseUrl, riotAuthUrl);
+};
 
-  const title = document.getElementById('title');
-  const loading = document.getElementById('loading');
+const riotOAuthDataFetcher = (hostBaseUrl, riotAuthUrl) => {
+  axios.get(`${hostBaseUrl}/api/v1.0/oauth`).then((res) => {
+    const { clientId, redirectUri } = res.data.data;
 
-  loading.style.display = 'flex';
+    const riotSignOnFormURL = `${riotAuthUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=openid+offline_access`;
+
+    replaceLocation(riotSignOnFormURL);
+
+    const code = new URLSearchParams(window.location.search).get('code');
+
+    if (code) riotSignOnFetcher(code);
+  });
+};
+
+const riotSignOnFetcher = (code) => {
+  showLoadingSpinner();
 
   axios
-    .post(`${hostBaseUrl}/api/v1.0/summoners`, {
-      summonersName: summonersName,
-      summonersTag: summonersTag,
-    })
+    .get(`${hostBaseUrl}/api/v1.0/oauth/login?code=${code}`)
     .then((res) => {
-      if (res.data.summonersEncryptedId) {
-        const infoData = {
-          summonersName,
-          summonersTag,
-          summonersEncryptedId: res.data.summonersEncryptedId,
-          summonersInfo: res.data.summonersInfo,
-        };
+      const { tokenId, summonerLeagueInfo } = res.data.data;
 
-        localStorage.setItem('infoData', JSON.stringify(infoData));
+      setLocalStorage('tokenInfo', tokenId);
+      setLocalStorage('leagueInfo', summonerLeagueInfo);
 
-        window.location.href = `${hostBaseUrl}/summoners`;
-      } else {
-        if (res.data.errorCode === 403) title.innerHTML = res.data.message;
-        else if (res.data.errorCode === 400) title.innerHTML = res.data.message;
-        else if (res.data.errorCode === 404) title.innerHTML = res.data.message;
-        else title.innerHTML = res.data.message;
-      }
+      replaceLocation(`${hostBaseUrl}/summoners`);
     })
     .catch((error) => {
-      console.error('[Client] summoner search error:', error);
-      alert('이름 및 태그를 모두 입력해 주세요.');
+      console.error('Riot Sign On Error:', error);
+      alert(
+        'RIOT 서버에 로그인할 수 없습니다. 서비스 관리자에게 문의해주세요.',
+      );
     })
     .finally(() => {
-      loading.style.display = 'none';
+      hideLoadingSpinner();
     });
 };
 
-const rsoLoginRequest = () => {
-  alert('블락');
-  // const hostBaseUrl = document.getElementById('host').dataset.hostBaseUrl;
-  // const riotAuthUrl = document.getElementById('auth').dataset.riotBaseUrlAuth;
-
-  // axios.get(`${hostBaseUrl}/api/v1.0/oauth`).then((res) => {
-  //   const rsoLoginUrl = `${riotAuthUrl}?client_id=${res.data.clientId}&redirect_uri=${res.data.redirectUri}&response_type=code&scope=openid+offline_access`;
-  //   window.location.href = rsoLoginUrl;
-
-  //   // // const code = new URLSearchParams(window.location.search).get('code');
-  //   // const code = new URL(window.location.href).searchParams.get('code');
-  //   // console.log('code:', code);
-
-  //   // else console.log('code not found');
-  //   // if (code) sendCodeToServer(code);
-  // });
+const showLoadingSpinner = () => {
+  document.getElementById('loading').style.display = 'flex';
 };
 
-const sendCodeToServer = (code) => {
-  axios.get(`${hostBaseUrl}/api/v1.0/oauth/login?code=${code}`).then((res) => {
-    const rsoData = res.data;
+const hideLoadingSpinner = () => {
+  document.getElementById('loading').style.display = 'none';
+};
 
-    localStorage.setItem('rsoData', JSON.stringify(rsoData));
-  });
+const setLocalStorage = (tag, data) => {
+  localStorage.setItem(tag, JSON.stringify(data));
+};
+
+const replaceLocation = (URL) => {
+  window.location.href = URL;
 };

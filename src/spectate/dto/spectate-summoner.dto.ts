@@ -2,11 +2,11 @@ import { IsNotEmpty } from 'class-validator';
 
 export class SpectateSummonerDto {
   @IsNotEmpty()
-  summonersName: string;
+  summonerName: string;
 
   @IsNotEmpty()
-  summonersTag: string;
+  summonerTag: string;
 
   @IsNotEmpty()
-  summonersEncryptedId: string;
+  encryptedSummonerId: string;
 }

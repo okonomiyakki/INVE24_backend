@@ -10,22 +10,14 @@
   </head>
 
   <body>
-    <h1 id="title">로그인 후 이용 가능합니다.</h1>
+    <h1 id="title">로그인이 필요한 서비스입니다.</h1>
     <hr>
     <div id="main-wrap">
-      <button id="loginBtn" onclick="rsoLoginRequest()">
+
+      <button id="loginBtn" onclick="handleRiotOAuth2Redirect()">
         <img src="https://img.icons8.com/color/96/riot-games.png" alt="riot-games" class="loginIcon" />
         <span>라이엇 계정으로 로그인하기</span>
       </button>
-
-      <div class="input-wrap">
-        <input type="search" id="summonersNameInput" placeholder=" 소환사 이름" value="">
-      </div>
-      <div class="input-wrap">
-        <input type="text" id="summonersTagInput" placeholder=" KR1" value="KR1">
-      </div>
-      
-      <button id="searchBtn" onclick="summonersInfoRequest()">소환사 검색</button>
 
       <div id="loading" class="spinner">
         <div class="dot dot1"></div>

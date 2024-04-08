@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
+import { Response } from 'express';
 import { NotifierService } from '../notifier/notifier.service';
-import { SearchSummonerDto } from './dto/search-summoner.dto';
 import { SpectateSummonerDto } from './dto/spectate-summoner.dto';
 
 @Injectable()
@@ -17,185 +17,66 @@ export class SpectateService {
   private RiotBaseUrlKr = this.config.get('RIOT_BASE_URL_KR');
   private RiotAppKey = this.config.get('RIOT_API_APP_KEY');
 
-  async getSummonersEncryptedId(
-    searchSummonerDto: SearchSummonerDto,
-  ): Promise<any> {
-    const { summonersName, summonersTag } = searchSummonerDto;
+  private DEFAULT_DELAY = this.config.get('LOL_DEFAULT_DELAY');
+  private INGAME_DELAY = this.config.get('LOL_INGAME_DELAY');
+  private LOADING_DELAY = this.config.get('LOL_LOADING_DELAY');
 
-    console.log(`----------------------------------------------`);
-    console.log(
-      `[${this.notifierService.getCurrentDate()}] 조회 계정: ${summonersName} #${summonersTag}`,
-    );
-
-    const encodedSummonersName = encodeURIComponent(summonersName);
-    const encodedSummonersTag = encodeURIComponent(summonersTag);
-
-    const GetSummonersEncryptedPuuidUrl = `${this.RiotBaseUrlAsia}/riot/account/v1/accounts/by-riot-id/${encodedSummonersName}/${encodedSummonersTag}?api_key=${this.RiotAppKey}`;
-
-    try {
-      var responseBySummonersNameTag = await this.httpService
-        .get(GetSummonersEncryptedPuuidUrl)
-        .toPromise();
-    } catch (error) {
-      const webHookInfo = {
-        title: {
-          summonersName,
-          summonersTag,
-          error,
-        },
-      };
-
-      if (error.response.status === 403) {
-        await this.notifierService.sendToWebHook(webHookInfo, '#1 forbiden');
-
-        return {
-          message: `이름 및 태그를 모두 입력해 주세요.`,
-          errorCode: error.response.status,
-        };
-      } else if (error.response.status === 400) {
-        await this.notifierService.sendToWebHook(webHookInfo, '#1 bad request');
-
-        return {
-          message: `잘못된 입력 형식입니다.`,
-          errorCode: error.response.status,
-        };
-      } else if (error.response.status === 404) {
-        await this.notifierService.sendToWebHook(webHookInfo, '#1 not found');
-
-        return {
-          message: `존재하지 않는 아이디입니다.`,
-          errorCode: error.response.status,
-        };
-      } else {
-        await this.notifierService.sendToWebHook(webHookInfo, 'server error');
-
-        return {
-          message: `서버 오류.<br>(code: ${error.response.status})`,
-          errorCode: error.response.status,
-        };
-      }
-    }
-
-    const summonersEncryptedPuuid = responseBySummonersNameTag.data.puuid;
-
-    const GetEncryptedSummonersIdUrl = `${this.RiotBaseUrlKr}/lol/summoner/v4/summoners/by-puuid/${summonersEncryptedPuuid}?api_key=${this.RiotAppKey}`;
-
-    try {
-      var responseBySummonersPuuid = await this.httpService
-        .get(GetEncryptedSummonersIdUrl)
-        .toPromise();
-    } catch (error) {
-      const webHookInfo = {
-        title: {
-          summonersName,
-          summonersTag,
-          error,
-        },
-      };
-
-      if (error.response.status === 404) {
-        await this.notifierService.sendToWebHook(webHookInfo, '#2 not found');
-
-        return {
-          message: `리그오브레전드 아이디가 아닙니다.`,
-          errorCode: error.response.status,
-        };
-      } else {
-        await this.notifierService.sendToWebHook(webHookInfo, 'server error');
-
-        return {
-          message: `서버 오류.<br>(code: ${error.response.status})`,
-          errorCode: error.response.status,
-        };
-      }
-    }
-
-    const summonersEncryptedId = responseBySummonersPuuid.data.id;
-
-    const GetSummonersInfoUrl = `${this.RiotBaseUrlKr}/lol/league/v4/entries/by-summoner/${summonersEncryptedId}?api_key=${this.RiotAppKey}`;
-
-    try {
-      var responseBySummonersEncryptedId = await this.httpService
-        .get(GetSummonersInfoUrl)
-        .toPromise();
-    } catch (error) {
-      const webHookInfo = {
-        title: {
-          summonersName,
-          summonersTag,
-          error,
-        },
-      };
-
-      if (error.response.status === 404) {
-        await this.notifierService.sendToWebHook(webHookInfo, '#3 not found');
-
-        return {
-          message: `소환사 정보가 존재하지 않습니다.`,
-          errorCode: error.response.status,
-        };
-      } else {
-        await this.notifierService.sendToWebHook(webHookInfo, 'server error');
-
-        return {
-          message: `서버 오류.<br>(code: ${error.response.status})`,
-          errorCode: error.response.status,
-        };
-      }
-    }
-
-    const webHookInfo = {
-      title: {
-        summonersName,
-        summonersTag,
-      },
-    };
-
-    await this.notifierService.sendToWebHook(webHookInfo, 'summoner OK');
-
-    const summonersInfo = responseBySummonersEncryptedId.data;
-
-    return { summonersEncryptedId, summonersInfo };
-  }
-
-  async getLiveGameTime(
+  async getCurrentGameStatus(
     spectateSummonerDto: SpectateSummonerDto,
+    res: Response,
   ): Promise<any> {
-    const { summonersName, summonersTag, summonersEncryptedId } =
+    const { summonerName, summonerTag, encryptedSummonerId } =
       spectateSummonerDto;
 
-    const GetStartGameTimeUrl = `${this.RiotBaseUrlKr}/lol/spectator/v4/active-games/by-summoner/${summonersEncryptedId}?api_key=${this.RiotAppKey}`;
+    const GetCurrentGameUrl = `${this.RiotBaseUrlKr}/lol/spectator/v4/active-games/by-summoner/${encryptedSummonerId}?api_key=${this.RiotAppKey}`;
 
     try {
-      const responseBySummonersId = await this.httpService
-        .get(GetStartGameTimeUrl)
+      const currentGameResponse = await this.httpService
+        .get(GetCurrentGameUrl)
         .toPromise();
 
       /** (주의) 이거 epochTime 임 */
-      const gameStartTime = responseBySummonersId.data.gameStartTime;
+      const { gameStartTime } = currentGameResponse.data;
 
       const currentEpochTime = new Date().getTime();
 
-      const webHookInfo = {
-        title: {
-          summonersName,
-          summonersTag,
-        },
-      };
+      if (
+        currentEpochTime >
+        gameStartTime +
+          parseInt(this.INGAME_DELAY) +
+          parseInt(this.DEFAULT_DELAY)
+      ) {
+        const webHookInfo = {
+          title: {
+            summonerName,
+            summonerTag,
+          },
+        };
 
-      if (currentEpochTime > gameStartTime + 30000 + 180000) {
         await this.notifierService.sendToWebHook(webHookInfo, '#4 forbiden');
 
-        return {
-          message: `게임 시작 3분이 경과되어<br>조회가 불가능합니다.`,
-          errorCode: 403.1,
-        };
+        return res.status(403).json({
+          status: 'fail',
+          message: `게임 시작 후 3분이 경과되어, 조회가 불가능합니다.`,
+        });
       }
+
+      const time = new Date(gameStartTime + parseInt(this.LOADING_DELAY));
+
+      const hours = time.getHours();
+      const minutes = time.getMinutes();
+      const seconds = time.getSeconds();
+
+      return res.status(200).json({
+        status: 'success',
+        message: `밴픽이 정상적으로 종료되어 로딩화면에 접근합니다.`,
+        data: { gameStartTime: { hours, minutes, seconds } },
+      });
     } catch (error) {
       const webHookInfo = {
         title: {
-          summonersName,
-          summonersTag,
+          summonerName,
+          summonerTag,
           error,
         },
       };
@@ -203,30 +84,36 @@ export class SpectateService {
       if (error.response.status === 404) {
         await this.notifierService.sendToWebHook(webHookInfo, '#4 not found');
 
-        return {
-          message: `'${summonersName}'<br>님은 현재 게임중이 아닙니다.`,
-          errorCode: error.response.status,
-        };
+        return res.status(404).json({
+          status: 'error',
+          message: `'${summonerName}'<br>님은 현재 게임중이 아닙니다.`,
+        });
       } else {
         await this.notifierService.sendToWebHook(webHookInfo, 'server error');
 
-        return {
+        return res.status(500).json({
+          status: 'error',
           message: `서버 오류.<br>(code: ${error.response.status})`,
-          errorCode: error.response.status,
-        };
+        });
       }
     }
+  }
 
-    /** API fetch 딜레이 */
+  async getCurrentGame(
+    spectateSummonerDto: SpectateSummonerDto,
+    res: Response,
+  ): Promise<any> {
+    const { summonerName, summonerTag, encryptedSummonerId } =
+      spectateSummonerDto;
+
+    const GetCurrentGameUrl = `${this.RiotBaseUrlKr}/lol/spectator/v4/active-games/by-summoner/${encryptedSummonerId}?api_key=${this.RiotAppKey}`;
+
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-    /** 게임 시작 시간 담는 배열 */
     let startTimeList = [];
 
-    /** 실제 게임 시작 시간 배열 인덱스 */
     let currentStartTimeIndex = 0;
 
-    /** 라이엇 인게임 조회 횟수 */
     let fetchCount = 0;
 
     do {
@@ -234,8 +121,8 @@ export class SpectateService {
       else {
         const webHookInfo = {
           title: {
-            summonersName,
-            summonersTag,
+            summonerName,
+            summonerTag,
           },
         };
 
@@ -245,14 +132,14 @@ export class SpectateService {
       }
 
       try {
-        var responseBySummonersId = await this.httpService
-          .get(GetStartGameTimeUrl)
+        var currentGameResponse = await this.httpService
+          .get(GetCurrentGameUrl)
           .toPromise();
       } catch (error) {
         const webHookInfo = {
           title: {
-            summonersName,
-            summonersTag,
+            summonerName,
+            summonerTag,
             error,
           },
         };
@@ -263,33 +150,30 @@ export class SpectateService {
             '#5 too many request',
           );
 
-          return {
-            message: `현재 요청자가 많아 이용이 어렵습니다.<br>ㅈㅅ`,
-            errorCode: error.response.status,
-          };
+          return res.status(429).json({
+            status: 'error',
+            message: `현재 요청자가 많아 이용이 어렵습니다. 잠시 후에 다시 시도해 주세요.`,
+          });
         } else {
           await this.notifierService.sendToWebHook(webHookInfo, 'server error');
 
-          return {
+          return res.status(500).json({
+            status: 'error',
             message: `서버 오류.<br>(code: ${error.response.status})`,
-            errorCode: error.response.status,
-          };
+          });
         }
       }
 
-      const gameStartTime = responseBySummonersId.data.gameStartTime;
+      const gameStartTime = currentGameResponse.data.gameStartTime;
 
       startTimeList.push(gameStartTime);
-
-      // console.log('로딩중... ');
-      // console.log('현재 배열: ', startTimeList);
 
       fetchCount++;
 
       const webHookInfo = {
         title: {
-          summonersName,
-          summonersTag,
+          summonerName,
+          summonerTag,
         },
       };
 
@@ -297,10 +181,10 @@ export class SpectateService {
       if (fetchCount === 30) {
         await this.notifierService.sendToWebHook(webHookInfo, '#5 forbiden');
 
-        return {
-          message: `로딩 시간이 5분 경과되어 이용이 어렵습니다.<br>(다시하기)`,
-          errorCode: 403.2,
-        };
+        return res.status(400).json({
+          status: 'error',
+          message: `로딩 시간이 5분 경과되어 이용이 어렵습니다. 다시 시도해 주세요.`,
+        });
       }
     } while (
       startTimeList.length === 1 ||
@@ -309,8 +193,8 @@ export class SpectateService {
 
     const webHookInfo = {
       title: {
-        summonersName,
-        summonersTag,
+        summonerName,
+        summonerTag,
       },
     };
 
@@ -320,8 +204,7 @@ export class SpectateService {
 
     const currentStartTime = startTimeList[currentStartTimeIndex];
 
-    /** 인게임 딜레이 30초 추가 */
-    const time = new Date(currentStartTime + 30 * 1000);
+    const time = new Date(currentStartTime + parseInt(this.INGAME_DELAY));
 
     const hours = time.getHours();
     const minutes = time.getMinutes();
@@ -330,12 +213,14 @@ export class SpectateService {
     const currentEpochTime = new Date().getTime();
 
     const realTimeSeconds = Math.floor(
-      (currentEpochTime - (currentStartTime + 30 * 1000)) / 1000,
+      (currentEpochTime - (currentStartTime + parseInt(this.INGAME_DELAY))) /
+        1000,
     );
 
-    return {
-      gameStartTime: { hours, minutes, seconds },
-      realTimeSeconds,
-    };
+    return res.status(200).json({
+      status: 'success',
+      message: `게임이 정상적으로 시작되었습니다.`,
+      data: { gameStartTime: { hours, minutes, seconds }, realTimeSeconds },
+    });
   }
 }

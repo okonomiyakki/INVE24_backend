@@ -106,123 +106,63 @@ input {
   border-radius: 50%;
 }
 
-.dot1 {
-  animation: dot1Anim 1s linear infinite;
-}
+.dot1 { animation: dot1Anim 1s linear infinite; }
 
-.dot2 {
-  animation: dot2Anim 1s linear infinite;
-}
+.dot2 { animation: dot2Anim 1s linear infinite; }
 
-.dot3 {
-  animation: dot3Anim 1s linear infinite;
-}
+.dot3 { animation: dot3Anim 1s linear infinite; }
 
-.dot4 {
-  animation: dot4Anim 1s linear infinite;
-}
+.dot4 { animation: dot4Anim 1s linear infinite; }
 
-.dot5 {
-  animation: dot5Anim 1s linear infinite;
-}
+.dot5 { animation: dot5Anim 1s linear infinite; }
 
-.dot6 {
-  animation: dot6Anim 1s linear infinite;
-}
+.dot6 { animation: dot6Anim 1s linear infinite; }
 
-.dot7 {
-  animation: dot7Anim 1s linear infinite;
-}
+.dot7 { animation: dot7Anim 1s linear infinite; }
 
-.dot8 {
-  animation: dot8Anim 1s linear infinite;
-}
+.dot8 { animation: dot8Anim 1s linear infinite; }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 @keyframes dot1Anim {
-  0%,
-  20% {
-    transform: translate(0, -50px);
-  }
-  100% {
-    transform: translate(0, -50px) rotate(360deg);
-  }
+  0%, 20% { transform: translate(0, -50px); }
+  100% { transform: translate(0, -50px) rotate(360deg); }
 }
 
 @keyframes dot2Anim {
-  0%,
-  20% {
-    transform: translate(29px, -38px);
-  }
-  100% {
-    transform: translate(29px, -38px) rotate(360deg);
-  }
+  0%, 20% { transform: translate(29px, -38px); }
+  100% { transform: translate(29px, -38px) rotate(360deg); }
 }
 
 @keyframes dot3Anim {
-  0%,
-  20% {
-    transform: translate(50px, 0);
-  }
-  100% {
-    transform: translate(50px, 0) rotate(360deg);
-  }
+  0%, 20% { transform: translate(50px, 0); }
+  100% { transform: translate(50px, 0) rotate(360deg); }
 }
 
 @keyframes dot4Anim {
-  0%,
-  20% {
-    transform: translate(29px, 38px);
-  }
-  100% {
-    transform: translate(29px, 38px) rotate(360deg);
-  }
+  0%, 20% { transform: translate(29px, 38px); }
+  100% { transform: translate(29px, 38px) rotate(360deg); }
 }
 
 @keyframes dot5Anim {
-  0%,
-  20% {
-    transform: translate(0, 50px);
-  }
-  100% {
-    transform: translate(0, 50px) rotate(360deg);
-  }
+  0%, 20% { transform: translate(0, 50px); }
+  100% { transform: translate(0, 50px) rotate(360deg); }
 }
 
 @keyframes dot6Anim {
-  0%,
-  20% {
-    transform: translate(-29px, 38px);
-  }
-  100% {
-    transform: translate(-29px, 38px) rotate(360deg);
-  }
+  0%, 20% { transform: translate(-29px, 38px); }
+  100% { transform: translate(-29px, 38px) rotate(360deg); }
 }
 
 @keyframes dot7Anim {
-  0%,
-  20% {
-    transform: translate(-50px, 0);
-  }
-  100% {
-    transform: translate(-50px, 0) rotate(360deg);
-  }
+  0%, 20% { transform: translate(-50px, 0); }
+  100% { transform: translate(-50px, 0) rotate(360deg); }
 }
 
 @keyframes dot8Anim {
-  0%,
-  20% {
-    transform: translate(-29px, -38px);
-  }
-  100% {
-    transform: translate(-29px, -38px) rotate(360deg);
-  }
+  0%, 20% { transform: translate(-29px, -38px); }
+  100% { transform: translate(-29px, -38px) rotate(360deg); }
 }

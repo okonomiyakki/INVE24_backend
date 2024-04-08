@@ -11,7 +11,7 @@
   </head>
 
   <body>
-    <h1 id="title">챔피언을 픽한 다음 눌러주세요.</h1>
+    <h1 id="title"></h1>
     <hr>
     <div id="main-wrap">
 
@@ -21,17 +21,10 @@
           <div id="summonerTag"></div>
           <div id="summonerTier"></div>
         </div>
-        <button id="searchBtn" onclick="lolRealTimeRequest()">조회</button>
-      </div>
-
-      <div class="time-container">
-        <div class="time-wrap">
-          <p class="timeTitle">로딩 시간</p>
-          <p id="realTime"></p>
-        </div>
+        <button id="searchBtn" onclick="showModal()">조회</button>
       </div>
     
-      <button id="resetBtn" onclick="reset()">HOME</button>
+      <button id="resetBtn" onclick="riotLogoutHandler()">로그아웃</button>
 
     </div>
     <h1 id="version">v.1.3.1 <a href={{data.DiscordInvitationCode}}> &nbsp;버그 신고 &gt;</a></h1>
@@ -48,6 +41,18 @@
     <hr>
     <div id="footer">
       <p><a href={{data.HostPrivacyUrl}}>개인정보처리방침</a> | <a href={{data.HostAgreementUrl}}>이용약관</a> | © 2024 INVE24, Okonomiyakki</p>
+    </div>
+
+    <div id="modal-wrap">
+      <div id="modal">
+        <p id="modalTitle">챔피언 픽을 하셨나요?</p>
+        <p id="modalSub">현재 밴픽중임을 간주하고 조회를 시작합니다.</p>
+        <p id="modalalert">※ 무분별한 조회 시, 서비스 이용이 불가능합니다. ※</p>
+        <div>
+          <button onclick="handleYesBtnClick()" class="modalBtn">예</button>
+          <button onclick="handleNoBtnClick()" class="modalBtn">아니오</button>
+        </div>
+      </div>
     </div>
 
     <div id="host" data-host-base-url={{data.HostBaseUrl}}></div>
