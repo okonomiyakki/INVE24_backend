@@ -51,7 +51,6 @@ export class AuthService {
     };
 
     const tokenParams = new URLSearchParams();
-
     tokenParams.append('grant_type', 'authorization_code');
     tokenParams.append('code', code);
     tokenParams.append('redirect_uri', this.HostRedirectUri);
@@ -62,15 +61,15 @@ export class AuthService {
         .toPromise();
     } catch (error) {
       console.log(error);
-      return res.status(500).json({
+      return res.status(400).json({
         status: 'error',
         message: 'token error',
       });
     }
 
-    const oauthPayload: OauthPayloadDto = accessTokenResponse.data;
+    console.log('accessTokenResponse : ', accessTokenResponse);
 
-    console.log('oauthPayload : ', oauthPayload);
+    const oauthPayload: OauthPayloadDto = accessTokenResponse.data;
 
     const tokenId = oauthPayload.id_token;
 
