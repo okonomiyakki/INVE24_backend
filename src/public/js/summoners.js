@@ -1,11 +1,9 @@
 const hostBaseUrl = document.getElementById('host').dataset.hostBaseUrl;
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
   const code = new URLSearchParams(window.location.search).get('code');
 
-  console.log('code : ', code);
-
-  if (code) riotSignOnFetcher(code);
+  if (code) await riotSignOnFetcher(code);
 
   const storedTokenInfo = localStorage.getItem('tokenInfo');
   const storedLeagueInfo = localStorage.getItem('leagueInfo');
@@ -21,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
   handleSummonerLeagueInfo(leagueInfo);
 });
 
-const riotSignOnFetcher = (code) => {
+const riotSignOnFetcher = async (code) => {
   showLoadingSpinner();
 
   axios
@@ -31,8 +29,6 @@ const riotSignOnFetcher = (code) => {
 
       setLocalStorage('tokenInfo', tokenId);
       setLocalStorage('leagueInfo', summonerLeagueInfo);
-
-      replaceLocation(`${hostBaseUrl}/summoners`);
     })
     .catch((error) => {
       console.error('Riot Sign On Error:', error);
