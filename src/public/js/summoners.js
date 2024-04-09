@@ -1,7 +1,10 @@
 const hostBaseUrl = document.getElementById('host').dataset.hostBaseUrl;
 
 document.addEventListener('DOMContentLoaded', function () {
-  injectHTML('title', '픽창에서 챔피언을 선택 후<br>조회 버튼을 눌러주세요.');
+  injectHTML(
+    'title',
+    '챔피언 픽 완료 후,<br>밴픽창에서 조회 버튼을 눌러주세요.',
+  );
 
   const code = new URLSearchParams(window.location.search).get('code');
 
@@ -31,13 +34,18 @@ const riotSignOnFetcher = (code) => {
         replaceLocation(`${hostBaseUrl}`);
       }
 
-      handleSummonerLeagueInfo();
+      replaceLocation(`${hostBaseUrl}/summoners`);
     })
     .catch((error) => {
       console.error('Riot Sign On Error:', error);
       alert(
         'RIOT 서버에 로그인할 수 없습니다. 서비스 관리자에게 문의해주세요.',
       );
+
+      localStorage.removeItem('tokenInfo');
+      localStorage.removeItem('leagueInfo');
+
+      replaceLocation(`${hostBaseUrl}`);
     })
     .finally(() => {
       hideLoadingSpinner();
