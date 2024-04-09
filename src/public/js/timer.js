@@ -6,23 +6,43 @@ document.addEventListener('DOMContentLoaded', function () {
   const storedTokenInfo = localStorage.getItem('tokenInfo');
   const storedLeagueInfo = localStorage.getItem('leagueInfo');
 
+  const leagueInfo = JSON.parse(storedLeagueInfo);
+
+  injectHTML(
+    'title',
+    `'${leagueInfo.summonerName}'<br>님의 실시간 협곡 시간을 조회합니다.`,
+  );
+
+  hideElement('pick');
+
+  hideElement('load');
+
+  hideElement('backBtn');
+
   if (!storedTokenInfo) {
     alert('잘못된 접근입니다.');
+
+    localStorage.removeItem('tokenInfo');
+    localStorage.removeItem('leagueInfo');
 
     replaceLocation(`${hostBaseUrl}`);
   }
 
+  let startAtBanPick = false;
+
   let retryCount = 0;
 
-  /** 5분 */
   const MAX_RETRIES = 30;
 
-  const leagueInfo = JSON.parse(storedLeagueInfo);
-
-  currentGameStatusFetcher(leagueInfo, retryCount, MAX_RETRIES);
+  currentGameStatusFetcher(leagueInfo, startAtBanPick, retryCount, MAX_RETRIES);
 });
 
-const currentGameStatusFetcher = (leagueInfo, retryCount, MAX_RETRIES) => {
+const currentGameStatusFetcher = (
+  leagueInfo,
+  startAtBanPick,
+  retryCount,
+  MAX_RETRIES,
+) => {
   axios
     .post(`${hostBaseUrl}/api/v2.0/spectate/status`, {
       summonerName: leagueInfo.summonerName,
@@ -42,9 +62,15 @@ const currentGameStatusFetcher = (leagueInfo, retryCount, MAX_RETRIES) => {
         `'${leagueInfo.summonerName}'<br>님의 게임은 현재 로딩중입니다.<br>곧 게임이 시작됩니다.`,
       );
 
-      injectHTML('banpick', '밴픽 완료');
+      if (startAtBanPick) {
+        injectHTML('banpick', '밴픽 완료');
 
-      hideAnimation('banpick');
+        hideAnimation('banpick');
+      } else {
+        showElement('pick');
+
+        injectHTML('banpick', '밴픽 완료');
+      }
 
       showElement('load');
 
@@ -75,14 +101,19 @@ const currentGameStatusFetcher = (leagueInfo, retryCount, MAX_RETRIES) => {
 
         if (!intervalId) generateTimer(0, 'pickTime', false);
 
+        startAtBanPick = true;
+
         retryCount++;
 
         setTimeout(
-          () => currentGameStatusFetcher(retryCount, MAX_RETRIES),
+          () =>
+            currentGameStatusFetcher(retryCount, startAtBanPick, MAX_RETRIES),
           10000,
         );
-      } else {
-        alert(error.response.message);
+      } else if (error.response.status === 403 || 500) {
+        // alert(error.response.data.message);
+
+        alert('RIOT 서버 점검 중입니다.'); // TODO: 지우기
 
         handleRedirectPrev();
       }
@@ -124,7 +155,7 @@ const currentGameFetcher = () => {
       generateTimer(realTimeSeconds, 'realTime', true);
     })
     .catch((error) => {
-      alert(error.response.message);
+      alert(error.response.data.message);
 
       handleRedirectPrev();
     });
