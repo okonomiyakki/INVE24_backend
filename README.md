@@ -2,11 +2,12 @@
 
 ---
 
-## v.1.3.1
+## v2.1.0
 
-> 챔피언 픽은 게임중으로 간주하지 않습니다. <br>
-> 로딩 중일 때 조회하셔야 정상적인 인게임 시간이 반환됩니다. <br>
-> 이미 시작된 게임은 조회가 불가능합니다.
+> 플레이 중인 리그오브레전드 계정으로 로그인해 주세요 <br>
+> 챔피언 픽 완료 후, 밴픽창에서 조회 버튼을 눌러주세요. <br>
+> 챔피언 픽 이전에 조회 시, 이용이 불가능합니다. <br>
+> 게임 시작 이후에 조회 시, 이용이 불가능합니다.
 
 ## 사용 기술
 
@@ -40,6 +41,7 @@
 
 ## 서비스 주요 기능
 
+- RSO(Oauth2.0) 로그인
 - 소환사 티어 정보 조회
 - 소환사 게임 중 여부 확인
 - 실시간 협곡 시간 조회
@@ -51,54 +53,25 @@
 - GitHub Actions를 사용하여 CI/CD 파이프라인을 구축하였습니다.
 - 도커라이징을 통해 배포합니다.
 
-## 로컬 환경 변수 설정
-
-- RIOT DEVELOPMENT API KEY 또는 RIOT PERSONAL API KEY를 발급받으시면, 로컬에서 사용 가능합니다.
-- RIOT BASE URL 값들은, KEY 발급 후 RIOT Developer 홈페이지 API Docs에서 확인 가능합니다.
-- [RIOT Developer 홈페이지 바로가기](https://developer.riotgames.com/)
-
-```bash
-touch .env.dev
-```
-
-```
-/.env.dev
-
-HOST_BASE_URL={http://localhost:서버포트}
-
-RIOT_BASE_URL_ASIA={라이엇 아시아 BASE URL}
-
-RIOT_BASE_URL_KR={라이엇 한국 BASE URL}
-
-RIOT_API_APP_KEY={라이엇 API 키}
-
-```
-
-## 로컬 실행 방법
-
-```bash
-npm i
-
-npm run start:dev
-```
-
----
-
 ## 사용 시나리오 & 기능 설명
 
-### 1. 소환사 검색
+### 1. 리그오브레전드 OAuth2.0 소셜 로그인 (RSO)
 
-- 소환사 닉네임과 태그를 입력하여 소환사를 검색합니다.
+- 리그오브레전드 계정으로 서비스에 로그인합니다.
 
 ### 2. 소환사 정보
 
-- 소환사의 티어 정보를 확인합니다.
+- 로그인된 계정의 소환사 정보를 확인합니다.
 
-### 3. 로딩 진행 여부 조회
+### 3. 밴픽 진행 정보
 
-- 챔피언 픽이 끝난 후, 조회 버튼을 누르면 로딩 중 상태가 동기화됩니다.
+- 챔피언 픽이 끝난 후, 조회 버튼을 누르면 밴픽 상태가 타이머 형식으로 반환됩니다.
 
-### 4. 실시간 협곡 시간 조회
+### 4. 로딩 진행 정보
+
+- 밴픽이 끝나면, 자동으로 게임의 로딩 상태가 타이머 형식으로 반환됩니다.
+
+### 5. 실시간 협곡 시간 정보
 
 - 게임이 시작되면, 실제 협곡 시간이 타이머 형식으로 반환됩니다.
 
@@ -106,19 +79,17 @@ npm run start:dev
 
         - 오차 없는 동기화가 가능하지만, 빠른 참여를 위해 1초 정도의 여유를 두었습니다.
 
-### 5. 조회 버튼 연타 방지 (추가)
-
-- 무분별한 API 호출을 막기 위한 연타 방지 스크립트가 존재합니다.
-
-        - n초 동안 n번 이상 클릭 시, 조회 버튼이 m초 동안 비활성화됩니다.
-
-        - 브라우저를 새로고침하거나 종료하더라도 버튼 비활성화는 풀리지 않습니다.
-
 ## 기능 개선 & 버그 문의
 
 - [디스코드 바로가기](https://discord.gg/3szXq8mpaq)
 - [GitHub Issue 바로가기](https://github.com/okonomiyakki/lol-real-time-watcher/issues)
 
+## Dev Implement
+
+- RIOT DEVELOPMENT API KEY 또는 RIOT PERSONAL API KEY를 발급받으시면, 로컬에서 사용 가능합니다.
+- RIOT BASE URL 값들은, KEY 발급 후 RIOT Developer 홈페이지 API Docs에서 확인 가능합니다.
+- [RIOT Developer 홈페이지 바로가기](https://developer.riotgames.com/)
+
 ---
 
-본 프로젝트는 RIOT으로부터 PRODUCTION 승인이 완료된 서비스이며, 제공하는 코드를 활용한 무단 사용 및 도용, 복제 및 배포를 금합니다. © 2024 INVE24, Okonomiyakki
+본 프로젝트는 PRODUCTION 승인이 완료된 서비스이며, 제공하는 코드를 활용한 무단 사용 및 도용, 복제 및 배포를 금합니다. © 2024 INVE24, Okonomiyakki
