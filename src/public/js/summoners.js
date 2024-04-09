@@ -1,53 +1,55 @@
 const hostBaseUrl = document.getElementById('host').dataset.hostBaseUrl;
 
 document.addEventListener('DOMContentLoaded', function () {
+  injectHTML('title', '픽창에서 챔피언을 선택 후<br>조회 버튼을 눌러주세요.');
+
   const code = new URLSearchParams(window.location.search).get('code');
 
-  const encodedCode = encodeURIComponent(code);
-
-  console.log('encodedCode : ', encodedCode);
-
-  if (code) riotSignOnFetcher(encodedCode);
-
-  const storedTokenInfo = localStorage.getItem('tokenInfo');
-  const storedLeagueInfo = localStorage.getItem('leagueInfo');
-
-  // if (!storedTokenInfo) {
-  //   alert('잘못된 접근입니다.');
-
-  //   replaceLocation(`${hostBaseUrl}`);
-  // }
-
-  const leagueInfo = JSON.parse(storedLeagueInfo);
-
-  handleSummonerLeagueInfo(leagueInfo);
+  if (code) riotSignOnFetcher(code);
+  else handleSummonerLeagueInfo();
 });
 
 const riotSignOnFetcher = (code) => {
-  // showLoadingSpinner();
+  showLoadingSpinner();
 
-  axios.get(`${hostBaseUrl}/api/v1.0/oauth/login?code=${code}`).then((res) => {
-    const { tokenId, summonerLeagueInfo } = res.data.data;
+  axios
+    .get(`${hostBaseUrl}/api/v1.0/oauth/login?code=${code}`)
+    .then((res) => {
+      const { tokenId, summonerLeagueInfo } = res.data.data;
 
-    console.log('tokenId : ', tokenId);
-    console.log('summonerLeagueInfo : ', summonerLeagueInfo);
+      setLocalStorage('tokenInfo', tokenId);
+      setLocalStorage('leagueInfo', summonerLeagueInfo);
 
-    setLocalStorage('tokenInfo', tokenId);
-    setLocalStorage('leagueInfo', summonerLeagueInfo);
-  });
-  // .catch((error) => {
-  //   console.error('Riot Sign On Error:', error);
-  //   alert(
-  //     'RIOT 서버에 로그인할 수 없습니다. 서비스 관리자에게 문의해주세요.',
-  //   );
-  // })
-  // .finally(() => {
-  //   hideLoadingSpinner();
-  // });
+      const storedTokenInfo = localStorage.getItem('tokenInfo');
+
+      if (!storedTokenInfo) {
+        alert('잘못된 접근입니다.');
+
+        localStorage.removeItem('tokenInfo');
+        localStorage.removeItem('leagueInfo');
+
+        replaceLocation(`${hostBaseUrl}`);
+      }
+
+      handleSummonerLeagueInfo();
+    })
+    .catch((error) => {
+      console.error('Riot Sign On Error:', error);
+      alert(
+        'RIOT 서버에 로그인할 수 없습니다. 서비스 관리자에게 문의해주세요.',
+      );
+    })
+    .finally(() => {
+      hideLoadingSpinner();
+    });
 };
 
-const handleSummonerLeagueInfo = (leagueInfo) => {
-  injectHTML('title', '픽창에서 챔피언을 선택 후<br>조회 버튼을 눌러주세요.');
+const handleSummonerLeagueInfo = () => {
+  const storedLeagueInfo = localStorage.getItem('leagueInfo');
+
+  const leagueInfo = JSON.parse(storedLeagueInfo);
+
+  console.log('leagueInfo : ', leagueInfo);
 
   injectHTML('summonerName', `${leagueInfo.summonerName}`);
 
@@ -66,7 +68,7 @@ const handleYesBtnClick = () => {
 };
 
 const handleNoBtnClick = () => {
-  replaceLocation(`${hostBaseUrl}/summoners`);
+  document.getElementById('modal-wrap').style.display = 'none';
 };
 
 const handleRiotLogout = () => {
@@ -85,10 +87,12 @@ const showModal = () => {
 };
 
 const showLoadingSpinner = () => {
+  document.getElementById('bg').style.display = 'flex';
   document.getElementById('loading').style.display = 'flex';
 };
 
 const hideLoadingSpinner = () => {
+  document.getElementById('bg').style.display = 'none';
   document.getElementById('loading').style.display = 'none';
 };
 
