@@ -27,6 +27,7 @@ export class SpectateService {
   ): Promise<any> {
     const { summonerName, summonerTag, encryptedSummonerId } =
       spectateSummonerDto;
+    console.log(spectateSummonerDto);
 
     const GetCurrentGameUrl = `${this.RiotBaseUrlKr}/lol/spectator/v4/active-games/by-summoner/${encryptedSummonerId}?api_key=${this.RiotAppKey}`;
 
@@ -69,7 +70,7 @@ export class SpectateService {
 
       return res.status(200).json({
         status: 'success',
-        message: `밴픽이 정상적으로 종료되어 로딩화면에 접근합니다.`,
+        message: `BanPick Complete.`,
         data: { gameStartTime: { hours, minutes, seconds } },
       });
     } catch (error) {
@@ -91,9 +92,9 @@ export class SpectateService {
       } else {
         await this.notifierService.sendToWebHook(webHookInfo, 'server error');
 
-        return res.status(500).json({
+        return res.status(error.response.status).json({
           status: 'error',
-          message: `서버 오류.<br>(code: ${error.response.status})`,
+          message: `RIOT Server Error. (code: ${error.response.status})`,
         });
       }
     }
@@ -108,11 +109,10 @@ export class SpectateService {
 
     const GetCurrentGameUrl = `${this.RiotBaseUrlKr}/lol/spectator/v4/active-games/by-summoner/${encryptedSummonerId}?api_key=${this.RiotAppKey}`;
 
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    const delay = (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms));
 
     let startTimeList = [];
-
-    let currentStartTimeIndex = 0;
 
     let fetchCount = 0;
 
@@ -157,14 +157,14 @@ export class SpectateService {
         } else {
           await this.notifierService.sendToWebHook(webHookInfo, 'server error');
 
-          return res.status(500).json({
+          return res.status(error.response.status).json({
             status: 'error',
-            message: `서버 오류.<br>(code: ${error.response.status})`,
+            message: `RIOT Server Error. (code: ${error.response.status})`,
           });
         }
       }
 
-      const gameStartTime = currentGameResponse.data.gameStartTime;
+      const { gameStartTime } = currentGameResponse.data;
 
       startTimeList.push(gameStartTime);
 
@@ -200,9 +200,7 @@ export class SpectateService {
 
     await this.notifierService.sendToWebHook(webHookInfo, 'start OK');
 
-    currentStartTimeIndex = startTimeList.length - 1;
-
-    const currentStartTime = startTimeList[currentStartTimeIndex];
+    const currentStartTime = startTimeList[startTimeList.length - 1];
 
     const time = new Date(currentStartTime + parseInt(this.INGAME_DELAY));
 
@@ -219,7 +217,7 @@ export class SpectateService {
 
     return res.status(200).json({
       status: 'success',
-      message: `게임이 정상적으로 시작되었습니다.`,
+      message: `Loading Complete`,
       data: { gameStartTime: { hours, minutes, seconds }, realTimeSeconds },
     });
   }
