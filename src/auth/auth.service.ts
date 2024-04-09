@@ -17,7 +17,7 @@ export class AuthService {
   ) {}
 
   private RiotClientID = this.config.get('RIOT_CLIENT_ID');
-  private RiotClientSecrete = this.config.get('RIOT_CLIENT_SECRETE');
+  private RiotClientSecret = this.config.get('RIOT_CLIENT_SECRET');
   private HostRedirectUri = this.config.get('HOST_REDIRECT_URI');
 
   private RiotBaseUrlToken = this.config.get('RIOT_BASE_URL_TOKEN');
@@ -46,7 +46,7 @@ export class AuthService {
     const tokenConfigs = {
       auth: {
         username: this.RiotClientID,
-        password: this.RiotClientSecrete,
+        password: this.RiotClientSecret,
       },
     };
 
@@ -67,8 +67,6 @@ export class AuthService {
       });
     }
 
-    console.log('accessTokenResponse : ', accessTokenResponse);
-
     const oauthPayload: OauthPayloadDto = accessTokenResponse.data;
 
     const tokenId = oauthPayload.id_token;
@@ -82,7 +80,7 @@ export class AuthService {
 
     const GetAccountUrl = `${this.RiotBaseUrlAsia}/riot/account/v1/accounts/me`;
 
-    const GetSummonertUrl = `${this.RiotBaseUrlAsia}/lol/summoner/v4/summoners/me`;
+    const GetSummonertUrl = `${this.RiotBaseUrlKr}/lol/summoner/v4/summoners/me`;
 
     const authConfig = {
       headers: {
@@ -110,7 +108,7 @@ export class AuthService {
       .get(GetLeagueEntryUrl)
       .toPromise();
 
-    const leagueEntry: LeagueEntryDto = leagueEntryResponse.data;
+    const leagueEntry: LeagueEntryDto = leagueEntryResponse.data[0];
 
     const summonerLeagueInfo: SummonerLeagueInfoDto = {
       encryptedSummonerId: summoner.id,

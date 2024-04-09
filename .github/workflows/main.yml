@@ -66,7 +66,7 @@ jobs:
             -e RIOT_API_APP_KEY=${{ secrets.RIOT_API_APP_KEY }} \
             -e RIOT_BASE_URL_AUTH=${{ secrets.RIOT_BASE_URL_AUTH }} \
             -e RIOT_CLIENT_ID=${{ secrets.RIOT_CLIENT_ID }} \
-            -e RIOT_CLIENT_SECRETE=${{ secrets.RIOT_CLIENT_SECRETE }} \
+            -e RIOT_CLIENT_SECRET=${{ secrets.RIOT_CLIENT_SECRET }} \
             -e HOST_REDIRECT_URI=${{ secrets.HOST_REDIRECT_URI }} \
             -e RIOT_BASE_URL_TOKEN=${{ secrets.RIOT_BASE_URL_TOKEN }} \
             -e LOL_DEFAULT_DELAY=${{ secrets.LOL_DEFAULT_DELAY }} \
