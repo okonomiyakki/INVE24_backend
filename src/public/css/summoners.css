@@ -138,6 +138,30 @@
   background: #4171D6;
 }
 
+#bg {
+  position: absolute;
+  display: none;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+#loading {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  display: none;
+}
+
 @font-face {
   font-family: 'BMDOHYEON';
   src: url('../font/BMDOHYEON_ttf.ttf') format('truetype');
@@ -198,21 +222,11 @@
   .modalBtn {
     font-size: 20px;
   }
-}
 
-#loading {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-  display: none;
+  #loading {
+    top: -200;
+  }
 }
-
 
 .spinner {
   width: 50px;
