@@ -23,17 +23,6 @@ const riotSignOnFetcher = (code) => {
       setLocalStorage('tokenInfo', tokenId);
       setLocalStorage('leagueInfo', summonerLeagueInfo);
 
-      const storedTokenInfo = localStorage.getItem('tokenInfo');
-
-      if (!storedTokenInfo) {
-        alert('잘못된 접근입니다.');
-
-        localStorage.removeItem('tokenInfo');
-        localStorage.removeItem('leagueInfo');
-
-        replaceLocation(`${hostBaseUrl}`);
-      }
-
       replaceLocation(`${hostBaseUrl}/summoners`);
     })
     .catch((error) => {
@@ -53,7 +42,17 @@ const riotSignOnFetcher = (code) => {
 };
 
 const handleSummonerLeagueInfo = () => {
+  const storedTokenInfo = localStorage.getItem('tokenInfo');
   const storedLeagueInfo = localStorage.getItem('leagueInfo');
+
+  if (!storedTokenInfo) {
+    alert('잘못된 접근입니다.');
+
+    localStorage.removeItem('tokenInfo');
+    localStorage.removeItem('leagueInfo');
+
+    replaceLocation(`${hostBaseUrl}`);
+  }
 
   const leagueInfo = JSON.parse(storedLeagueInfo);
 
