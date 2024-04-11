@@ -2,46 +2,130 @@
 
   <head>
     <meta charset='utf-8' />
-    <link rel="icon" href="favicon/icons8-league-of-legends-doodle-16.png" />
     <link href='css/summoners.css' rel='stylesheet' />
-    <link href='css/common.css' rel='stylesheet' />
-    <link href='css/clock.css' rel='stylesheet' />
+    {{!-- <link href='css/common.css' rel='stylesheet' />
+    <link href='css/clock.css' rel='stylesheet' /> --}}
+
+    <link href='css/global.css' rel='stylesheet' />
+    <link href='css/navbar.css' rel='stylesheet' />
+    <link href='css/summoner.css' rel='stylesheet' />
+    <link href='css/carousel.css' rel='stylesheet' />
+    <link href='css/section.css' rel='stylesheet' />
+    <link href='css/footer.css' rel='stylesheet' />
+    <link rel="icon" href="favicon/icons8-league-of-legends-doodle-16.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gaegu&display=swap" rel="stylesheet">
+    <link rel="stylesheet"href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/embla-carousel/embla-carousel.umd.js"></script>
+    <script src="https://unpkg.com/embla-carousel-autoplay/embla-carousel-autoplay.umd.js"></script>
     <title>인베24 | 지금 협곡 시간은?</title>
   </head>
 
   <body>
-    <h1 id="title"></h1>
-    <hr>
 
-    <div id="main-wrap">
-      <div id="start">
-        <div id="summoner-wrap">
-          <div id="summonerName"></div>
-          <div id="summonerTag"></div>
-          <div id="summonerTier"></div>
+    <header>
+    
+      <div id="nav_bar">
+        <div id="nav_bar_logo_container">
+          <img id="nav_bar_logo_img" src="https://img.icons8.com/doodle/96/league-of-legends.png" alt="league-of-legends" />
+          <span id="nav_bar_logo_title">INVE24</span>
         </div>
-        <button id="searchBtn" onclick="showModal()">조회</button>
+        <span id="nav_bar_menu" class="material-symbols-outlined" onclick="handleNavBar()">menu</span>
       </div>
     
-      <button id="resetBtn" onclick="handleRiotLogout()">로그아웃</button>
-    </div>
+    </header>
 
-    <h1 id="version">v2.1.0 <a href={{data.DiscordInvitationCode}}> &nbsp;버그 신고 &gt;</a></h1>
-    <hr>
-    <h1 id="info">- 사 용 법 -</h1>
-    <div id="info-wrap">
+    <main>
 
-      <p>1. <b>플레이 중</b>인 <b>리그오브레전드</b> 계정으로 로그인해 주세요.</p>
-      <p>2. <b>챔피언 픽 완료</b> 후, <b>밴픽창</b>에서 조회 버튼을 눌러주세요.</p>
-      <p>3. <b>챔피언 픽 이전</b>에 조회 시, 이용이 <b>불가능</b>합니다.</p>
-      <p>4. <b>게임 시작 이후</b>에 조회 시, 이용이 <b>불가능</b>합니다.</p>
+      <div>
+        <div id="summoner">
+          <div id="summoner_container">
 
-    </div>
-    <hr>
-    <div id="footer">
-      <p><a href={{data.HostPrivacyUrl}}>개인정보처리방침</a> | <a href={{data.HostAgreementUrl}}>이용약관</a> | © 2024 INVE24, Okonomiyakki</p>
-    </div>
+            <div id="summoner_profile">
+              <div id="summoner_profile_icon">profile_icon</div>
+              <div id="summoner_profile_account">
+                <div id="summoner_profile_account_name"></div>
+                <div id="summoner_profile_account_tag"></div>
+              </div>
+            </div>
+
+            <div id="summoner_league">
+              <div id="summoner_league_icon">league_tier_icon</div>
+              <div id="summoner_league_current">
+                <div id="summoner_league_current_queue_type">개인/2인 랭크</div>
+                <div id="summoner_league_current_tier_rank"></div>
+                <div id="summoner_league_current_league_points"></div>
+                <div id="summoner_league_current_winning_rate"></div>
+              </div>
+              <div id="summoner_spectate_button" onclick="showModal()">start</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div id="usage_carousel">
+          <div id="usage_carousel_container">
+            <div class="usage_carousel_slide">플레이 중인 리그오브레전드 계정으로 로그인해 주세요.</div>
+            <div class="usage_carousel_slide">챔피언 픽 완료 후, 밴픽창에서 조회 버튼을 눌러주세요.</div>
+            <div class="usage_carousel_slide">챔피언 픽 이전에 조회 시, 정상적인 이용이 불가능합니다.</div>
+            <div class="usage_carousel_slide">이미 시작된 게임은 조회가 불가능합니다.</div>
+            <div class="usage_carousel_slide">밴픽 타이머가 4분이 넘으면, 닷지 된 게임입니다.</div>
+            <div class="usage_carousel_slide">개인/2인 랭크 게임의 밴픽 소요 시간은 4분 40초입니다.</div>
+          </div>
+        </div>
+      
+        <div class="usage_carousel_dots"></div>
+      </div>
+
+      <div>
+        <div id="patch_note_info" class="box_common" onclick="handleLeagueOfLegendsPatchNotes()">
+          <span>리그오브레전드 v14.7 패치노트</span>
+          <span id="patch_note_info_arrow_icon" class="material-symbols-outlined">chevron_right</span>
+        </div>
+      </div>
+
+      <div>
+        <div id="dev_links">
+          <div id="update_info" onclick="handleInve24UpdateInfo()">
+            <div class="update_info_button box_common">
+              <span id="update_info_version">v2.1.0</span>
+              <div id="update_info_title">
+                <span>업데이트 내용</span>
+                <span id="bug_report_discord_arrow_icon" class="material-symbols-outlined">chevron_right</span>
+              </div>
+            </div>
+          </div>
+      
+          <div id="bug_report">
+            <div id="bug_report_discord_button" class="bug_report_button box_common" onclick="handleBugReportToDiscord()">
+              <span id="bug_report_discord_icon" class="material-symbols-outlined">report</span>
+              <span>&nbsp;버그신고 Discord</span>
+              <span id="bug_report_discord_arrow_icon" class="material-symbols-outlined">chevron_right</span>
+            </div>
+      
+            <div id="bug_report_github_button" class="bug_report_button box_common" onclick="handleBugReportToGitHub()">
+              <span id="bug_report_github_icon" class="material-symbols-outlined">rocket_launch</span>
+              <span>&nbsp;버그신고 GitHub</span>
+              <span id="bug_report_github_arrow_icon" class="material-symbols-outlined">chevron_right</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <footer>
+    
+      <ul id="policy_links">
+        <li><a href={{data.HostPrivacyUrl}}>개인정보처리방침</a></li>
+        <li><a href={{data.HostAgreementUrl}}>이용약관</a></li>
+      </ul>
+    
+      <p id="legal">© 2024 INVE24 Okonomiyakki</p>
+    
+    </footer>
 
     <div id="modal-wrap">
       <div id="modal">
@@ -69,8 +153,11 @@
     <div id="bg"></div>
 
     <div id="host" data-host-base-url={{data.HostBaseUrl}}></div>
+    <div id="discord" data-discord-base-url={{data.DiscordInvitationCode}}></div>
 
     <script src='js/summoners.js'></script>
+    <script src='js/common.js'></script>
+
   </body>
 
 </html>

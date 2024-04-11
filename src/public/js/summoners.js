@@ -1,11 +1,6 @@
 const hostBaseUrl = document.getElementById('host').dataset.hostBaseUrl;
 
 document.addEventListener('DOMContentLoaded', function () {
-  injectHTML(
-    'title',
-    '챔피언 픽 완료 후,<br>밴픽창에서 조회 버튼을 눌러주세요.',
-  );
-
   const code = new URLSearchParams(window.location.search).get('code');
 
   if (code) riotSignOnFetcher(code);
@@ -58,15 +53,25 @@ const handleSummonerLeagueInfo = () => {
 
   console.log('leagueInfo : ', leagueInfo);
 
-  injectHTML('summonerName', `${leagueInfo.summonerName}`);
+  injectHTML('summoner_profile_account_name', `${leagueInfo.summonerName}`);
 
-  injectHTML('summonerTag', `${leagueInfo.summonerTag}`);
+  injectHTML('summoner_profile_account_tag', `#${leagueInfo.summonerTag}`);
 
   injectHTML(
-    'summonerTier',
+    'summoner_league_current_tier_rank',
     leagueInfo.tier
-      ? `${leagueInfo.tier} &nbsp; ${leagueInfo.rank} &nbsp; ${leagueInfo.leaguePoints}LP`
+      ? `${leagueInfo.tier} ${leagueInfo.rank}`
       : '티어 정보가 없습니다.',
+  );
+
+  injectHTML(
+    'summoner_league_current_league_points',
+    `${leagueInfo.leaguePoints} LP`,
+  );
+
+  injectHTML(
+    'summoner_league_current_winning_rate',
+    `${leagueInfo.wins}승 ${leagueInfo.losses}패 승률 ${parseInt((leagueInfo.wins / (leagueInfo.wins + leagueInfo.losses)) * 100)}%`,
   );
 };
 
@@ -90,7 +95,8 @@ const injectHTML = (elementId, content) => {
 };
 
 const showModal = () => {
-  document.getElementById('modal-wrap').style.display = 'flex';
+  // document.getElementById('modal-wrap').style.display = 'flex';
+  alert('no contents');
 };
 
 const showLoadingSpinner = () => {
