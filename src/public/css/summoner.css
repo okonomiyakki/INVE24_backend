@@ -1,0 +1,171 @@
+#summoner_container {
+  margin: 40px;
+
+  height: 700px;
+
+  font-size: 25px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+
+  border: 4px solid #D13639;
+  border-radius: 40px;
+  background-color: #FFF2DD;
+}
+
+#summoner_profile{
+  width: 95%;
+  height: 300px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+
+  border: 1px solid black;
+  border-radius: 40px;
+}
+
+#summoner_profile_icon {
+  width: 30%;
+  height: 250px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+
+  border: 1px solid black;
+  border-radius: 40px;
+}
+
+#summoner_profile_account {
+  width: 60%;
+  height: 250px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+    
+  border: 1px solid black;
+  border-radius: 40px;
+}
+
+#summoner_profile_account_name {
+  width: 95%;
+  height: 60px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  
+  border: 1px solid black;
+  border-radius: 40px;
+}
+
+#summoner_profile_account_tag {
+  width: 95%;
+  height: 60px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  
+
+  border: 1px solid black;
+  border-radius: 40px;
+}
+
+#summoner_league{
+  width: 95%;
+  height: 300px;
+  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  
+  border: 1px solid black;
+  border-radius: 40px;
+}
+
+#summoner_league_icon {
+  width: 30%;
+  height: 250px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  
+  border: 1px solid black;
+  border-radius: 40px;
+}
+
+#summoner_league_current {
+  width: 40%;
+  height: 250px;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  
+  border: 1px solid black;
+  border-radius: 40px;
+}
+
+#summoner_league_current_queue_type {
+  width: 90%;
+  height: 40px;
+
+  border: 1px solid black;
+  border-radius: 40px;
+}
+
+#summoner_league_current_tier_rank {
+  width: 90%;
+  height: 40px;
+
+  border: 1px solid black;
+  border-radius: 40px;
+}
+
+#summoner_league_current_league_points {
+  width: 90%;
+  height: 40px;
+
+  border: 1px solid black;
+  border-radius: 40px;
+}
+
+#summoner_league_current_winning_rate {
+  width: 90%;
+  height: 40px;
+
+  border: 1px solid black;
+  border-radius: 40px;
+}
+
+#summoner_spectate_button {
+  width: 20%;
+  height: 250px;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  
+  border: 1px solid black;
+  border-radius: 40px;
+
+  background-color: #F28B82;
+
+  cursor: pointer;;
+}
