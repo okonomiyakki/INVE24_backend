@@ -1,0 +1,14 @@
+body {
+  margin: 40px 0;
+  padding: 0;
+
+  font-family: "Do Hyeon", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+
+  font-size: 40px;
+}
+
+header {
+  margin-bottom: 40px;
+}

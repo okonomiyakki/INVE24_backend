@@ -1,0 +1,148 @@
+.box_common {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 40px;
+}
+
+#rso_login_container {
+  margin: 40px;
+
+  height: 500;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  border: 4px solid #D13639;
+  background-color: #FFF2DD;
+}
+
+#rso_login_button {
+  padding: 10px 20px 10px 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 4px solid #D13639;
+  border-radius: 30px;
+  color: #D13639;
+  background-color: white;
+
+  cursor: pointer;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+#rso_login_icon {
+  margin-right: 10px;
+}
+
+#patch_note_info {
+  margin: 40px;
+
+  height: 150px;
+
+  border: 1px solid #E6CCB2;
+  color: #393e42;
+  background-color: #E6CCB2;
+
+  cursor: pointer;
+}
+
+#dev_links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#update_info {
+  margin: 0 20px 20px 40px;
+
+  gap: 20px;
+
+  width: 100%;
+  height: 400px;
+
+  display: flex;
+  justify-content: space-around;
+
+  cursor: pointer;
+}
+
+.update_info_button {
+  width: 100%;
+  height: 400px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+
+  border: 1px solid #c2d8fc;
+  color: #393e42;
+  background-color: #c2d8fc;
+}
+
+#update_info_version {
+  font-size: 70px;
+}
+
+#update_info_title {
+  padding-left: 35px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#bug_report_discord_arrow_icon {
+  font-size: 50px;
+}
+
+#bug_report_github_arrow_icon {
+  font-size: 50px;
+}
+
+#bug_report {
+  margin: 0 40px 20px 20px;
+
+  gap: 20px;
+
+  width: 100%;
+  height: 400px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#bug_report_discord_button {
+  background-color: #7B85F8;
+  border: 1px solid #7B85F8;
+}
+
+#bug_report_github_button {
+  background-color: #4d545a;
+  border: 1px solid #4d545a;
+}
+
+.bug_report_button {
+  width: 100%;
+  height: 400px;
+
+  color: white;
+
+  cursor: pointer;
+}
+
+#bug_report_discord_icon {
+  font-size: 60px;
+}
+
+#bug_report_github_icon {
+  font-size: 50px;
+}

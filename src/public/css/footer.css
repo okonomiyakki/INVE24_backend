@@ -1,0 +1,21 @@
+#policy_links {
+  padding: 0;
+
+  font-size: 20px;
+
+  list-style-type: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 5px;
+}
+
+#legal {
+  font-size: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

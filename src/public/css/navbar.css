@@ -1,0 +1,28 @@
+#nav_bar_logo_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#nav_bar_logo_img {
+  width: 90px;
+  height: 90px;
+}
+
+#nav_bar_logo_title {
+  color: #16B7B8;
+}
+
+#nav_bar {
+  margin: 0 40px;
+
+  font-size: 80px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#nav_bar_menu {
+  font-size: 80px;
+}
