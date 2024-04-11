@@ -52,6 +52,10 @@
   cursor: pointer;
 }
 
+#patch_note_info_arrow_icon {
+  font-size: 50px;
+}
+
 #dev_links {
   display: flex;
   align-items: center;
