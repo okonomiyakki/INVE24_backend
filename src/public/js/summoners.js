@@ -82,7 +82,7 @@ const indicateLeagueInfo = (leagueInfo) => {
     summonerName: `${leagueInfo.summonerName}`,
     summonerTag: `#${leagueInfo.summonerTag}`,
     leagueIconImgSrc: leagueInfo.tier
-      ? `${hostBaseUrl}/img/Rank=${leagueInfo.tier}.png`
+      ? `/img/Rank=${leagueInfo.tier}.png`
       : 'https://img.icons8.com/doodle/96/league-of-legends.png',
     tierRank: leagueInfo.tier ? `${leagueInfo.tier} ${rankNum}` : '랭크 없음',
     lp: leagueInfo.leaguePoints ? `${leagueInfo.leaguePoints} LP` : '- LP',
