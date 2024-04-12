@@ -3,8 +3,6 @@
   <head>
     <meta charset='utf-8' />
     <link href='css/summoners.css' rel='stylesheet' />
-    {{!-- <link href='css/common.css' rel='stylesheet' />
-    <link href='css/clock.css' rel='stylesheet' /> --}}
 
     <link href='css/global.css' rel='stylesheet' />
     <link href='css/navbar.css' rel='stylesheet' />
@@ -13,8 +11,8 @@
     <link href='css/section.css' rel='stylesheet' />
     <link href='css/footer.css' rel='stylesheet' />
     <link rel="icon" href="favicon/icons8-league-of-legends-doodle-16.png" />
-    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gaegu&display=swap" rel="stylesheet">
-    <link rel="stylesheet"href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/embla-carousel/embla-carousel.umd.js"></script>
     <script src="https://unpkg.com/embla-carousel-autoplay/embla-carousel-autoplay.umd.js"></script>
@@ -42,7 +40,10 @@
           <div id="summoner_container">
 
             <div id="summoner_profile">
-              <div id="summoner_profile_icon">profile_icon</div>
+              <div id="summoner_profile_icon_container">
+                <img id="summoner_profile_icon"/>
+                <span id="summoner_profile_level"></span>
+              </div>
               <div id="summoner_profile_account">
                 <div id="summoner_profile_account_name"></div>
                 <div id="summoner_profile_account_tag"></div>
@@ -50,14 +51,22 @@
             </div>
 
             <div id="summoner_league">
-              <div id="summoner_league_icon">league_tier_icon</div>
+              <img id="summoner_league_icon"/> 
               <div id="summoner_league_current">
-                <div id="summoner_league_current_queue_type">개인/2인 랭크</div>
-                <div id="summoner_league_current_tier_rank"></div>
-                <div id="summoner_league_current_league_points"></div>
-                <div id="summoner_league_current_winning_rate"></div>
+                <div id="summoner_league_tier_info">
+                  <div id="summoner_league_current_tier_rank"></div>
+                  <div id="summoner_league_current_league_points"></div>
+                </div>
+                <div id="summoner_league_score_info">
+                  <div id="summoner_league_current_score"></div>
+                  <div id="summoner_league_current_winning_rate"></div>
+                </div>
               </div>
-              <div id="summoner_spectate_button" onclick="showModal()">start</div>
+            </div>
+
+            <div id="summoner_fetch">
+              <div id="summoner_renewal_button" onclick="handleSummonerLeagueInfoRenewal()">전적 갱신</div>
+              <div id="summoner_spectate_button" onclick="showModal()">게임 조회</div>
             </div>
 
           </div>
@@ -72,7 +81,7 @@
             <div class="usage_carousel_slide">챔피언 픽 이전에 조회 시, 정상적인 이용이 불가능합니다.</div>
             <div class="usage_carousel_slide">이미 시작된 게임은 조회가 불가능합니다.</div>
             <div class="usage_carousel_slide">밴픽 타이머가 4분이 넘으면, 닷지 된 게임입니다.</div>
-            <div class="usage_carousel_slide">개인/2인 랭크 게임의 밴픽 소요 시간은 4분 40초입니다.</div>
+            <div class="usage_carousel_slide">랭크 게임의 밴픽 소요 시간은 4분 40초입니다.</div>
           </div>
         </div>
       
