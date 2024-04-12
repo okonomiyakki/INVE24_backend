@@ -77,12 +77,12 @@ const indicateLeagueInfo = (leagueInfo) => {
   const rankNum = replaceRankInitials(leagueInfo.rank);
 
   return {
-    profileIconImgSrc: `http://ddragon.leagueoflegends.com/cdn/9.16.1/img/profileicon/${leagueInfo.profileIconId}.png`,
+    profileIconImgSrc: `https://ddragon.leagueoflegends.com/cdn/9.16.1/img/profileicon/${leagueInfo.profileIconId}.png`,
     summonerLevel: `${leagueInfo.summonerLevel}`,
     summonerName: `${leagueInfo.summonerName}`,
     summonerTag: `#${leagueInfo.summonerTag}`,
     leagueIconImgSrc: leagueInfo.tier
-      ? `img/Rank=${leagueInfo.tier}.png`
+      ? `${hostBaseUrl}/img/Rank=${leagueInfo.tier}.png`
       : 'https://img.icons8.com/doodle/96/league-of-legends.png',
     tierRank: leagueInfo.tier ? `${leagueInfo.tier} ${rankNum}` : '랭크 없음',
     lp: leagueInfo.leaguePoints ? `${leagueInfo.leaguePoints} LP` : '- LP',
