@@ -53,26 +53,73 @@ const handleSummonerLeagueInfo = () => {
 
   console.log('leagueInfo : ', leagueInfo);
 
-  injectHTML('summoner_profile_account_name', `${leagueInfo.summonerName}`);
+  const newLeagueInfo = indicateLeagueInfo(leagueInfo);
 
-  injectHTML('summoner_profile_account_tag', `#${leagueInfo.summonerTag}`);
+  injectLeagueInfo(newLeagueInfo);
+};
 
-  injectHTML(
-    'summoner_league_current_tier_rank',
-    leagueInfo.tier
-      ? `${leagueInfo.tier} ${leagueInfo.rank}`
-      : '티어 정보가 없습니다.',
-  );
+const replaceRankInitials = (rank) => {
+  switch (rank) {
+    case 'I':
+      return 1;
+    case 'II':
+      return 2;
+    case 'III':
+      return 3;
+    case 'IV':
+      return 4;
+    default:
+      return '?';
+  }
+};
 
-  injectHTML(
-    'summoner_league_current_league_points',
-    `${leagueInfo.leaguePoints} LP`,
-  );
+const indicateLeagueInfo = (leagueInfo) => {
+  const rankNum = replaceRankInitials(leagueInfo.rank);
 
-  injectHTML(
-    'summoner_league_current_winning_rate',
-    `${leagueInfo.wins}승 ${leagueInfo.losses}패 승률 ${parseInt((leagueInfo.wins / (leagueInfo.wins + leagueInfo.losses)) * 100)}%`,
-  );
+  return {
+    profileIconImgSrc: `http://ddragon.leagueoflegends.com/cdn/9.16.1/img/profileicon/${leagueInfo.profileIconId}.png`,
+    summonerLevel: `${leagueInfo.summonerLevel}`,
+    summonerName: `${leagueInfo.summonerName}`,
+    summonerTag: `#${leagueInfo.summonerTag}`,
+    leagueIconImgSrc: leagueInfo.tier
+      ? `img/Rank=${leagueInfo.tier}.png`
+      : 'https://img.icons8.com/doodle/96/league-of-legends.png',
+    tierRank: leagueInfo.tier ? `${leagueInfo.tier} ${rankNum}` : '랭크 없음',
+    lp: leagueInfo.leaguePoints ? `${leagueInfo.leaguePoints} LP` : '- LP',
+    wins: leagueInfo.wins ? leagueInfo.wins : '-',
+    losses: leagueInfo.losses ? leagueInfo.losses : '-',
+
+    score: leagueInfo.wins
+      ? `${leagueInfo.wins + leagueInfo.losses}전 ${leagueInfo.wins}승 ${leagueInfo.losses}패`
+      : `전적 없음`,
+    rate: leagueInfo.wins
+      ? `승률 ${parseInt((leagueInfo.wins / (leagueInfo.wins + leagueInfo.losses)) * 100)}%`
+      : `승률 없음`,
+  };
+};
+
+const injectLeagueInfo = (newLeagueInfo) => {
+  injectImgSrc('summoner_profile_icon', newLeagueInfo.profileIconImgSrc);
+
+  injectHTML('summoner_profile_level', newLeagueInfo.summonerLevel);
+
+  injectHTML('summoner_profile_account_name', newLeagueInfo.summonerName);
+
+  injectHTML('summoner_profile_account_tag', newLeagueInfo.summonerTag);
+
+  injectImgSrc('summoner_league_icon', newLeagueInfo.leagueIconImgSrc);
+
+  injectHTML('summoner_league_current_tier_rank', newLeagueInfo.tierRank);
+
+  injectHTML('summoner_league_current_league_points', newLeagueInfo.lp);
+
+  injectHTML('summoner_league_current_score', newLeagueInfo.score);
+
+  injectHTML('summoner_league_current_winning_rate', newLeagueInfo.rate);
+};
+
+const handleSummonerLeagueInfoRenewal = () => {
+  alert('준비중');
 };
 
 const handleYesBtnClick = () => {
@@ -94,9 +141,13 @@ const injectHTML = (elementId, content) => {
   document.getElementById(elementId).innerHTML = content;
 };
 
+const injectImgSrc = (elementId, src) => {
+  document.getElementById(elementId).src = src;
+};
+
 const showModal = () => {
   // document.getElementById('modal-wrap').style.display = 'flex';
-  alert('no contents');
+  alert('준비중');
 };
 
 const showLoadingSpinner = () => {
