@@ -8,6 +8,7 @@
     <link href='css/summoner.css' rel='stylesheet' />
     <link href='css/section.css' rel='stylesheet' />
     <link href='css/footer.css' rel='stylesheet' />
+    <link href='css/modal.css' rel='stylesheet' />
     <link href='css/loader.css' rel='stylesheet' />
     <link rel="icon" href="favicon/icons8-league-of-legends-doodle-16.png" />
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
@@ -77,7 +78,7 @@
 
             <div id="summoner_fetch" class="border_white">
               <div id="summoner_renewal_button" class="summoner_fetch_button" onclick="fetchLeagueInfoRenewalAPI()">전적 갱신</div>
-              <div id="summoner_spectate_button" class="summoner_fetch_button" onclick="handleModal()">게임 조회</div>
+              <div id="summoner_spectate_button" class="summoner_fetch_button" onclick="handleDisplayModal()">게임 조회</div>
             </div>
 
           </div>
@@ -147,9 +148,29 @@
 
     </footer>
 
-    <div id="loading_spinner_container">
-      <div id="loading_spinner_background"></div>
-      <div id="loading_spinner"></div>
+    <div>
+      <div id="modal">
+        <div id="modal_container">
+          <span id="modal_title">챔피언 픽을 하셨나요?
+            <div id="modal_cancel_button" onclick="handleHideModal()">
+              <span id="modal_cancel_button_icon" class="material-symbols-outlined">close</span>
+            </div>
+          </span>
+          <span id="modal_sub">현재 밴픽중임을 간주하고 조회를 시작합니다.</span>
+          <span id="modal_notice">※ 무분별한 조회 시, 서비스 이용이 불가능합니다. ※</span>
+          <div id="modal_control">
+            <div id="modal_accept_button" onclick="handleRedirectForSpectate()">OK</div>
+          </div>
+        </div>
+        <div id="modal_background"></div>
+      </div>
+    </div>
+
+    <div>
+      <div id="loading_spinner">
+        <div id="loading_spinner_background"></div>
+        <div id="loading_spinner_gen"></div>
+      </div>
     </div>
 
     <div id="host" data-host-base-url={{data.HostBaseUrl}}></div>

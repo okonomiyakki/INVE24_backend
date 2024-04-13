@@ -17,8 +17,6 @@ const handleSummonerLeagueInfo = () => {
 
   const leagueInfo = JSON.parse(storedLeagueInfo);
 
-  // console.log('leagueInfo : ', leagueInfo);
-
   const newLeagueInfo = indicateLeagueInfo(leagueInfo);
 
   injectLeagueInfo(newLeagueInfo);
@@ -29,11 +27,6 @@ const handleNavBar = () => {
 };
 
 const handleInve24UpdateInfo = () => {
-  alert('Access Denied');
-};
-
-const handleModal = () => {
-  // document.getElementById('modal-wrap').style.display = 'flex';
   alert('Access Denied');
 };
 
@@ -54,6 +47,29 @@ const handleBugReportToGitHub = () => {
   const github = 'https://github.com/okonomiyakki/lol-real-time-watcher/issues';
 
   replaceLocation(github);
+};
+
+const handleDisplayModal = () => {
+  displayComponent('modal');
+  displayComponent('modal_background');
+};
+
+const handleHideModal = () => {
+  hideComponent('modal');
+  hideComponent('modal_background');
+};
+
+const handleRedirectForSpectate = () => {
+  alert('Access Denied');
+  // replaceLocation(`${hostBaseUrl}/summoners/spectate/live`);
+};
+
+const handleDisplayLoadingSpinner = () => {
+  displayComponent('loading_spinner');
+};
+
+const handleHideLoadingSpinner = () => {
+  hideComponent('loading_spinner');
 };
 
 const handleCarousel = (element) => {
@@ -88,25 +104,9 @@ const handleCarousel = (element) => {
   dotContainer.children[0].classList.add('usage_carousel_dot--selected');
 };
 
-const displayLoadingSpinner = () => {
-  document.getElementById('loading_spinner_container').style.display = 'flex';
-};
-
-const hideLoadingSpinner = () => {
-  document.getElementById('loading_spinner_container').style.display = 'none';
-};
-
 // const handleRiotLogout = () => {
 //   localStorage.removeItem('tokenInfo');
 //   localStorage.removeItem('leagueInfo');
 
 //   replaceLocation(`${hostBaseUrl}`);
-// };
-
-// const handleYesBtnClick = () => {
-//   replaceLocation(`${hostBaseUrl}/summoners/spectate/live`);
-// };
-
-// const handleNoBtnClick = () => {
-//   document.getElementById('modal-wrap').style.display = 'none';
 // };
