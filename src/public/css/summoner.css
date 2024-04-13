@@ -1,3 +1,37 @@
+#rso_login_container {
+  margin: 40px;
+  height: 400px;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+
+  color: white;
+
+  background-color: #515163;
+}
+
+#rso_login_button {
+  padding: 10px 20px 10px 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+  border: 4px solid white;
+  border-radius: 30px;
+  background-color: #515163;
+
+  cursor: pointer;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+#rso_login_icon {
+  margin-right: 10px;
+}
+
 #summoner_container {
   margin: 40px;
   height: 900px;
