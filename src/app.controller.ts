@@ -25,7 +25,7 @@ export class AppController {
   }
 
   @Get('/summoners')
-  @Render('summoners')
+  @Render('main')
   summoners() {
     return {
       data: {
