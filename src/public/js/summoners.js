@@ -58,33 +58,18 @@ const handleSummonerLeagueInfo = () => {
   injectLeagueInfo(newLeagueInfo);
 };
 
-const replaceRankInitials = (rank) => {
-  switch (rank) {
-    case 'I':
-      return 1;
-    case 'II':
-      return 2;
-    case 'III':
-      return 3;
-    case 'IV':
-      return 4;
-    default:
-      return '?';
-  }
-};
-
 const indicateLeagueInfo = (leagueInfo) => {
-  const rankNum = replaceRankInitials(leagueInfo.rank);
-
   return {
     profileIconImgSrc: `https://ddragon.leagueoflegends.com/cdn/9.16.1/img/profileicon/${leagueInfo.profileIconId}.png`,
     summonerLevel: `${leagueInfo.summonerLevel}`,
     summonerName: `${leagueInfo.summonerName}`,
     summonerTag: `#${leagueInfo.summonerTag}`,
     leagueIconImgSrc: leagueInfo.tier
-      ? `Img/Rank=${leagueInfo.tier}.png`
+      ? `/img/Rank=${replaceTierName(leagueInfo.tier)}.png`
       : 'https://img.icons8.com/doodle/96/league-of-legends.png',
-    tierRank: leagueInfo.tier ? `${leagueInfo.tier} ${rankNum}` : '랭크 없음',
+    tierRank: leagueInfo.tier
+      ? `${replaceTierName(leagueInfo.tier)} ${replaceRankInitials(leagueInfo.rank)}`
+      : '랭크 없음',
     lp: leagueInfo.leaguePoints ? `${leagueInfo.leaguePoints} LP` : '- LP',
     wins: leagueInfo.wins ? leagueInfo.wins : '-',
     losses: leagueInfo.losses ? leagueInfo.losses : '-',
@@ -116,6 +101,25 @@ const injectLeagueInfo = (newLeagueInfo) => {
   injectHTML('summoner_league_current_score', newLeagueInfo.score);
 
   injectHTML('summoner_league_current_winning_rate', newLeagueInfo.rate);
+};
+
+const replaceTierName = (tier) => {
+  return tier.charAt(0) + tier.slice(1).toLowerCase();
+};
+
+const replaceRankInitials = (rank) => {
+  switch (rank) {
+    case 'I':
+      return 1;
+    case 'II':
+      return 2;
+    case 'III':
+      return 3;
+    case 'IV':
+      return 4;
+    default:
+      return '?';
+  }
 };
 
 const handleSummonerLeagueInfoRenewal = () => {
