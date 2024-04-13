@@ -15,6 +15,33 @@ const replaceTierName = (tier) => {
   return tier.charAt(0) + tier.slice(1).toLowerCase();
 };
 
+const replaceTierImgSrc = (tier) => {
+  switch (tier) {
+    case 'IRON':
+      return 'ae88c3c3-798f-4cfb-8ae6-9942288a3aa8';
+    case 'BRONZE':
+      return 'c514be0b-7a69-46ba-93ac-0ab1f3f27a87';
+    case 'SILVER':
+      return '86773901-c027-4270-8e7d-b4e284e4b52d';
+    case 'GOLD':
+      return '2992b070-fdb0-489c-81cd-fc833336085b';
+    case 'PLATINUM':
+      return 'f6481639-922b-4208-99f1-d0aae56bf274';
+    case 'EMERALD':
+      return 'a2af7a63-db02-4f4a-a72f-4fc242a19159';
+    case 'DIAMOND':
+      return 'eafa5a9a-0c15-4f62-9ea3-d7b5f1d3de01';
+    case 'MASTER':
+      return 'bafe6caf-bb48-4128-9bea-ac7406a124af';
+    case 'GRANDMASTER':
+      return 'fea35c67-386a-4670-b643-83236898afb8';
+    case 'CHALLENGER':
+      return 'd5a69cba-b3fd-434b-88f6-1ad43908473d';
+    default:
+      return '?';
+  }
+};
+
 const replaceRankInitials = (rank) => {
   switch (rank) {
     case 'I':
@@ -37,7 +64,7 @@ const indicateLeagueInfo = (leagueInfo) => {
     summonerName: `${leagueInfo.summonerName}`,
     summonerTag: `#${leagueInfo.summonerTag}`,
     leagueIconImgSrc: leagueInfo.tier
-      ? `/img/Rank=${replaceTierName(leagueInfo.tier)}.png`
+      ? `https://github.com/okonomiyakki/lol-real-time-watcher/assets/83577128/${replaceTierImgSrc(leagueInfo.tier)}` //`/img/Rank=${replaceTierName(leagueInfo.tier)}.png`
       : 'https://img.icons8.com/doodle/96/league-of-legends.png',
     tierRank: leagueInfo.tier
       ? `${replaceTierName(leagueInfo.tier)} ${replaceRankInitials(leagueInfo.rank)}`
