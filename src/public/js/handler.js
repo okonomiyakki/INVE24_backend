@@ -17,8 +17,6 @@ const handleSummonerLeagueInfo = () => {
 
   const leagueInfo = JSON.parse(storedLeagueInfo);
 
-  // console.log('leagueInfo : ', leagueInfo);
-
   const newLeagueInfo = indicateLeagueInfo(leagueInfo);
 
   injectLeagueInfo(newLeagueInfo);
@@ -29,11 +27,6 @@ const handleNavBar = () => {
 };
 
 const handleInve24UpdateInfo = () => {
-  alert('Access Denied');
-};
-
-const handleModal = () => {
-  // document.getElementById('modal-wrap').style.display = 'flex';
   alert('Access Denied');
 };
 
@@ -54,6 +47,29 @@ const handleBugReportToGitHub = () => {
   const github = 'https://github.com/okonomiyakki/lol-real-time-watcher/issues';
 
   replaceLocation(github);
+};
+
+const handleDisplayModal = () => {
+  displayComponent('modal');
+  displayComponent('modal_background');
+};
+
+const handleHideModal = () => {
+  hideComponent('modal');
+  hideComponent('modal_background');
+};
+
+const handleRedirectForSpectate = () => {
+  alert('Access Denied');
+  // replaceLocation(`${hostBaseUrl}/summoners/spectate/live`);
+};
+
+const handleDisplayLoadingSpinner = () => {
+  displayComponent('loading_spinner');
+};
+
+const handleHideLoadingSpinner = () => {
+  hideComponent('loading_spinner');
 };
 
 const handleCarousel = (element) => {
@@ -93,22 +109,4 @@ const handleCarousel = (element) => {
 //   localStorage.removeItem('leagueInfo');
 
 //   replaceLocation(`${hostBaseUrl}`);
-// };
-
-// const showLoadingSpinner = () => {
-//   document.getElementById('bg').style.display = 'flex';
-//   document.getElementById('loading').style.display = 'flex';
-// };
-
-// const hideLoadingSpinner = () => {
-//   document.getElementById('bg').style.display = 'none';
-//   document.getElementById('loading').style.display = 'none';
-// };
-
-// const handleYesBtnClick = () => {
-//   replaceLocation(`${hostBaseUrl}/summoners/spectate/live`);
-// };
-
-// const handleNoBtnClick = () => {
-//   document.getElementById('modal-wrap').style.display = 'none';
 // };

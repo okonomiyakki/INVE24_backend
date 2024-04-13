@@ -25,4 +25,6 @@
 
 #nav_bar_menu {
   font-size: 80px;
+
+  cursor: pointer;
 }
