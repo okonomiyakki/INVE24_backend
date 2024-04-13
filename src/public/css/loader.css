@@ -1,4 +1,4 @@
-#loading_spinner_container {
+#loading_spinner {
   display: none;
   align-items: center;
   justify-content: center;
@@ -15,7 +15,7 @@
   ;
 }
 
-#loading_spinner {
+#loading_spinner_gen {
   width: 200px;
   height: 200px;
 
@@ -25,8 +25,8 @@
   border-radius: 100%;
 }
 
-#loading_spinner:before,
-#loading_spinner:after {
+#loading_spinner_gen:before,
+#loading_spinner_gen:after {
   content: "";
   position: absolute;
   top: -10px;
@@ -38,12 +38,12 @@
   border-top-color: #3498db;
 }
 
-#loading_spinner:before {
+#loading_spinner_gen:before {
   z-index: 100;
   animation: spin 1s infinite;
 }
 
-#loading_spinner:after {
+#loading_spinner_gen:after {
   border: 20px solid #ccc;
 }
 
