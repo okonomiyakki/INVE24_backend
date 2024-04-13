@@ -9,7 +9,7 @@ const fetchRiotOAuthDataAPI = () => {
 };
 
 const fetchRiotSignOnAPI = (code) => {
-  // showLoadingSpinner();
+  displayLoadingSpinner();
 
   axios
     .get(`${hostBaseUrl}/api/v1.0/oauth/login?code=${code}`)
@@ -33,7 +33,7 @@ const fetchRiotSignOnAPI = (code) => {
       replaceLocation(`${hostBaseUrl}`);
     })
     .finally(() => {
-      // hideLoadingSpinner();
+      hideLoadingSpinner();
     });
 };
 

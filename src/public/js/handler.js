@@ -88,21 +88,19 @@ const handleCarousel = (element) => {
   dotContainer.children[0].classList.add('usage_carousel_dot--selected');
 };
 
+const displayLoadingSpinner = () => {
+  document.getElementById('loading_spinner_container').style.display = 'flex';
+};
+
+const hideLoadingSpinner = () => {
+  document.getElementById('loading_spinner_container').style.display = 'none';
+};
+
 // const handleRiotLogout = () => {
 //   localStorage.removeItem('tokenInfo');
 //   localStorage.removeItem('leagueInfo');
 
 //   replaceLocation(`${hostBaseUrl}`);
-// };
-
-// const showLoadingSpinner = () => {
-//   document.getElementById('bg').style.display = 'flex';
-//   document.getElementById('loading').style.display = 'flex';
-// };
-
-// const hideLoadingSpinner = () => {
-//   document.getElementById('bg').style.display = 'none';
-//   document.getElementById('loading').style.display = 'none';
 // };
 
 // const handleYesBtnClick = () => {
