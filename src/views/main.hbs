@@ -6,6 +6,7 @@
     <link href='css/navbar.css' rel='stylesheet' />
     <link href='css/carousel.css' rel='stylesheet' />
     <link href='css/summoner.css' rel='stylesheet' />
+    <link href='css/spectate.css' rel='stylesheet' />
     <link href='css/section.css' rel='stylesheet' />
     <link href='css/footer.css' rel='stylesheet' />
     <link href='css/modal.css' rel='stylesheet' />
@@ -80,6 +81,20 @@
             <div id="summoner_fetch" class="border_white">
               <div id="summoner_renewal_button" class="summoner_fetch_button" onclick="fetchLeagueInfoRenewalAPI()">전적 갱신</div>
               <div id="summoner_spectate_button" class="summoner_fetch_button" onclick="handleDisplayModal()">게임 조회</div>
+            </div>
+
+            <div id="crrent_game" class="border_white">
+              <span id="current_game_info"></span>
+              <div id="current_game_status">
+                <div id="current_game_status_bar"></div>
+              </div>
+              <div id="current_game_timer">
+                <div id="current_game_timer_clock"></div>
+              </div>
+            </div>
+
+            <div id="spectate_cancel" class="border_white">
+              <div id="spectate_cancel_button" class="summoner_fetch_button" onclick="">그만하기</div>
             </div>
 
           </div>
