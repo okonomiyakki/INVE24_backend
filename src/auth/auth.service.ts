@@ -111,7 +111,7 @@ export class AuthService {
     const leagueEntry: LeagueEntryDto = leagueEntryResponse.data[0];
 
     const summonerLeagueInfo: SummonerLeagueInfoDto = {
-      encryptedSummonerId: summoner.id,
+      encryptedPUUID: summoner.puuid,
 
       summonerName: account.gameName,
 

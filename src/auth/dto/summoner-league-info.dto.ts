@@ -1,5 +1,5 @@
 export class SummonerLeagueInfoDto {
-  encryptedSummonerId: string;
+  encryptedPUUID: string;
 
   summonerName: string;
 
