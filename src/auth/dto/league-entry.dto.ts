@@ -24,14 +24,4 @@ export class LeagueEntryDto {
   freshBlood: boolean;
 
   inactive: boolean;
-
-  miniSeries: {
-    losses: number;
-
-    progress: string;
-
-    target: number;
-
-    wins: number;
-  };
 }
