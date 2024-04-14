@@ -8,5 +8,5 @@ export class SpectateSummonerDto {
   summonerTag: string;
 
   @IsNotEmpty()
-  encryptedSummonerId: string;
+  encryptedPUUID: string;
 }
