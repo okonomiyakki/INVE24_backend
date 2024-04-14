@@ -64,11 +64,11 @@ const handleRedirectForSpectate = () => {
 };
 
 const handleDisplayLoadingSpinner = () => {
-  displayComponent('loading_spinner');
+  displayComponent('spinner');
 };
 
 const handleHideLoadingSpinner = () => {
-  hideComponent('loading_spinner');
+  hideComponent('spinner');
 };
 
 const handleCarousel = (element) => {

@@ -1,4 +1,4 @@
-#loading_spinner {
+#spinner {
   display: none;
   align-items: center;
   justify-content: center;
@@ -6,7 +6,7 @@
   touch-action: none;
 }
 
-#loading_spinner_background {
+#spinner_background {
   width: 100%;
   height: 100%;
 
@@ -16,7 +16,7 @@
   background-color: rgba(0, 0, 0, 0.7);
 }
 
-#loading_spinner_gen {
+#spinner_loading {
   width: 200px;
   height: 200px;
 
@@ -26,8 +26,8 @@
   border-radius: 100%;
 }
 
-#loading_spinner_gen:before,
-#loading_spinner_gen:after {
+#spinner_loading:before,
+#spinner_loading:after {
   content: "";
   position: absolute;
   top: -10px;
@@ -39,12 +39,12 @@
   border-top-color: #3498db;
 }
 
-#loading_spinner_gen:before {
+#spinner_loading:before {
   z-index: 100;
   animation: spin 1s infinite;
 }
 
-#loading_spinner_gen:after {
+#spinner_loading:after {
   border: 20px solid #ccc;
 }
 
