@@ -60,8 +60,7 @@ const handleHideModal = () => {
 };
 
 const handleRedirectForSpectate = () => {
-  alert('Access Denied');
-  // replaceLocation(`${hostBaseUrl}/summoners/spectate/live`);
+  replaceLocation(`${hostBaseUrl}/summoners/spectate/live`);
 };
 
 const handleDisplayLoadingSpinner = () => {
