@@ -2,6 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  cursor: pointer;
 }
 
 #nav_bar_logo_img {

@@ -21,7 +21,7 @@
   height: 500px;
 
   position: fixed;
-  top: 300px;
+  top: 700px;
   z-index: 100;
 
   display: flex;
@@ -69,6 +69,8 @@
   color: white;
   background-color: #5383E8;
   border-radius: 20px;
+
+  cursor: pointer;
 }
 
 #modal_cancel_button {
