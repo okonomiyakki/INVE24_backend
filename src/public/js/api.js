@@ -53,36 +53,32 @@ const fetchCurrentGameStatusAPI = (leagueInfo, retryCnt, MAX_RETRIES) => {
 
       fetchCurrentGameAPI(leagueInfo);
 
-      injectHTML('current_game_info', '밴픽이 종료되어 로딩이 진행 중입니다.');
+      handleFetchConditions('밴픽이 종료되어 로딩이 진행 중입니다.');
 
-      handleLoadingStop('current_game_status_bar');
+      handleLoadingStop();
 
-      handleLoadingstart('current_game_status_bar', 'yellowgreen');
+      handleLoadingstart('yellowgreen');
     })
     .catch((error) => {
       if (error.response.status === 404 && retryCnt < MAX_RETRIES) {
-        injectHTML('current_game_info', '현재 밴픽이 진행 중입니다.');
+        handleFetchConditions('밴픽 종료 여부를 조회중입니다. (최대 5분 소요)');
 
-        if (retryCnt === 0)
-          handleLoadingstart('current_game_status_bar', 'yellow');
+        if (retryCnt === 0) handleLoadingstart('yellow');
 
         handleFetchResume(retryCnt, leagueInfo, MAX_RETRIES);
       } else if (error.response.status === 404 && retryCnt >= MAX_RETRIES) {
-        clearInterval(intervalFetch);
-
-        alert('현재 게임이 닷지되어 이전 화면으로 돌아갑니다.');
-
-        hideComponent('crrent_game');
-        hideComponent('spectate_cancel');
+        handleCurrentGameFetchError(
+          intervalFetch,
+          '게임이 닷지되었습니다. 이전 화면으로 돌아갑니다.',
+        );
 
         handleRedirectPrev();
       } else {
-        clearInterval(intervalFetch);
-
-        alert(`${error.response.status} ${error.response.data.message}`);
-
-        hideComponent('crrent_game');
-        hideComponent('spectate_cancel');
+        handleCurrentGameFetchError(
+          intervalFetch,
+          `RIOT 서버에 접근할 수 없습니다. 서비스 관리자에게 문의해주세요. 
+          ${error.response.status} ${error.response.data.message}`,
+        );
 
         handleRedirectPrev();
       }
@@ -99,23 +95,20 @@ const fetchCurrentGameAPI = (leagueInfo) => {
     .then((res) => {
       const { gameStartTime, realTimeSeconds } = res.data.data;
 
-      handleLoadingStop('current_game_status_bar');
+      handleLoadingStop();
 
-      injectHTML('current_game_info', '게임이 시작되었습니다.');
+      handleFetchConditions('게임이 시작되었습니다.');
 
-      hideComponent('current_game_status');
+      handleComponentGameStartAfter();
 
-      displayComponent('current_game_timer');
-
-      generateTimer(realTimeSeconds + 1, 'current_game_timer_clock', true);
+      handleTimerStart(realTimeSeconds + 1);
     })
     .catch((error) => {
-      clearInterval(intervalTimer);
-
-      alert(`${error.response.status} ${error.response.data.message}`);
-
-      hideComponent('crrent_game');
-      hideComponent('spectate_cancel');
+      handleCurrentGameFetchError(
+        intervalTimer,
+        `RIOT 서버에 접근할 수 없습니다. 서비스 관리자에게 문의해주세요. 
+          ${error.response.status} ${error.response.data.message}`,
+      );
 
       handleRedirectPrev();
     });

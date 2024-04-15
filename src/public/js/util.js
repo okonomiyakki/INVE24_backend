@@ -15,6 +15,21 @@ const replaceTierName = (tier) => {
   return tier.charAt(0) + tier.slice(1).toLowerCase();
 };
 
+const replaceRankInitials = (rank) => {
+  switch (rank) {
+    case 'I':
+      return 1;
+    case 'II':
+      return 2;
+    case 'III':
+      return 3;
+    case 'IV':
+      return 4;
+    default:
+      return '?';
+  }
+};
+
 const replaceTierImgSrc = (tier) => {
   switch (tier) {
     case 'IRON':
@@ -42,21 +57,6 @@ const replaceTierImgSrc = (tier) => {
   }
 };
 
-const replaceRankInitials = (rank) => {
-  switch (rank) {
-    case 'I':
-      return 1;
-    case 'II':
-      return 2;
-    case 'III':
-      return 3;
-    case 'IV':
-      return 4;
-    default:
-      return '?';
-  }
-};
-
 const indicateLeagueInfo = (leagueInfo) => {
   return {
     profileIconImgSrc: `https://ddragon.leagueoflegends.com/cdn/9.16.1/img/profileicon/${leagueInfo.profileIconId}.png`,
@@ -64,7 +64,7 @@ const indicateLeagueInfo = (leagueInfo) => {
     summonerName: `${leagueInfo.summonerName}`,
     summonerTag: `#${leagueInfo.summonerTag}`,
     leagueIconImgSrc: leagueInfo.tier
-      ? `https://github.com/okonomiyakki/lol-real-time-watcher/assets/83577128/${replaceTierImgSrc(leagueInfo.tier)}` //`/img/Rank=${replaceTierName(leagueInfo.tier)}.png`
+      ? `/img/Rank=${replaceTierName(leagueInfo.tier)}.png` // `https://github.com/okonomiyakki/lol-real-time-watcher/assets/83577128/${replaceTierImgSrc(leagueInfo.tier)}`
       : 'https://img.icons8.com/doodle/96/league-of-legends.png',
     tierRank: leagueInfo.tier
       ? `${replaceTierName(leagueInfo.tier)} ${replaceRankInitials(leagueInfo.rank)}`
@@ -82,31 +82,46 @@ const indicateLeagueInfo = (leagueInfo) => {
   };
 };
 
-const injectLeagueInfo = (newLeagueInfo) => {
-  injectImgSrc('summoner_profile_icon', newLeagueInfo.profileIconImgSrc);
+const convertSecondsToHMS = (seconds) => {
+  var hours = Math.floor(seconds / 3600);
+  var minutes = Math.floor((seconds % 3600) / 60);
+  var remainingSeconds = seconds % 60;
 
-  injectHTML('summoner_profile_level', newLeagueInfo.summonerLevel);
+  const h = hours < 10 ? `0${hours}` : hours;
+  const m = minutes < 10 ? `0${minutes}` : minutes;
+  const s = remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds;
 
-  injectHTML('summoner_profile_account_name', newLeagueInfo.summonerName);
-
-  injectHTML('summoner_profile_account_tag', newLeagueInfo.summonerTag);
-
-  injectImgSrc('summoner_league_icon', newLeagueInfo.leagueIconImgSrc);
-
-  injectHTML('summoner_league_current_tier_rank', newLeagueInfo.tierRank);
-
-  injectHTML('summoner_league_current_league_points', newLeagueInfo.lp);
-
-  injectHTML('summoner_league_current_score', newLeagueInfo.score);
-
-  injectHTML('summoner_league_current_winning_rate', newLeagueInfo.rate);
+  return { h, m, s };
 };
 
-const increaseLoadingBar = (width, elementId) => {
-  if (width >= 94.5) {
-    clearInterval(intervalBanPick);
-  } else {
-    setComponentwidth(elementId, `${width}%`);
-    injectHTML('current_game_status_bar', `${width.toFixed(1)}%`);
-  }
+const playCarousel = (elementId) => {
+  const slideNode = document.getElementById(elementId);
+  const options = { loop: false };
+  const plugins = [EmblaCarouselAutoplay()];
+  const slide = EmblaCarousel(slideNode, options, plugins);
+  const dotContainer = document.querySelector('.usage_carousel_dots');
+
+  slide.on('select', () => {
+    const selectedDot = dotContainer.querySelector(
+      '.usage_carousel_dot--selected',
+    );
+
+    if (selectedDot)
+      selectedDot.classList.remove('usage_carousel_dot--selected');
+
+    dotContainer.children[slide.selectedScrollSnap()].classList.add(
+      'usage_carousel_dot--selected',
+    );
+  });
+
+  slide.on('scroll', () => resumeCarousle(slide));
+
+  slideNode.querySelectorAll('.usage_carousel_slide').forEach((_, index) => {
+    const button = document.createElement('button');
+    button.classList.add('usage_carousel_dot');
+    button.addEventListener('click', () => slide.scrollTo(index));
+    dotContainer.appendChild(button);
+  });
+
+  dotContainer.children[0].classList.add('usage_carousel_dot--selected');
 };
