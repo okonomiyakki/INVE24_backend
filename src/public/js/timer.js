@@ -47,7 +47,7 @@ const currentGameStatusFetcher = (
     .post(`${hostBaseUrl}/api/v2.0/spectate/status`, {
       summonerName: leagueInfo.summonerName,
       summonerTag: leagueInfo.summonerTag,
-      encryptedSummonerId: leagueInfo.encryptedSummonerId,
+      encryptedPUUID: leagueInfo.encryptedPUUID,
     })
     .then((res) => {
       const { gameStartTime } = res.data.data;
@@ -82,9 +82,10 @@ const currentGameStatusFetcher = (
 
       generateTimer(0, 'realTime', false);
 
-      currentGameFetcher();
+      currentGameFetcher(leagueInfo);
     })
     .catch((error) => {
+      // TODO: 최대 조회 횟수 넘겼을때 로직 구현해야함
       if (error.response.status === 404 && retryCount < MAX_RETRIES) {
         injectHTML(
           'title',
@@ -107,25 +108,28 @@ const currentGameStatusFetcher = (
 
         setTimeout(
           () =>
-            currentGameStatusFetcher(retryCount, startAtBanPick, MAX_RETRIES),
+            currentGameStatusFetcher(
+              leagueInfo,
+              retryCount,
+              startAtBanPick,
+              MAX_RETRIES,
+            ),
           10000,
         );
       } else if (error.response.status === 403 || 500) {
-        // alert(error.response.data.message);
-
-        alert('RIOT 서버 점검 중입니다.'); // TODO: 지우기
-
-        handleRedirectPrev();
+        console.log(`${error.response.status} ${error.response.data.message}`);
+        // alert('RIOT 서버 점검 중입니다.'); // TODO: 지우기
+        // handleRedirectPrev();
       }
     });
 };
 
-const currentGameFetcher = () => {
+const currentGameFetcher = (leagueInfo) => {
   axios
     .post(`${hostBaseUrl}/api/v2.0/spectate/live`, {
       summonerName: leagueInfo.summonerName,
       summonerTag: leagueInfo.summonerTag,
-      encryptedSummonerId: leagueInfo.encryptedSummonerId,
+      encryptedPUUID: leagueInfo.encryptedPUUID,
     })
     .then((res) => {
       const { gameStartTime, realTimeSeconds } = res.data.data;
@@ -157,7 +161,7 @@ const currentGameFetcher = () => {
     .catch((error) => {
       alert(error.response.data.message);
 
-      handleRedirectPrev();
+      // handleRedirectPrev();
     });
 };
 

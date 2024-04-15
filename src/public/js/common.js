@@ -29,3 +29,11 @@ const displayComponent = (elementId) => {
 const hideComponent = (elementId) => {
   document.getElementById(elementId).style.display = 'none';
 };
+
+const setComponentBackgroundColor = (elementId, color) => {
+  document.getElementById(elementId).style.backgroundColor = color;
+};
+
+const setComponentwidth = (elementId, maxWidth) => {
+  document.getElementById(elementId).style.width = maxWidth;
+};

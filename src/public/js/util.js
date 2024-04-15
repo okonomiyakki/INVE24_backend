@@ -2,8 +2,8 @@ const getCodeFromURL = () => {
   return new URLSearchParams(window.location.search).get('code');
 };
 
-const isUrlValid = () => {
-  if (window.location.href.includes('/summoners')) return true;
+const isUrlInclude = (path) => {
+  if (window.location.href.includes(path)) return true;
   else return false;
 };
 
@@ -100,4 +100,13 @@ const injectLeagueInfo = (newLeagueInfo) => {
   injectHTML('summoner_league_current_score', newLeagueInfo.score);
 
   injectHTML('summoner_league_current_winning_rate', newLeagueInfo.rate);
+};
+
+const increaseLoadingBar = (width, elementId) => {
+  if (width >= 94.5) {
+    clearInterval(intervalBanPick);
+  } else {
+    setComponentwidth(elementId, `${width}%`);
+    injectHTML('current_game_status_bar', `${width.toFixed(1)}%`);
+  }
 };

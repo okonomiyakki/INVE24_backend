@@ -25,11 +25,9 @@ export class SpectateService {
     spectateSummonerDto: SpectateSummonerDto,
     res: Response,
   ): Promise<any> {
-    const { summonerName, summonerTag, encryptedSummonerId } =
-      spectateSummonerDto;
-    console.log(spectateSummonerDto);
+    const { summonerName, summonerTag, encryptedPUUID } = spectateSummonerDto;
 
-    const GetCurrentGameUrl = `${this.RiotBaseUrlKr}/lol/spectator/v4/active-games/by-summoner/${encryptedSummonerId}?api_key=${this.RiotAppKey}`;
+    const GetCurrentGameUrl = `${this.RiotBaseUrlKr}/lol/spectator/v5/active-games/by-summoner/${encryptedPUUID}?api_key=${this.RiotAppKey}`;
 
     try {
       const currentGameResponse = await this.httpService
@@ -104,10 +102,9 @@ export class SpectateService {
     spectateSummonerDto: SpectateSummonerDto,
     res: Response,
   ): Promise<any> {
-    const { summonerName, summonerTag, encryptedSummonerId } =
-      spectateSummonerDto;
+    const { summonerName, summonerTag, encryptedPUUID } = spectateSummonerDto;
 
-    const GetCurrentGameUrl = `${this.RiotBaseUrlKr}/lol/spectator/v4/active-games/by-summoner/${encryptedSummonerId}?api_key=${this.RiotAppKey}`;
+    const GetCurrentGameUrl = `${this.RiotBaseUrlKr}/lol/spectator/v5/active-games/by-summoner/${encryptedPUUID}?api_key=${this.RiotAppKey}`;
 
     const delay = (ms: number) =>
       new Promise((resolve) => setTimeout(resolve, ms));

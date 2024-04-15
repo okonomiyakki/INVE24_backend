@@ -6,10 +6,11 @@
     <link href='css/navbar.css' rel='stylesheet' />
     <link href='css/carousel.css' rel='stylesheet' />
     <link href='css/summoner.css' rel='stylesheet' />
+    <link href='css/spectate.css' rel='stylesheet' />
     <link href='css/section.css' rel='stylesheet' />
     <link href='css/footer.css' rel='stylesheet' />
     <link href='css/modal.css' rel='stylesheet' />
-    <link href='css/loader.css' rel='stylesheet' />
+    <link href='css/spinner.css' rel='stylesheet' />
     <link rel="icon" href="favicon/icons8-league-of-legends-doodle-16.png" />
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
@@ -80,6 +81,20 @@
             <div id="summoner_fetch" class="border_white">
               <div id="summoner_renewal_button" class="summoner_fetch_button" onclick="fetchLeagueInfoRenewalAPI()">전적 갱신</div>
               <div id="summoner_spectate_button" class="summoner_fetch_button" onclick="handleDisplayModal()">게임 조회</div>
+            </div>
+
+            <div id="crrent_game" class="border_white">
+              <span id="current_game_info"></span>
+              <div id="current_game_status">
+                <div id="current_game_status_bar"></div>
+              </div>
+              <div id="current_game_timer">
+                <div id="current_game_timer_clock"></div>
+              </div>
+            </div>
+
+            <div id="spectate_cancel" class="border_white">
+              <div id="spectate_cancel_button" class="summoner_fetch_button" onclick="handleRedirectPrev()">그만하기</div>
             </div>
 
           </div>
@@ -168,9 +183,9 @@
     </div>
 
     <div>
-      <div id="loading_spinner">
-        <div id="loading_spinner_background"></div>
-        <div id="loading_spinner_gen"></div>
+      <div id="spinner">
+        <div id="spinner_background"></div>
+        <div id="spinner_loading"></div>
       </div>
     </div>
 
