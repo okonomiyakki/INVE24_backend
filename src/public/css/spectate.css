@@ -22,16 +22,13 @@
 }
 
 #current_game_status_bar {
+  height: 60%;
+
   margin: 0 20px;
 
   color: black;
   text-align: center;
 
-  /* 로딩 완료시 94.5% */
-  width: 20%;
-  height: 60%;
-  background-color: yellow;
-  /* background-color: yellowgreen; */
   border-radius: 40px;
 }
 
