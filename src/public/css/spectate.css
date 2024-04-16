@@ -8,6 +8,10 @@
   justify-content: space-evenly;
 }
 
+#current_game_info {
+  text-align: center;
+}
+
 #current_game_status {
   width: 80%;
   height: 40px;
@@ -48,6 +52,7 @@
 #current_game_timer_clock {
   width: 100%;
 
+  padding-top: 5px;
 
   color: #5fe264;
   font-size: 60px;

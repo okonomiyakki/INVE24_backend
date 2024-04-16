@@ -53,7 +53,7 @@ const fetchCurrentGameStatusAPI = (leagueInfo, retryCnt, MAX_RETRIES) => {
 
       fetchCurrentGameAPI(leagueInfo);
 
-      handleFetchConditions('밴픽이 종료되어 현재 로딩 진행 중입니다...');
+      handleFetchConditions('밴픽이 종료되어 현재 로딩 진행 중입니다.');
 
       handleLoadingStop();
 
