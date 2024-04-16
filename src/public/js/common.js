@@ -34,6 +34,10 @@ const setComponentBackgroundColor = (elementId, color) => {
   document.getElementById(elementId).style.backgroundColor = color;
 };
 
-const setComponentwidth = (elementId, maxWidth) => {
+const setComponentWidth = (elementId, maxWidth) => {
   document.getElementById(elementId).style.width = maxWidth;
+};
+
+const setComponentFontSize = (elementId, fontSize) => {
+  document.getElementById(elementId).style.fontSize = fontSize;
 };

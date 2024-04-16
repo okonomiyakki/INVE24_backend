@@ -53,7 +53,7 @@ const fetchCurrentGameStatusAPI = (leagueInfo, retryCnt, MAX_RETRIES) => {
 
       fetchCurrentGameAPI(leagueInfo);
 
-      handleFetchConditions('밴픽이 종료되어 로딩이 진행 중입니다.');
+      handleFetchConditions('밴픽이 종료되어 현재 로딩 진행 중입니다...');
 
       handleLoadingStop();
 
@@ -61,7 +61,9 @@ const fetchCurrentGameStatusAPI = (leagueInfo, retryCnt, MAX_RETRIES) => {
     })
     .catch((error) => {
       if (error.response.status === 404 && retryCnt < MAX_RETRIES) {
-        handleFetchConditions('밴픽 종료 여부를 조회중입니다. (최대 5분 소요)');
+        handleFetchConditions(
+          '밴픽 상태 정보를 가져오는 중입니다...<br>최대 5분이 소요될 수 있습니다.',
+        );
 
         if (retryCnt === 0) handleLoadingstart('yellow');
 

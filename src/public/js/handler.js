@@ -55,8 +55,6 @@ const handleInjectLeagueInfo = () => {
   injectHTML('summoner_league_current_league_points', newLeagueInfo.lp);
 
   injectHTML('summoner_league_current_score', newLeagueInfo.score);
-
-  injectHTML('summoner_league_current_winning_rate', newLeagueInfo.rate);
 };
 
 const handleFetchConditions = (msg) => {
@@ -85,14 +83,14 @@ const handleLoadingstart = (color) => {
 
 const handleLoadingStop = () => {
   clearInterval(intervalLoading);
-  setComponentwidth('current_game_status_bar', '94.5%');
+  setComponentWidth('current_game_status_bar', '94.5%');
   injectHTML('current_game_status_bar', '100%');
 };
 
 const handleIncreaseLoadingBar = (width) => {
   if (width >= 94.5) clearInterval(intervalBanPick);
   else {
-    setComponentwidth('current_game_status_bar', `${width}%`);
+    setComponentWidth('current_game_status_bar', `${width}%`);
     injectHTML('current_game_status_bar', `${width.toFixed(1)}%`);
   }
 };
@@ -124,11 +122,11 @@ const handleRedirectPrev = () => {
 };
 
 const handleNavBar = () => {
-  alert('Access Denied');
+  alert('여긴 아무것도 없어요.');
 };
 
 const handleInve24UpdateInfo = () => {
-  alert('Access Denied');
+  alert('준비 중입니다.');
 };
 
 const handleLeagueOfLegendsPatchNotes = () => {
@@ -187,7 +185,10 @@ const handleTimerStart = (realTimeSeconds) => {
     const { h, m, s } = convertSecondsToHMS(currentRealTimeSeconds);
 
     if (currentRealTimeSeconds === 120) {
-      clearInterval(intervalTimer);
+      handleCurrentGameFetchError(
+        intervalTimer,
+        `게임 시작 후 2분이 경과되어 이전 화면으로 돌아갑니다.`,
+      );
 
       handleRedirectPrev();
     } else handleTimerUpdate(h, m, s);
