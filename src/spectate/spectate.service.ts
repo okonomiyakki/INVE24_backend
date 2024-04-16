@@ -39,12 +39,8 @@ export class SpectateService {
 
       const currentEpochTime = new Date().getTime();
 
-      if (
-        currentEpochTime >
-        gameStartTime +
-          parseInt(this.INGAME_DELAY) +
-          parseInt(this.DEFAULT_DELAY)
-      ) {
+      //+parseInt(this.DEFAULT_DELAY)
+      if (currentEpochTime > gameStartTime + parseInt(this.INGAME_DELAY)) {
         const webHookInfo = {
           title: {
             summonerName,
@@ -56,7 +52,7 @@ export class SpectateService {
 
         return res.status(403).json({
           status: 'fail',
-          message: `게임 시작 후 3분이 경과되어, 조회가 불가능합니다.`,
+          message: `${summonerName}님이 현재 참여하신 게임은 이미 시작되었습니다.`,
         });
       }
 
@@ -149,7 +145,7 @@ export class SpectateService {
 
           return res.status(429).json({
             status: 'error',
-            message: `현재 요청자가 많아 이용이 어렵습니다. 잠시 후에 다시 시도해 주세요.`,
+            message: `현재 INVE24 서버가 혼잡하여 이용이 불가능합니다. 잠시 후에 다시 시도해 주세요.`,
           });
         } else {
           await this.notifierService.sendToWebHook(webHookInfo, 'server error');
@@ -180,7 +176,7 @@ export class SpectateService {
 
         return res.status(400).json({
           status: 'error',
-          message: `로딩 시간이 5분 경과되어 이용이 어렵습니다. 다시 시도해 주세요.`,
+          message: `${summonerName}님이 현재 참여하신 게임의 로딩 시간이 5분 경과되었습니다. 로딩이 5분 이상 진행된 게임은 서비스하지 않습니다. 이전 화면으로 돌아갑니다.`,
         });
       }
     } while (

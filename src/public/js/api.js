@@ -71,15 +71,14 @@ const fetchCurrentGameStatusAPI = (leagueInfo, retryCnt, MAX_RETRIES) => {
       } else if (error.response.status === 404 && retryCnt >= MAX_RETRIES) {
         handleCurrentGameFetchError(
           intervalFetch,
-          '게임이 닷지되었습니다. 이전 화면으로 돌아갑니다.',
+          `${leagueInfo.summonerName}님이 현재 참여하신 게임이 밴픽 도중 닷지되었습니다. 이전 화면으로 돌아갑니다.`,
         );
 
         handleRedirectPrev();
       } else {
         handleCurrentGameFetchError(
           intervalFetch,
-          `RIOT 서버에 접근할 수 없습니다. 서비스 관리자에게 문의해주세요. 
-          ${error.response.status} ${error.response.data.message}`,
+          `(${error.response.status}) ${error.response.data.message}`,
         );
 
         handleRedirectPrev();
@@ -108,8 +107,7 @@ const fetchCurrentGameAPI = (leagueInfo) => {
     .catch((error) => {
       handleCurrentGameFetchError(
         intervalTimer,
-        `RIOT 서버에 접근할 수 없습니다. 서비스 관리자에게 문의해주세요. 
-          ${error.response.status} ${error.response.data.message}`,
+        `(${error.response.status}) ${error.response.data.message}`,
       );
 
       handleRedirectPrev();
