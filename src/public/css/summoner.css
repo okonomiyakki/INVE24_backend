@@ -1,6 +1,7 @@
 #rso_login_container {
-  margin: 40px;
-  height: 400px;
+  height: 170px;
+
+  margin: 20px;
 
   flex-direction: column;
   align-items: center;
@@ -12,30 +13,35 @@
 }
 
 #rso_login_button {
-  padding: 10px 20px 10px 10px;
+  padding: 5px 10px 5px 5px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
   color: white;
-  border: 4px solid white;
-  border-radius: 30px;
+  font-size: 17px;
+  font-weight: bold;
+
+  border: 2px solid white;
+  border-radius: 15px;
   background-color: #515163;
 
   cursor: pointer;
-  font-size: 40px;
-  font-weight: bold;
 }
 
 #rso_login_icon {
-  margin-right: 10px;
+  width: 40px;
+  height: 40px;
+
+  margin-right: 5px;
 }
 
 #summoner_container {
-  margin: 40px;
-  height: 900px;
+  margin: 20px;
+  height: 400px;
 
+  color :white;
   font-family: "Noto Sans KR", sans-serif;
   font-weight: 500;
   text-align: left;
@@ -45,76 +51,78 @@
   align-items: center;
   justify-content: space-around;
 
-  color :white;
-
-  border-radius: 40px;
+  border-radius: 20px;
   background-color: #515163;
 }
 
 #summoner_profile{
   width: 100%;
-  height: 280px;
+  height: 150px;
+
+  margin-top: 10px;
 
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+
+  border-radius: 10px;
 }
 
 #summoner_profile_icon_container {
-  height: 220px;
+  height: 120px;
 
-  padding-left: 50px;
+  padding-left: 15px;
 }
 
 #summoner_profile_icon {
-  width: 220px;
-  height: 220px;
+  width: 100px;
+  height: 100px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
 
-  border-radius: 40px;
+  border-radius: 20px;
 }
 
 #summoner_profile_level {
-  width: 100px;
-  height: 35px;
+  width: 50px;
+  height: 15px;
 
   position: relative; 
-  top: -20px;
-  left: 60px;
+  top: -8px;
+  left: 25px;
 
-  font-size: 30px;
+  font-size: 12px;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  border-radius: 60px;
+  border-radius: 30px;
   background-color: #2b2b31;
 }
 
 #summoner_profile_account {
   width: 70%;
-  height: 220px;
+  height: 120px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  border-radius: 40px;
+  border-radius: 20px;
 }
 
 #summoner_profile_account_name {
   width: 90%;
-  height: 90px;
+  height: 50px;
 
-  font-size: 55px;
+  font-size: 25px;
 
   display: flex;
   flex-direction: column;
@@ -125,10 +133,12 @@
 
 #summoner_profile_account_tag {
   width: 90%;
-  height: 90px;
+  height: 30px;
 
-  font-size: 50px;
+  margin-bottom: 30px;
+
   color: #9E9DAA;
+  font-size: 20px;
 
   display: flex;
   flex-direction: column;
@@ -138,16 +148,17 @@
 }
 
 .border_white {
-  border-top: 4px solid white;
-  border-left: 4px solid white;
-  border-right: 4px solid white;
-  border-top-left-radius: 40px;
-  border-top-right-radius: 40px;
+  border-top: 2px solid white;
+  border-left: 2px solid white;
+  border-right: 2px solid white;
+
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
 #summoner_league{
   width: 100%;
-  height: 350px;
+  height: 160px;
   
   display: flex;
   flex-direction: row;
@@ -156,8 +167,10 @@
 }
 
 #summoner_league_icon {
-  width: 250px;
-  height: 250px;
+  width: 100px;
+  height: 100px;
+
+  padding: 0 10px;
 
   display: flex;
   flex-direction: column;
@@ -165,39 +178,34 @@
   justify-content: space-evenly;
 
   border: 1px solid black;
-
-  border-radius: 40px; 
-  padding: 0 20px;
-
+  border-radius: 20px;
   background-color: #282830;
 }
 
 #summoner_league_current {
-  width: 60%;
-  height: 250px;
+  width: 52%;
+  height: 150px;
 
-  font-size: 30px;
+  font-size: 15px;
   
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 #summoner_league_tier_info {
   width: 100%;
 
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
 }
 
 #summoner_league_current_tier_rank {
   width: 70%;
 
-  margin-left: 20px;
-
-  font-size: 40px;
+  font-size: 20px;
 
   display: flex;
   flex-direction: column;
@@ -207,15 +215,12 @@
 #summoner_league_current_league_points {
   width: 30%;
 
-  margin-right: 30px;
-
-  font-size: 35px;
   color: #9E9DAA;
+  font-size: 15px;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: end;
 }
 
 #summoner_league_score_info {
@@ -227,33 +232,21 @@
 }
 
 #summoner_league_current_score {
-  width: 70%;
+  width: 100%;
 
-  margin-left: 20px;
-
-  color: #9E9DAA;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-#summoner_league_current_winning_rate {
-  width: 30%;
-
-  margin-right: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 
   color: #9E9DAA;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: end;
 }
 
 #summoner_fetch {
   width: 100%;
-  height: 200px;
+  height: 100px;
   
   display: flex;
   flex-direction: row;
@@ -263,14 +256,14 @@
 
 .summoner_fetch_button {
   width: 30%;
-  height: 100px;
+  height: 40px;
   
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
 
-  border-radius: 20px;
+  border-radius: 7px;
 
   cursor: pointer;
 }

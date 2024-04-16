@@ -1,21 +1,21 @@
 #usage_carousel {
-  overflow: hidden;
-
   width: 100%;
 
+  overflow: hidden;
   cursor: pointer;
 }
 
 #usage_carousel_container {
-  margin: 0 40px;
-  
-  gap: 20px;
+  margin: 0 20px;
+  gap: 10px;
 
   display: flex;
 }
 
 .usage_carousel_slide {
-  height: 150px;
+  height: 60px;
+  
+  color: #393e42;
   
   flex: 0 0 100%;
   display: flex;
@@ -23,13 +23,12 @@
   justify-content: center;
 
   border: 1px solid #c2d8fc;
-  border-radius: 20px;
-  color: #393e42;
+  border-radius: 10px;
   background-color: #c2d8fc;
 }
 
 .usage_carousel_dots {
-  margin: 10px 0;
+  margin: 5px 0;
 
   display: flex;
   justify-content: center;
@@ -37,20 +36,21 @@
 }
 
 .usage_carousel_dot {
-  margin: 0 5px;
-
-  width: 5px;
-  height: 15px;
+  width: 10px;
+  height: 6px;
+  
+  margin: 0 2px;
+  padding: 0;
 
   border: 1px solid lightgray;
-  border-radius: 50px;
+  border-radius: 25px;
   background-color: lightgray;
 
   cursor: pointer;
 }
 
 .usage_carousel_dot--selected {
-  width: 40px;
+  width: 20px;
 
   border: 1px solid gray;
   background-color: grey;

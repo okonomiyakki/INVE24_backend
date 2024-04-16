@@ -26,7 +26,7 @@ const replaceRankInitials = (rank) => {
     case 'IV':
       return 4;
     default:
-      return '?';
+      return '';
   }
 };
 
@@ -53,11 +53,31 @@ const replaceTierImgSrc = (tier) => {
     case 'CHALLENGER':
       return 'd5a69cba-b3fd-434b-88f6-1ad43908473d';
     default:
-      return '?';
+      return '';
   }
 };
 
+const replaceRankForMasterLeagues = (leagueInfo) => {
+  if (leagueInfo.tier === 'MASTER') leagueInfo.rank = '';
+  else if (leagueInfo.tier === 'GRANDMASTER') leagueInfo.rank = '';
+  else if (leagueInfo.tier === 'CHALLENGER') leagueInfo.rank = '';
+
+  return leagueInfo;
+};
+
+const replaceSummonerNameFontSize = (summonerName) => {
+  if (summonerName.length >= 12)
+    setComponentFontSize('summoner_profile_account_name', '17px');
+  else if (summonerName.length >= 10)
+    setComponentFontSize('summoner_profile_account_name', '20px');
+  else if (summonerName.length >= 8)
+    setComponentFontSize('summoner_profile_account_name', '22px');
+  else return;
+};
+
 const indicateLeagueInfo = (leagueInfo) => {
+  replaceSummonerNameFontSize(leagueInfo.summonerName);
+
   return {
     profileIconImgSrc: `https://ddragon.leagueoflegends.com/cdn/9.16.1/img/profileicon/${leagueInfo.profileIconId}.png`,
     summonerLevel: `${leagueInfo.summonerLevel}`,
@@ -67,18 +87,15 @@ const indicateLeagueInfo = (leagueInfo) => {
       ? `/img/Rank=${replaceTierName(leagueInfo.tier)}.png` // `https://github.com/okonomiyakki/lol-real-time-watcher/assets/83577128/${replaceTierImgSrc(leagueInfo.tier)}`
       : 'https://img.icons8.com/doodle/96/league-of-legends.png',
     tierRank: leagueInfo.tier
-      ? `${replaceTierName(leagueInfo.tier)} ${replaceRankInitials(leagueInfo.rank)}`
+      ? `${replaceTierName(leagueInfo.tier)} ${replaceRankInitials(replaceRankForMasterLeagues(leagueInfo).rank)}`
       : '랭크 없음',
     lp: leagueInfo.leaguePoints ? `${leagueInfo.leaguePoints} LP` : '- LP',
     wins: leagueInfo.wins ? leagueInfo.wins : '-',
     losses: leagueInfo.losses ? leagueInfo.losses : '-',
 
     score: leagueInfo.wins
-      ? `${leagueInfo.wins + leagueInfo.losses}전 ${leagueInfo.wins}승 ${leagueInfo.losses}패`
+      ? `${leagueInfo.wins}승 ${leagueInfo.losses}패 &nbsp; 승률 ${parseInt((leagueInfo.wins / (leagueInfo.wins + leagueInfo.losses)) * 100)}%`
       : `전적 없음`,
-    rate: leagueInfo.wins
-      ? `승률 ${parseInt((leagueInfo.wins / (leagueInfo.wins + leagueInfo.losses)) * 100)}%`
-      : `승률 없음`,
   };
 };
 

@@ -3,16 +3,17 @@
   align-items: center;
   justify-content: center;
 
-  border-radius: 40px;
+  border-radius: 15px;
 }
 
 #patch_note_info {
-  margin: 40px;
+  height: 50px;
 
-  height: 150px;
+  margin: 20px;
 
   color: #393e42;
-  border: 3px solid #D13639;
+
+  border: 2px solid #f57577;
   background-color: #FFF2DD;
 
   cursor: pointer;
@@ -29,22 +30,22 @@
 } */
 
 #patch_note_info_arrow_icon {
-  font-size: 50px;
+  font-size: 25px;
 }
 
+/* 모바일에서 오른쪽 여백생기는거 이게 문제였음 */
 #dev_links {
+  margin: 20px;
+
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
 }
 
 #update_info {
-  margin: 0 20px 20px 40px;
-
-  gap: 20px;
-
-  width: 100%;
-  height: 400px;
+  width: 40%;
+  height: 120px;
 
   display: flex;
   justify-content: space-around;
@@ -54,24 +55,24 @@
 
 .update_info_button {
   width: 100%;
-  height: 400px;
+  height: 100%;
+
+  color: white;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
 
-  border: 1px solid #c2d8fc;
-  color: #393e42;
-  background-color: #c2d8fc;
+  background-color: #515163;
 }
 
 #update_info_version {
-  font-size: 70px;
+  font-size: 35px;
 }
 
 #update_info_title {
-  padding-left: 35px;
+  padding-left: 10px;
 
   display: flex;
   flex-direction: row;
@@ -79,40 +80,36 @@
 }
 
 #bug_report_discord_arrow_icon {
-  font-size: 50px;
+  font-size: 25px;
 }
 
 #bug_report_github_arrow_icon {
-  font-size: 50px;
+  font-size: 25px;
 }
 
 #bug_report {
-  margin: 0 40px 20px 20px;
-
-  gap: 20px;
-
-  width: 100%;
-  height: 400px;
+  width: 55%;
+  height: 120px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 #bug_report_discord_button {
-  background-color: #7B85F8;
   border: 1px solid #7B85F8;
+  background-color: #7B85F8;
 }
 
 #bug_report_github_button {
-  background-color: #4d545a;
   border: 1px solid #4d545a;
+  background-color: #4d545a;
 }
 
 .bug_report_button {
   width: 100%;
-  height: 400px;
+  height: 47%;
 
   color: white;
 
@@ -120,9 +117,9 @@
 }
 
 #bug_report_discord_icon {
-  font-size: 60px;
+  font-size: 30px;
 }
 
 #bug_report_github_icon {
-  font-size: 50px;
+  font-size: 25px;
 }

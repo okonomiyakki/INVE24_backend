@@ -17,11 +17,11 @@
 }
 
 #modal_container {
-  width: 800px;
-  height: 500px;
+  width: 320px;
+  height: 200px;
 
   position: fixed;
-  top: 700px;
+  top: 280px;
   z-index: 100;
 
   display: flex;
@@ -29,24 +29,24 @@
   align-items: center;
   justify-content: space-evenly;
 
-  border-radius: 40px;
+  border-radius: 20px;
   background-color: white;
 }
 
 #modal_title {
-  height: 40px;
+  height: 20px;
 
-  font-size: 60px;
+  font-size: 22px;
 }
 
 #modal_sub {
-  font-size: 40px;
   color: grey;
+  font-size: 16px;
 }
 
 #modal_notice {
-  font-size: 35px;
   color: lightcoral;
+  font-size: 13px;
 }
 
 #modal_control {
@@ -62,13 +62,14 @@
   width: 30%;
   height: 120%;
 
+  color: white;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
-  color: white;
+  border-radius: 10px;
   background-color: #5383E8;
-  border-radius: 20px;
 
   cursor: pointer;
 }
@@ -77,22 +78,22 @@
   width: 50px;
   height: 50px;
 
-  z-index: 101;
-
+  color: grey;
+  
   position: relative;
-  top: -110px;
-  left: 550px;
+  top: -57px;
+  left: 200px;
+  z-index: 101;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  color: grey;
   border-radius: 25px;
 
   cursor: pointer;
 }
 
 #modal_cancel_button_icon {
-  font-size: 70px;
+  font-size: 30px;
 }
