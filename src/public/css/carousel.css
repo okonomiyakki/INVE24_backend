@@ -30,6 +30,7 @@
 
 .usage_carousel_dots {
   margin: 5px 0;
+  margin-bottom: 20px;
 
   display: flex;
   justify-content: center;
