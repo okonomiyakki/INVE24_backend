@@ -1,8 +1,8 @@
 #rso_login_container {
   height: 170px;
 
-  margin: 20px;
-  margin-top: 0;
+  /* margin: 20px; */
+  margin: 0 20px 20px 20px;
 
   flex-direction: column;
   align-items: center;
@@ -39,7 +39,8 @@
 }
 
 #summoner_container {
-  margin: 20px;
+  /* margin: 20px; */
+  margin: 0 20px 20px 20px;
   height: 400px;
 
   color :white;
