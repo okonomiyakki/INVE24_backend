@@ -19,15 +19,9 @@
   cursor: pointer;
 }
 
-/* #kakao_adfit {
-  margin: 40px;
-
-  border: 2px solid red;
-  width: 320px;
-  height: 100px;
-
-  cursor: pointer;
-} */
+#kakao_adfit {
+  text-align: center;
+}
 
 #patch_note_info_arrow_icon {
   font-size: 25px;
