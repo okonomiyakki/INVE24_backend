@@ -20,6 +20,7 @@ header {
 
 @media (min-width: 1000px) {
   body {
-    max-width: 25vw;
+    /* max-width: 25vw; */
+    width: 500px;
   }
 }
