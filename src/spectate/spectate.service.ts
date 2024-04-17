@@ -147,6 +147,15 @@ export class SpectateService {
             status: 'error',
             message: `현재 INVE24 서버가 혼잡하여 이용이 불가능합니다. 잠시 후에 다시 시도해 주세요.`,
           });
+        } else if (error.response.status === 504) {
+          await this.notifierService.sendToWebHook(webHookInfo, 'server error');
+
+          console.log(error);
+
+          return res.status(504).json({
+            status: 'error',
+            message: `RIOT Server Gateway timeout : 현재 게임이 시작되었지만, 라이엇 서버로부터 게임 시작 정보를 받아올 수 없습니다.`,
+          });
         } else {
           await this.notifierService.sendToWebHook(webHookInfo, 'server error');
 
