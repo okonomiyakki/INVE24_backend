@@ -148,7 +148,10 @@ export class SpectateService {
             message: `현재 INVE24 서버가 혼잡하여 이용이 불가능합니다. 잠시 후에 다시 시도해 주세요.`,
           });
         } else if (error.response.status === 504) {
-          await this.notifierService.sendToWebHook(webHookInfo, 'server error');
+          await this.notifierService.sendToWebHook(
+            webHookInfo,
+            '#5 gateway timeout',
+          );
 
           console.log(error);
 

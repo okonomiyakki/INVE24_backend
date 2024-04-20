@@ -8,12 +8,14 @@ import { AccountDto } from './dto/account.dto';
 import { SummonerDto } from './dto/summoner.dto';
 import { LeagueEntryDto } from './dto/league-entry.dto';
 import { SummonerLeagueInfoDto } from './dto/summoner-league-info.dto';
+import { NotifierService } from 'src/notifier/notifier.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly httpService: HttpService,
     private readonly config: ConfigService,
+    private readonly notifierService: NotifierService,
   ) {}
 
   private RiotClientID = this.config.get('RIOT_CLIENT_ID');
@@ -131,6 +133,15 @@ export class AuthService {
 
       losses: leagueEntry.losses,
     };
+
+    const webHookInfo = {
+      title: {
+        summonerName: account.gameName,
+        summonerTag: account.tagLine,
+      },
+    };
+
+    await this.notifierService.sendToWebHook(webHookInfo, 'login OK');
 
     return res.status(200).json({
       status: 'success',
