@@ -159,7 +159,12 @@ const handleHideModal = () => {
 };
 
 const handleRedirectForSpectate = () => {
-  replaceLocation(`${hostBaseUrl}/spectate`);
+  // replaceLocation(`${hostBaseUrl}/spectate`);
+  alert(
+    '현재 라이엇 게임즈 관전 기능 점검으로 인해, 해당 기간 동안 서비스가 제한됩니다.',
+  );
+
+  replaceLocation(`${hostBaseUrl}/summoners`);
 };
 
 const handleDisplayLoadingSpinner = () => {
