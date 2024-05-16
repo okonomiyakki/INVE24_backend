@@ -10,6 +10,10 @@ const replaceLocation = (URL) => {
   window.location.href = URL;
 };
 
+const openLocation = (URL) => {
+  window.open(URL, '_blank');
+};
+
 const setLocalStorage = (tag, data) => {
   localStorage.setItem(tag, JSON.stringify(data));
 };

@@ -123,14 +123,16 @@ const handleRedirectPrev = () => {
 
 const handleNavBar = () => {
   const storedTokenInfo = localStorage.getItem('tokenInfo');
-  const logout = 'https://www.leagueoflegends.com/ko-kr/';
+  const logoutRedirectUri =
+    'https://login.riotgames.com/end-session-redirect?redirect_uri=https%3A%2F%2Fauth.riotgames.com%2Flogout&state=622911e9676b67201e557d76e9';
 
   if (!storedTokenInfo) {
     alert('현재 로그인이 되어있지 않습니다.');
   } else {
     if (confirm('로그아웃을 하시겠습니까?')) {
-      alert('로그아웃을 위해 라이엇 공식 홈페이지로 이동합니다.');
-      replaceLocation(logout);
+      openLocation(logoutRedirectUri);
+      replaceLocation(`${hostBaseUrl}`);
+      handleTokenClear();
     }
   }
 };
@@ -211,7 +213,7 @@ const handleTimerStart = (realTimeSeconds) => {
   }, 1000);
 };
 
-const handleRiotLogout = () => {
+const handleTokenClear = () => {
   localStorage.removeItem('tokenInfo');
   localStorage.removeItem('leagueInfo');
 
