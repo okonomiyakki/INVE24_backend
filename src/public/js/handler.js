@@ -141,7 +141,7 @@ const handleInve24UpdateInfo = () => {
 
 const handleLeagueOfLegendsPatchNotes = () => {
   const lol =
-    'https://www.leagueoflegends.com/ko-kr/news/game-updates/patch-14-7-notes/';
+    'https://www.leagueoflegends.com/ko-kr/news/game-updates/patch-14-10-notes/';
 
   replaceLocation(lol);
 };
