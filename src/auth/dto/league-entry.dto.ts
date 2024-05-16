@@ -1,27 +1,27 @@
 export class LeagueEntryDto {
-  leagueId: string;
+  leagueId?: string;
 
-  summonerId: number;
+  summonerId?: number;
 
-  summonerName: string;
+  summonerName?: string;
 
-  queueType: string;
+  queueType?: string;
 
-  tier: string;
+  tier?: string;
 
-  rank: string;
+  rank?: string;
 
-  leaguePoints: number;
+  leaguePoints?: number;
 
-  wins: number;
+  wins?: number;
 
-  losses: number;
+  losses?: number;
 
-  hotStreak: boolean;
+  hotStreak?: boolean;
 
-  veteran: boolean;
+  veteran?: boolean;
 
-  freshBlood: boolean;
+  freshBlood?: boolean;
 
-  inactive: boolean;
+  inactive?: boolean;
 }
