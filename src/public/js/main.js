@@ -29,19 +29,19 @@ const getSummonerLeagueInfo = () => {
 };
 
 const getSummonerSpectateInfo = () => {
-  alert(
-    '현재 라이엇 게임즈 관전 기능 점검으로 인해, 해당 기간 동안 서비스가 제한됩니다.',
-  );
+  // alert(
+  //   '현재 라이엇 게임즈 관전 기능 점검으로 인해, 해당 기간 동안 서비스가 제한됩니다.',
+  // );
 
-  replaceLocation(`${hostBaseUrl}`);
+  // replaceLocation(`${hostBaseUrl}`);
 
-  // handleDenyAccess();
+  handleDenyAccess();
 
-  // handleComponentLoginAfter();
+  handleComponentLoginAfter();
 
-  // handleInjectLeagueInfo();
+  handleInjectLeagueInfo();
 
-  // handleComponentCurrentGameFetchAfter();
+  handleComponentCurrentGameFetchAfter();
 
-  // fetchCurrentGameStatusAPI(handleParseLeagueInfo(), 0, MAX_RETRIES);
+  fetchCurrentGameStatusAPI(handleParseLeagueInfo(), 0, MAX_RETRIES);
 };

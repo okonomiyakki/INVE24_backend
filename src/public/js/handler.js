@@ -122,7 +122,17 @@ const handleRedirectPrev = () => {
 };
 
 const handleNavBar = () => {
-  alert('여긴 아무것도 없어요.');
+  const storedTokenInfo = localStorage.getItem('tokenInfo');
+  const logout = 'https://www.leagueoflegends.com/ko-kr/';
+
+  if (!storedTokenInfo) {
+    alert('현재 로그인이 되어있지 않습니다.');
+  } else {
+    if (confirm('로그아웃을 하시겠습니까?')) {
+      alert('로그아웃을 위해 라이엇 공식 홈페이지로 이동합니다.');
+      replaceLocation(logout);
+    }
+  }
 };
 
 const handleInve24UpdateInfo = () => {
@@ -131,7 +141,7 @@ const handleInve24UpdateInfo = () => {
 
 const handleLeagueOfLegendsPatchNotes = () => {
   const lol =
-    'https://www.leagueoflegends.com/ko-kr/news/game-updates/patch-14-7-notes/';
+    'https://www.leagueoflegends.com/ko-kr/news/game-updates/patch-14-10-notes/';
 
   replaceLocation(lol);
 };
@@ -159,12 +169,13 @@ const handleHideModal = () => {
 };
 
 const handleRedirectForSpectate = () => {
-  // replaceLocation(`${hostBaseUrl}/spectate`);
-  alert(
-    '현재 라이엇 게임즈 관전 기능 점검으로 인해, 해당 기간 동안 서비스가 제한됩니다.',
-  );
+  replaceLocation(`${hostBaseUrl}/spectate`);
 
-  replaceLocation(`${hostBaseUrl}/summoners`);
+  // alert(
+  //   '현재 라이엇 게임즈 관전 기능 점검으로 인해, 해당 기간 동안 서비스가 제한됩니다.',
+  // );
+
+  // replaceLocation(`${hostBaseUrl}/summoners`);
 };
 
 const handleDisplayLoadingSpinner = () => {

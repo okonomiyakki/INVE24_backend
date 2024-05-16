@@ -9,13 +9,13 @@ export class SummonerLeagueInfoDto {
 
   profileIconId: number;
 
-  tier: string;
+  tier?: string;
 
-  rank: string;
+  rank?: string;
 
-  leaguePoints: number;
+  leaguePoints?: number;
 
-  wins: number;
+  wins?: number;
 
-  losses: number;
+  losses?: number;
 }

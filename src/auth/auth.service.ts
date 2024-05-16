@@ -123,15 +123,15 @@ export class AuthService {
 
       profileIconId: summoner.profileIconId,
 
-      tier: leagueEntry.tier,
+      tier: leagueEntry?.tier,
 
-      rank: leagueEntry.rank,
+      rank: leagueEntry?.rank,
 
-      leaguePoints: leagueEntry.leaguePoints,
+      leaguePoints: leagueEntry?.leaguePoints,
 
-      wins: leagueEntry.wins,
+      wins: leagueEntry?.wins,
 
-      losses: leagueEntry.losses,
+      losses: leagueEntry?.losses,
     };
 
     const webHookInfo = {
