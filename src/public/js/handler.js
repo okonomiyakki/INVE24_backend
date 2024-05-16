@@ -122,7 +122,17 @@ const handleRedirectPrev = () => {
 };
 
 const handleNavBar = () => {
-  alert('여긴 아무것도 없어요.');
+  const storedTokenInfo = localStorage.getItem('tokenInfo');
+  const logout = 'https://www.leagueoflegends.com/ko-kr/';
+
+  if (!storedTokenInfo) {
+    alert('현재 로그인이 되어있지 않습니다.');
+  } else {
+    if (confirm('로그아웃을 하시겠습니까?')) {
+      alert('로그아웃을 위해 라이엇 공식 홈페이지로 이동합니다.');
+      replaceLocation(logout);
+    }
+  }
 };
 
 const handleInve24UpdateInfo = () => {
