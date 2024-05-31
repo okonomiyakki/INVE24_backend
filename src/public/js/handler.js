@@ -155,9 +155,7 @@ const handleBugReportToDiscord = () => {
 };
 
 const handleBugReportToGitHub = () => {
-  const github = 'https://github.com/okonomiyakki/lol-real-time-watcher/issues';
-
-  replaceLocation(github);
+  alert('접근이 불가능합니다.');
 };
 
 const handleDisplayModal = () => {
