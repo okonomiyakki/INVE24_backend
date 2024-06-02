@@ -116,24 +116,16 @@
           <div id="usage_carousel_container">
             <div class="usage_carousel_slide">리그오브레전드 실시간 인게임 시간을 알려드립니다.</div>
             <div class="usage_carousel_slide">플레이 중이신<br>리그오브레전드 계정으로 로그인해 주세요.</div>
+            <div class="usage_carousel_slide">우측 상단의 메뉴 버튼을 클릭하시면<br>로그아웃하실 수 있습니다.</div>
             <div class="usage_carousel_slide">챔피언 픽 완료 후,<br>밴픽창에서 조회 버튼을 눌러주세요.</div>
             <div class="usage_carousel_slide">조회 버튼을 누른 후, 웹 브라우저를<br>새로고침하거나 종료하지 말아주세요.</div>
-            <div class="usage_carousel_slide">게임의 로딩 상태가 5분 이상 지속된 게임은<br>조회가 불가능합니다.</div>
+            <div class="usage_carousel_slide">게임의 로딩 상태가 5분 이상 경과된 게임은<br>조회가 불가능합니다.</div>
             <div class="usage_carousel_slide">이미 시작된 게임은 조회가 불가능합니다.</div>
           </div>
         </div>
 
         <div class="usage_carousel_dots"></div>
       </div>
-
-      {{!-- <div>
-        <div id="kakao_adfit">
-          <ins class="kakao_ad_area" style="display:none;"  
-              data-ad-unit="DAN-869SqFXA5w5UoyhX"
-              data-ad-width="300"
-              data-ad-height="250"></ins>
-        </div>
-      </div> --}}
 
       <div>
         <div id="kakao_adfit">
@@ -146,8 +138,15 @@
 
       <div>
         <div id="patch_note_info" class="box_common" onclick="handleLeagueOfLegendsPatchNotes()">
-          <span>리그오브레전드 v14.10 패치노트</span>
-          <span id="patch_note_info_arrow_icon" class="material-symbols-outlined">chevron_right</span>
+          <div>
+            <img id="patch_note_info_img"
+              src="https://cmsassets.rgpub.io/sanity/images/dsfx7636/news/ef4d0d5db25f6da57f640a967c697d64b31384bf-1920x1080.jpg?auto=format&fit=fill&q=80&w=983"
+              alt="League of Legends Patch Notes">
+          </div>
+          <div id="patch_note_info_title">
+            <span>리그오브레전드 v14.11 패치노트</span>
+            <span id="patch_note_info_arrow_icon" class="material-symbols-outlined">chevron_right</span>
+          </div>
         </div>
       </div>
 
@@ -191,15 +190,6 @@
               data-ad-height="250"></ins>
         </div>
       </div>
-
-      {{!-- <div>
-        <div id="kakao_adfit">
-          <ins class="kakao_ad_area" style="display:none;"  
-              data-ad-unit="DAN-6jAfUGqQX01aMXeO"
-              data-ad-width="320"
-              data-ad-height="100"></ins>
-        </div>
-      </div> --}}
 
       <ul id="policy_links">
         <li><a href={{data.HostPrivacyUrl}}>개인정보처리방침</a></li>
