@@ -34,7 +34,7 @@ const handleNavBar = () => {
 
 const handleLeagueOfLegendsPatchNotes = () => {
   const lol =
-    'https://www.leagueoflegends.com/ko-kr/news/game-updates/patch-14-10-notes/';
+    'https://www.leagueoflegends.com/ko-kr/news/game-updates/patch-14-11-notes/';
 
   replaceLocation(lol);
 };
