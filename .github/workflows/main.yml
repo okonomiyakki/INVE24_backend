@@ -1,81 +1,99 @@
 name: CI/CD Docker
 
-# main브랜치로 PR될 때 트리거 되고, 해당 PR이 merge되면 workflow를 실행함
 on:
   pull_request:
-    branches: [main]
-    types: [closed]
+  branches: [main]
+  types: [closed]
 
-# 환경변수 설정
 env:
-  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/github-auto-deploy
-  VERSION: ${{ github.sha }}
-  NAME: inve24_container
+  DOCKER_HUB_NGINX_REPO_NAME: inve24_nginx
+  DOCKER_HUB_SERVER_REPO_NAME: inve24_server
 
 jobs:
-  build: # Docker 이미지 빌드 및 GHCR에 푸시
-    name: Build 실행
-    runs-on: ubuntu-latest #ubuntu 환경에서 작업 실행
+  ci:
+    name: Build
+    runs-on: ubuntu-latest # 깃허브 가상머신에서 빌드할거임
     steps:
-      - name: (1) Checkout / github repository의 코드를 가상의 컨테이너 안으로 체크아웃
-        uses: actions/checkout@v2
-      - name: (2) SetUp Docker buildx / Docker 이미지 buildx 설정
-        id: buildx
-        uses: docker/setup-buildx-action@v1
-      - name: (3) Cache Docker layers / Docker 빌드 레이어 캐싱
-        uses: actions/cache@v2
+      - # 깃허브에서 제공하는 가상 빌드 머신에서 main에 있는 코드를 클론함
+        # 여기서 수정이 감지된 이미지들을 빌드할거임
+        name: Checkout (빌드 머신에서 저장소를 체크아웃)
+        uses: actions/checkout@v4
+
+      - # 빌드된 이미지들을 도커 허브에 푸시하기 위해서 도커 허브에 로그인함
+        name: Login to Docker Hub (도커 허브에 로그인)
+        uses: docker/login-action@v3
         with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ env.VERSION }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-11
-      - name: (4) Login to GHCR / GHCR에 로그인
-        uses: docker/login-action@v1
+          username: ${{ secrets.DOCKER_HUB_USER_NAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+        # 빌드는 각 디렉토리에 있는 Dockerfile로 하고,
+        # 이미지 pull받고 실행하는거는 docker-compose.yml으로 한다.
+        # EC2에서 Nest서버 도커라이징을 3개든 5개든 하더라도, 이미지는 하나만 있으면 되니깐
+
+      - # Nginx 이미지 빌드
+        # Nginx/nginx.conf 에다가 로드밸런싱이랑 SSL 인증서를 EC2 호스트랑 마운트하는 커스텀 파일을 작성
+        # Nginx/Dockerfile 에서 로컬에서 작성한 커스텀 nginx.conf 파일을
+        # 기존의 nginx.cong 파일에 덮어씌워서 nginx:latest 버전으로 빌드함
+        # 이렇게 커스텀하여 빌드된 nginx 이미지를 tags 옵션에 적힌 이름으로 Docker Hub에 푸시함
+        name: Nginx Build and push Docker images (Nginx 이미지 빌드)
+        uses: docker/build-push-action@v5
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_TOKEN }}
-      - name: (5) Build and Push / Docker 이미지 빌드 후 packages에 푸시
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          dockerfile: Docker/nginx/Dockerfile
           push: true
-          tags: ${{ env.DOCKER_IMAGE }}:latest
-  # 배포
-  deploy:
-    needs: build # build 후에 실행되도록 정의
-    name: Deploy 실행
-    runs-on: [self-hosted, label-inve24] # AWS ./configure에서 사용할 label명
-    steps:
-      - name: (1) Login to GHCR / GHCR에 로그인
-        uses: docker/login-action@v1
+          tags: ${{ secrets.DOCKER_HUB_USER_NAME }}/${{ env.DOCKER_HUB_NGINX_REPO_NAME }}:latest
+
+      - # NestJS 이미지 빌드
+        # /var/app 폴더를 만들고 해당 폴더에다가 package.json을 포함한 모든 파일을 복붙함
+        # 여기서 의존성을 모두 설치해서 npm build 한 다음에 배포환경 실행 스크립트를 첨부해서 빌드함
+        # 빌드된 NestJS 이미지를 tags 옵션에 적힌 이름으로 Docker Hub에 푸시함
+        name: NestJS Build and push Docker images (NestJS 이미지 빌드)
+        uses: docker/build-push-action@v5
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_TOKEN }}
-      - name: (2) Docker Run / Docker 컨테이너 띄우기
+          context: .
+          dockerfile: Docker/nestjs/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USER_NAME }}/${{ env.DOCKER_HUB_SERVER_REPO_NAME }}:latest
+
+  cd:
+    name: Deploy
+    needs: ci
+    runs-on: [self-hosted, label-inve24] # 내 서버에서 배포할거임
+    steps:
+      # 쉽게하려면 CI처럼 깃허브 가상머신에서 내 EC2에 SSH접근한 다음 도커 이미지 pull 받고 실행하면 되는데,
+      # EC2 인바운드에다가 IP를 싹 열어놓으면 위험하니까 내 서버를 self hosted로 설정하고 여기서 배포함
+      # self hosted를 내 집 컴터나 노트북으로도 설정할 수 있음. 그러면 EC2 인바운드 규칙에 우리집 IP만 추가하면 됨
+      # 대신 다른 지역에서는 배포를 못하기 때문에 그냥 내 서버를 self hosted로 설정했음
+
+      - # 도커 허브에 푸시된 이미지들을 pull받고 실행하기 위해서 도커 허브에 로그인함
+        name: Login to Docker Hub (도커 허브에 로그인)
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USER_NAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - # 내 EC2 호스트머신 루트 디렉토리 하위에 만들어둔 폴더로 들어감
+        # 우선 기존에 돌고있는 도커 컨테이너들을 중지시키고, 삭제함
+        # 직전 배포에서 pull 받을때 저장된 이미지도 삭제함
+
+        # sudo docker rmi $(docker images -q)는 모든 이미지 삭제 (근데 걍 명시하는게 좋을듯)
+        name: Terminate to Prev Containers and Images (기존 컨테이너 및 이미지 삭제)
         run: |
-          docker stop ${{ env.NAME }} || true
-          docker rm ${{ env.NAME }} || true
-          docker rmi ${{ env.DOCKER_IMAGE }}:latest || true
-          docker run -d -p 5500:5500 --name inve24_container --restart always \
-            -e HOST_BASE_URL=${{ secrets.HOST_BASE_URL }} \
-            -e RIOT_BASE_URL_ASIA=${{ secrets.RIOT_BASE_URL_ASIA }} \
-            -e RIOT_BASE_URL_KR=${{ secrets.RIOT_BASE_URL_KR }} \
-            -e RIOT_API_APP_KEY=${{ secrets.RIOT_API_APP_KEY }} \
-            -e RIOT_BASE_URL_AUTH=${{ secrets.RIOT_BASE_URL_AUTH }} \
-            -e RIOT_CLIENT_ID=${{ secrets.RIOT_CLIENT_ID }} \
-            -e RIOT_CLIENT_SECRET=${{ secrets.RIOT_CLIENT_SECRET }} \
-            -e HOST_REDIRECT_URI=${{ secrets.HOST_REDIRECT_URI }} \
-            -e RIOT_BASE_URL_TOKEN=${{ secrets.RIOT_BASE_URL_TOKEN }} \
-            -e LOL_DEFAULT_DELAY=${{ secrets.LOL_DEFAULT_DELAY }} \
-            -e LOL_INGAME_DELAY=${{ secrets.LOL_INGAME_DELAY }} \
-            -e LOL_LOADING_DELAY=${{ secrets.LOL_LOADING_DELAY }} \
-            -e DISCORD_INVITATION_CODE=${{ secrets.DISCORD_INVITATION_CODE }} \
-            -e DISCORD_WEBHOOK_URL_SUMMONER=${{ secrets.DISCORD_WEBHOOK_URL_SUMMONER }} \
-            -e DISCORD_WEBHOOK_URL_INGAME=${{ secrets.DISCORD_WEBHOOK_URL_INGAME }} \
-            -e DISCORD_WEBHOOK_URL_SUMMONER_ERROR=${{ secrets.DISCORD_WEBHOOK_URL_SUMMONER_ERROR }} \
-            -e DISCORD_WEBHOOK_URL_INGAME_ERROR=${{ secrets.DISCORD_WEBHOOK_URL_INGAME_ERROR }} \
-            -e DISCORD_WEBHOOK_URL_SERVER_ERROR=${{ secrets.DISCORD_WEBHOOK_URL_SERVER_ERROR }} \
-            ${{ env.DOCKER_IMAGE }}:latest
+          cd ~/inve24
+          sudo docker-compose -f docker-compose-prod.yml down
+          sudo docker rmi ${{ secrets.DOCKER_HUB_USER_NAME }}/${{ env.DOCKER_HUB_NGINX_REPO_NAME }}:latest || true
+          sudo docker rmi ${{ secrets.DOCKER_HUB_USER_NAME }}/${{ env.DOCKER_HUB_SERVER_REPO_NAME }}:latest || true
+
+      - # 같은 경로에 내가 미리 만들어둔 docker-compose-prod.yml 파일의 image 섹션에 적혀있는
+        # okonomiyakki/inve24_nginx:latest, okonomiyakki/inve24_server:latest 와 일치하는 이미지들을 pull 받음
+        # 해당 이미지들로 docker-compose-prod.yml에 정의된 서비스를 컨테이너화 하여 실행함
+        # 결론적으로 Docker-Nginx 1개, Docker-Server 2개가 실행됨
+
+        # docker-compose down : 컨테이너 중지 + 삭제 (이미지는 남아있음)
+        # --force-recreate는 기존 컨테이너 삭제하는 스크립트
+        # docker image prune -a는 사용하지 않는 이미지 삭제 (-a 옵션으로 어떤 컨테이너에도 참조되지 않는 모든 이미지 삭제)
+        name: Deploy to Docker Compose (도커 이미지 배포)
+        run: |
+          cd ~/inve24
+          sudo docker-compose -f docker-compose-prod.yml pull
+          sudo docker-compose -f docker-compose-prod.yml up -d
