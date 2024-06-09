@@ -39,7 +39,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          dockerfile: docker/nginx/Dockerfile
+          dockerfile: ./docker/nginx/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USER_NAME }}/${{ env.DOCKER_HUB_NGINX_REPO_NAME }}:latest
 
@@ -67,7 +67,7 @@ jobs:
 
       - # 도커 허브에 푸시된 이미지들을 pull받고 실행하기 위해서 도커 허브에 로그인함
         name: Login to Docker Hub (도커 허브에 로그인)
-        uses: ./docker/login-action@v3
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USER_NAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
