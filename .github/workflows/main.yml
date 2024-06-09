@@ -39,7 +39,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          dockerfile: Docker/nginx/Dockerfile
+          dockerfile: docker/nginx/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USER_NAME }}/${{ env.DOCKER_HUB_NGINX_REPO_NAME }}:latest
 
@@ -51,7 +51,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          dockerfile: Docker/nestjs/Dockerfile
+          dockerfile: docker/nestjs/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USER_NAME }}/${{ env.DOCKER_HUB_SERVER_REPO_NAME }}:latest
 
