@@ -1,0 +1,38 @@
+services:
+
+  nginx:
+    container_name: inve24_nginx
+    build:
+      context: .
+      dockerfile: Docker/nginx/Dockerfile
+    image: okonomiyakki/inve24_nginx:latest
+    restart: unless-stopped
+    ports:
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - nestjs-1
+      - nestjs-2
+
+  nestjs-1:
+    container_name: inve24_nestjs_1
+    build:
+      context: .
+      dockerfile: Docker/nestjs/Dockerfile
+    image: okonomiyakki/inve24_server:latest
+    ports:
+      - "5501:5500"
+    env_file:
+      - .env.prod
+
+  nestjs-2:
+    container_name: inve24_nestjs_2
+    build:
+      context: .
+      dockerfile: Docker/nestjs/Dockerfile
+    image: okonomiyakki/inve24_server:latest
+    ports:
+      - "5502:5500"
+    env_file:
+      - .env.prod 
