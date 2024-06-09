@@ -1,6 +1,8 @@
+# Dockerfile로 이미지 만들떄 들어가면 안되는 것들
+
 .git
 node_modules/
 dist/
-Dockerfile
+docker/
 .env.dev
 .env.prod
