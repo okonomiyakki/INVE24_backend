@@ -40,7 +40,7 @@ jobs:
         # 기존의 nginx.cong 파일에 덮어씌워서 nginx:latest 버전으로 빌드함
         # 이렇게 커스텀하여 빌드된 nginx 이미지를 tags 옵션에 적힌 이름으로 Docker Hub에 푸시함
         name: Nginx Build and push Docker images (Nginx 이미지 빌드)
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v2
         with:
           context: .
           dockerfile: ./docker/nginx/Dockerfile
@@ -52,7 +52,7 @@ jobs:
         # 여기서 의존성을 모두 설치해서 npm build 한 다음에 배포환경 실행 스크립트를 첨부해서 빌드함
         # 빌드된 NestJS 이미지를 tags 옵션에 적힌 이름으로 Docker Hub에 푸시함
         name: NestJS Build and push Docker images (NestJS 이미지 빌드)
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v2
         with:
           context: .
           dockerfile: ./docker/nestjs/Dockerfile
