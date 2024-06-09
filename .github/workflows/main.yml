@@ -26,6 +26,10 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USER_NAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
+      - # GitHub Actions 빌더 구성
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
         # 빌드는 각 디렉토리에 있는 Dockerfile로 하고,
         # 이미지 pull받고 실행하는거는 docker-compose.yml으로 한다.
         # EC2에서 Nest서버 도커라이징을 3개든 5개든 하더라도, 이미지는 하나만 있으면 되니깐
@@ -39,7 +43,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          dockerfile: ./docker/nginx/Dockerfile
+          dockerfile: docker/nginx/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USER_NAME }}/${{ env.DOCKER_HUB_NGINX_REPO_NAME }}:latest
 
@@ -51,7 +55,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          dockerfile: ./docker/nestjs/Dockerfile
+          dockerfile: docker/nestjs/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USER_NAME }}/${{ env.DOCKER_HUB_SERVER_REPO_NAME }}:latest
 
