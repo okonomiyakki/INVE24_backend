@@ -2,8 +2,8 @@ name: CI/CD Docker
 
 on:
   pull_request:
-  branches: [main]
-  types: [closed]
+    branches: [main]
+    types: [closed]
 
 env:
   DOCKER_HUB_NGINX_REPO_NAME: inve24_nginx
