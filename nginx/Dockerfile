@@ -9,6 +9,6 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # 랭크 이미지 파일 추가
 
 # 컨테이너가 내부적으로 사용하는 포트를 명시적으로 지정
-EXPOSE 443
+EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
