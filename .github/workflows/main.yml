@@ -42,8 +42,8 @@ jobs:
         name: Nginx Build and push Docker images (Nginx 이미지 빌드)
         uses: docker/build-push-action@vs
         with:
-          context: .
-          dockerfile: ./docker/nginx/Dockerfile
+          context: ./nginx
+          # dockerfile: ./docker/nginx/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USER_NAME }}/${{ env.DOCKER_HUB_NGINX_REPO_NAME }}:latest
 
@@ -54,8 +54,8 @@ jobs:
         name: NestJS Build and push Docker images (NestJS 이미지 빌드)
         uses: docker/build-push-action@v5
         with:
-          context: .
-          dockerfile: ./docker/nestjs/Dockerfile
+          context: ./nestjs
+          # dockerfile: ./docker/nestjs/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USER_NAME }}/${{ env.DOCKER_HUB_SERVER_REPO_NAME }}:latest
 
