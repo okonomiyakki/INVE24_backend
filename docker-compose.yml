@@ -3,8 +3,8 @@ services:
   nginx:
     container_name: inve24_nginx
     build:
-      context: .
-      dockerfile: Docker/nginx/Dockerfile
+      context: ./nginx
+      # dockerfile: ./Dockerfile
     image: okonomiyakki/inve24_nginx:latest
     restart: unless-stopped
     ports:
@@ -18,8 +18,8 @@ services:
   nestjs-1:
     container_name: inve24_nestjs_1
     build:
-      context: .
-      dockerfile: Docker/nestjs/Dockerfile
+      context: ./nestjs
+      # dockerfile: ./Dockerfile
     image: okonomiyakki/inve24_server:latest
     ports:
       - "5501:5500"
@@ -29,8 +29,8 @@ services:
   nestjs-2:
     container_name: inve24_nestjs_2
     build:
-      context: .
-      dockerfile: Docker/nestjs/Dockerfile
+      context: ./nestjs
+      # dockerfile: ./Dockerfile
     image: okonomiyakki/inve24_server:latest
     ports:
       - "5502:5500"

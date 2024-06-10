@@ -1,8 +1,12 @@
-# Dockerfile로 이미지 만들떄 들어가면 안되는 것들
+.vscode/
 
-.git
+.git/
+
 node_modules/
-dist/
-docker/
-.env.dev
-.env.prod
+docker-compose.yml
+README.md
+
+nestjs/node_modules/
+nestjs/dist/
+nestjs/.env.dev
+nestjs/.env.prod
