@@ -1,4 +1,4 @@
-FROM nginx:alpine
+FROM nginx:latest
 
 # COPY <nginx 하위의 nginx.conf 복사> <도커 이미지 /etc/nginx/conf.d/default.conf 에다가 붙여넣기>
 COPY nginx.conf /etc/nginx/conf.d/default.conf
