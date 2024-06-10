@@ -9,9 +9,11 @@ services:
     image: okonomiyakki/inve24_nginx:latest
     restart: unless-stopped
     ports:
+      - "80:80"
       - "443:443"
     volumes:
-      - /etc/letsencrypt:/etc/letsencrypt:ro
+      # - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /cert:/etc/nginx/cert
     depends_on:
       - nestjs-1
       - nestjs-2
@@ -34,4 +36,4 @@ services:
     ports:
       - "5502:5500"
     env_file:
-      - .env.prod 
+      - .env.prod
