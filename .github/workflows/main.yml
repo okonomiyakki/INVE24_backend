@@ -43,7 +43,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./nginx
-          # dockerfile: ./docker/nginx/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USER_NAME }}/${{ env.DOCKER_HUB_NGINX_REPO_NAME }}:latest
 
@@ -55,7 +54,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./nestjs
-          # dockerfile: ./docker/nestjs/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USER_NAME }}/${{ env.DOCKER_HUB_SERVER_REPO_NAME }}:latest
 
@@ -84,7 +82,7 @@ jobs:
         name: Terminate to Prev Containers and Images (기존 컨테이너 및 이미지 삭제)
         run: |
           cd ~/inve24
-          sudo docker-compose -f docker-compose-prod.yml down
+          sudo docker-compose -f docker-compose-prod.yml down || true
           sudo docker rmi ${{ secrets.DOCKER_HUB_USER_NAME }}/${{ env.DOCKER_HUB_NGINX_REPO_NAME }}:latest || true
           sudo docker rmi ${{ secrets.DOCKER_HUB_USER_NAME }}/${{ env.DOCKER_HUB_SERVER_REPO_NAME }}:latest || true
 
