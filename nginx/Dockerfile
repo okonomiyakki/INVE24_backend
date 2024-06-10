@@ -1,10 +1,8 @@
 FROM nginx:alpine
 
-# SSL 인증서를 저장할 디렉토리를 생성
-RUN mkdir -p /etc/letsencrypt
-
-# COPY nginx.conf /etc/nginx/nginx.conf
+# COPY <nginx 하위의 nginx.conf 복사> <도커 이미지 /etc/nginx/conf.d/default.conf 에다가 붙여넣기>
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+# COPY nginx.conf /etc/nginx/nginx.conf
 
 # riot.txt 파일 추가
 
