@@ -40,7 +40,7 @@ jobs:
         # 기존의 nginx.cong 파일에 덮어씌워서 nginx:latest 버전으로 빌드함
         # 이렇게 커스텀하여 빌드된 nginx 이미지를 tags 옵션에 적힌 이름으로 Docker Hub에 푸시함
         name: Nginx Build and push Docker images (Nginx 이미지 빌드)
-        uses: docker/build-push-action@vs
+        uses: docker/build-push-action@v5
         with:
           context: ./nginx
           # dockerfile: ./docker/nginx/Dockerfile
