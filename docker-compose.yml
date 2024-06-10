@@ -4,7 +4,6 @@ services:
     container_name: inve24_nginx
     build:
       context: ./nginx
-      # dockerfile: ./Dockerfile
     image: okonomiyakki/inve24_nginx:latest
     restart: unless-stopped
     ports:
@@ -19,7 +18,6 @@ services:
     container_name: inve24_nestjs_1
     build:
       context: ./nestjs
-      # dockerfile: ./Dockerfile
     image: okonomiyakki/inve24_server:latest
     ports:
       - "5501:5500"
@@ -30,7 +28,6 @@ services:
     container_name: inve24_nestjs_2
     build:
       context: ./nestjs
-      # dockerfile: ./Dockerfile
     image: okonomiyakki/inve24_server:latest
     ports:
       - "5502:5500"
