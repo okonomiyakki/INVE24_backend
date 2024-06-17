@@ -26,10 +26,6 @@
 
 ## ![Riot Games Badge](https://img.shields.io/badge/Riot%20Games-EB0029?logo=riotgames&logoColor=fff&style=for-the-badge)
 
-## 서비스 아키텍쳐 & CICD 파이프라인
-
-![아키텍쳐](https://github.com/okonomiyakki/lol-real-time-watcher/assets/83577128/3116d8f2-3445-411f-b87d-726644a85450)
-
 ## 서비스 목적
 
 - 흡연 유저들의 인베 참여율을 높입니다.
@@ -39,13 +35,28 @@
 - 롤 계정으로 로그인
 - 소환사 티어 정보 조회
 - 실시간 밴픽 및 로딩 상황 조회
-- 실시간 협곡 시간 조회
+- 실시간 게임 진행 시간 조회
 
-## 구현한 기술
+## 서비스 아키텍쳐 & CICD 파이프라인
+
+![아키텍쳐](https://github.com/okonomiyakki/INVE24_backend/assets/83577128/e820dca6-0ebe-4959-994d-d57192be5248)
+
+### CICD Workflow
+
+1. main 브랜치로 코드를 PR 합니다.
+2. 변경사항이 merge 되면, GitHub Actions가 해당 이벤트를 트리거 합니다.
+3. CI 작업을 하기 위해 깃허브 빌드 머신으로 접속합니다.
+4. 최신으로 반영된 코드를 해당 빌드 머신에 체크아웃(클론) 하고, Dockerfile을 기반으로 NestJS와 Nginx를 각각 빌드 합니다.
+5. 빌드 된 이미지들을 DockerHub 레포지토리에 푸시(업로드) 합니다.
+6. CD 작업을 하기 위해 EC2(호스트 머신)에 접속합니다.
+7. DockerHub로부터 최신 버전의 이미지들을 풀(다운로드) 합니다.
+8. 기존에 띄워진 Docker 컨테이너들을 종료 및 제거하고, 최신 이미지들을 실행합니다.
+
+## 구현 기술
 
 ### 클라이언트
 
-- SSR 프로젝트이며, Handlebars 템플릿을 랜더링합니다.
+- SSR 프로젝트로, Handlebars 템플릿을 랜더링합니다.
 
 ### 서버
 
